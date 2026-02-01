@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "typecheck": "tsc --noEmit",
     "build:main": "export JAVA_HOME='/opt/homebrew/opt/openjdk@21' && export ANDROID_HOME='/Users/nibhritvij/Library/Android/sdk' && rm -rf .next && NEXT_PUBLIC_ADMIN_APK=false next build && npx cap sync android && cd android && ./gradlew assembleCustomerDebug",
     "build:admin": "export JAVA_HOME='/opt/homebrew/opt/openjdk@21' && export ANDROID_HOME='/Users/nibhritvij/Library/Android/sdk' && rm -rf .next && cp capacitor.config.ts capacitor.config.main.bak && cp capacitor.config.admin.ts capacitor.config.ts && NEXT_PUBLIC_ADMIN_APK=true next build && npx cap sync android && cd android && ./gradlew assembleAdminDebug && cd .. && mv capacitor.config.main.bak capacitor.config.ts",
     "start": "next start",
