@@ -64,7 +64,7 @@ const technicalSpecs = [
 
 export default function WhySection() {
     return (
-        <section id="about" className="py-24 bg-dark-bg relative overflow-hidden">
+        <section id="about" className="py-16 sm:py-20 md:py-24 bg-dark-bg relative overflow-hidden">
             {/* Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-primary-blue/5 rounded-full blur-[160px] pointer-events-none" />
 
@@ -73,23 +73,26 @@ export default function WhySection() {
                     <motion.span
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        className="text-primary-blue font-black tracking-[0.2em] uppercase text-sm mb-4 inline-block"
+                        viewport={{ once: true }}
+                        className="text-primary-blue font-black tracking-[0.15em] sm:tracking-[0.2em] uppercase text-xs sm:text-sm mb-4 inline-block"
                     >
                         Engineering Excellence
                     </motion.span>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="text-4xl md:text-5xl font-black text-white mb-6 uppercase tracking-tighter"
+                        className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-6 uppercase tracking-tighter"
                     >
-                        WHY <span className="blue-text font-black uppercase text-3xl md:text-5xl">GENTECH GUARD</span>?
+                        WHY <span className="blue-text font-black uppercase text-2xl sm:text-3xl md:text-5xl">GENTECH GUARD</span>?
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
-                        className="text-text-grey text-lg font-medium leading-relaxed"
+                        className="text-text-grey text-base sm:text-lg font-medium leading-relaxed"
                     >
                         Our films are a precisely engineered multi-layer defense systems designed for the ultimate automotive preservation.
                     </motion.p>

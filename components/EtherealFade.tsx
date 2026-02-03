@@ -46,12 +46,12 @@ export const EtherealFade: React.FC<EtherealFadeProps> = ({
                         key={img.id}
                         className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
                     >
-                        {/* Ken Burns Effect Wrapper */}
+                        {/* Ken Burns Effect Wrapper - Optimized for mobile */}
                         <div className={`w-full h-full overflow-hidden`}>
                             <img
                                 src={img.url}
                                 alt={img.alt || img.title}
-                                className={`w-full h-full object-cover origin-center transition-transform duration-[3500ms] ease-linear ${isActive ? 'scale-110' : 'scale-100'}`}
+                                className={`w-full h-full object-cover origin-center transition-transform duration-[4000ms] ease-linear will-change-transform ${isActive ? 'scale-[1.05]' : 'scale-100'}`}
                             />
                         </div>
 

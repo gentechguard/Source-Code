@@ -1,7 +1,108 @@
-[00:00:01.302] Server  LOG     ✓ Ready in 943ms
-[00:00:02.189] Server  WARN    ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
-[00:00:02.729] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:04.198] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+[00:00:01.218] Server  LOG     ✓ Ready in 912ms
+[00:00:01.660] Server  WARN    ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+[00:00:02.585] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:02.601] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:09.009] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/home/" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html
+                          lang="en"
+-                         data-extension-installed=""
+-                         data-extension-id="fakegmdomhmegokfomgmkbopjibonfcp"
+-                         data-extension-version="2.3.0"
+-                         data-extension-manifest-version="3"
+                        >
+                          ...
+                            <div className="relative z...">
+                              <div>
+                              <p>
+                              <a href="/warranty" className="group">
+                                <GlassSurface borderRadius={100} width="fit-content" className="whitespace..." ...>
+                                  <div
+                                    ref={{current:null}}
+                                    className="relative flex items-center justify-center overflow-hidden transition-op..."
+                                    style={{
++                                     position: "absolute"
+-                                     position: "absolute"
++                                     maxWidth: "90dvw"
++                                     width: "fit-content"
+-                                     width: "fit-content"
++                                     height: "80px"
+-                                     height: "80px"
++                                     borderRadius: "100px"
++                                     --glass-frost: 0
+-                                     --glass-frost: "0"
++                                     --glass-saturation: 1
+-                                     --glass-saturation: "1"
++                                     background: "rgba(255, 255, 255, 0.25)"
++                                     backdropFilter: "blur(12px) saturate(1.8) brightness(1.1)"
++                                     WebkitBackdropFilter: "blur(12px) saturate(1.8) brightness(1.1)"
++                                     border: "1px solid rgba(255, 255, 255, 0.3)"
++                                     boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.2),\n                        0 2px ..."
+-                                     max-width: "90dvw"
+-                                     border-top-left-radius: "100px"
+-                                     border-top-right-radius: "100px"
+-                                     border-bottom-right-radius: "100px"
+-                                     border-bottom-left-radius: "100px"
+-                                     background-image: "initial"
+-                                     background-position-x: "initial"
+-                                     background-position-y: "initial"
+-                                     background-size: "initial"
+-                                     background-repeat: "initial"
+-                                     background-attachment: "initial"
+-                                     background-origin: "initial"
+-                                     background-clip: "initial"
+-                                     background-color: "rgba(255, 255, 255, 0.4)"
+-                                     border-top-width: "1px"
+-                                     border-right-width: "1px"
+-                                     border-bottom-width: "1px"
+-                                     border-left-width: "1px"
+-                                     border-top-style: "solid"
+-                                     border-right-style: "solid"
+-                                     border-bottom-style: "solid"
+-                                     border-left-style: "solid"
+-                                     border-top-color: "rgba(255, 255, 255, 0.3)"
+-                                     border-right-color: "rgba(255, 255, 255, 0.3)"
+-                                     border-bottom-color: "rgba(255, 255, 255, 0.3)"
+-                                     border-left-color: "rgba(255, 255, 255, 0.3)"
+-                                     border-image-source: "initial"
+-                                     border-image-slice: "initial"
+-                                     border-image-width: "initial"
+-                                     border-image-outset: "initial"
+-                                     border-image-repeat: "initial"
+-                                     box-shadow: "rgba(255, 255, 255, 0.5) 0px 1px 0px 0px inset, rgba(255, 255, 255,..."
+                                    }}
+                                  >
+                  ...
+
+[00:00:10.015] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
 
 - A server/client branch `if (typeof window !== 'undefined')`.
 - Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
@@ -98,17 +199,4 @@ It can also happen if the client has a browser extension installed which messes 
                 ...
               ...
 
-[00:00:11.888] Browser WARN    Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly.
-[00:00:27.132] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
-[00:00:27.451] Browser WARN    GoTrueClient@sb-rnscmxjrkqelmaiwrouz-auth-token:1 (2.93.3) 2026-02-01T16:15:20.284Z Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
-[00:00:27.451] Browser WARN    GoTrueClient@sb-rnscmxjrkqelmaiwrouz-auth-token:2 (2.93.3) 2026-02-01T16:15:20.284Z Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
-[00:00:47.910] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:48.468] Browser WARN    GoTrueClient@sb-rnscmxjrkqelmaiwrouz-auth-token:1 (2.93.3) 2026-02-01T16:15:41.299Z Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
-[00:00:55.082] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
-[00:00:55.082] Browser WARN    Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly.
-[00:01:40.754] Browser WARN    GoTrueClient@sb-rnscmxjrkqelmaiwrouz-auth-token:2 (2.93.3) 2026-02-01T16:16:33.583Z Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
-[00:01:40.754] Browser WARN    GoTrueClient@sb-rnscmxjrkqelmaiwrouz-auth-token:3 (2.93.3) 2026-02-01T16:16:33.586Z Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
-[00:08:23.129] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:08:23.740] Browser WARN    GoTrueClient@sb-rnscmxjrkqelmaiwrouz-auth-token:1 (2.93.3) 2026-02-01T16:23:16.572Z Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
-[00:08:31.719] Browser WARN    Image with src "https://rnscmxjrkqelmaiwrouz.supabase.co/storage/v1/object/public/gallery/installations/test-car.jpg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
-Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[00:00:31.878] Browser WARN    Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly.

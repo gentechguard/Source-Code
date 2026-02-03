@@ -9,21 +9,21 @@ import Image from 'next/image';
 // Helper to get Supabase image URL
 const getProductImageUrl = (imagePath: string | null | undefined) => {
   if (!imagePath) return '/assets/gentech-tall.png'; // fallback
-  
+
   // Replace with your actual Supabase URL from env or config
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://your-project-ref.supabase.co';
   return `${supabaseUrl}/storage/v1/object/public/products/${imagePath}`;
 };
 
 // Helper to safely parse specs
-const parseSpecs = (specs: any): Array<{label: string, value: string}> => {
+const parseSpecs = (specs: any): Array<{ label: string, value: string }> => {
   if (!specs) return [];
-  
+
   // If it's already an array of label/value objects
   if (Array.isArray(specs) && specs.length > 0 && specs[0].label) {
     return specs;
   }
-  
+
   // If it's an object (JSONB from Supabase)
   if (typeof specs === 'object' && !Array.isArray(specs)) {
     return Object.entries(specs).map(([key, value]) => ({
@@ -31,7 +31,7 @@ const parseSpecs = (specs: any): Array<{label: string, value: string}> => {
       value: Array.isArray(value) ? value.join(', ') : String(value)
     }));
   }
-  
+
   // If it's a string (JSON stringified)
   if (typeof specs === 'string') {
     try {
@@ -44,7 +44,7 @@ const parseSpecs = (specs: any): Array<{label: string, value: string}> => {
       return [];
     }
   }
-  
+
   return [];
 };
 
@@ -67,19 +67,46 @@ export default function ProductShowcase() {
   const [selectedParent, setSelectedParent] = useState<Product | null>(null);
   const [activeProduct, setActiveProduct] = useState<Product | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  
+
+  // Mobile accordion expansion state
+  const [expandedMobileIndex, setExpandedMobileIndex] = useState<number | null>(0);
+
+  // Track if we're on mobile - with proper SSR handling
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const rafIdRef = useRef<number | null>(null);
   const isSyncingRef = useRef(false);
 
+  // Client-side only detection to avoid hydration mismatch
+  useEffect(() => {
+    setIsClient(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const displayedProducts = selectedParent
     ? products.filter(p => p.parent_id === selectedParent.id)
     : products.filter(p => !p.parent_id);
 
+  // Auto-expand first on mobile when products change
+  useEffect(() => {
+    if (isMobile && displayedProducts.length > 0) {
+      setExpandedMobileIndex(0);
+    } else if (!isMobile) {
+      setExpandedMobileIndex(null);
+    }
+  }, [selectedParent, isMobile, displayedProducts.length]);
+
   const syncBackgrounds = useCallback(() => {
     if (!isSyncingRef.current) return;
-    
+
     const container = containerRef.current;
     if (!container || cardsRef.current.length === 0) {
       rafIdRef.current = requestAnimationFrame(syncBackgrounds);
@@ -87,12 +114,12 @@ export default function ProductShowcase() {
     }
 
     const containerRect = container.getBoundingClientRect();
-    
+
     cardsRef.current.forEach((card) => {
       if (!card) return;
       const cardRect = card.getBoundingClientRect();
       const xOffset = containerRect.left - cardRect.left;
-      
+
       card.style.backgroundSize = `${containerRect.width}px ${containerRect.height}px`;
       card.style.backgroundPositionX = `${xOffset}px`;
       card.style.backgroundPositionY = 'center';
@@ -107,7 +134,7 @@ export default function ProductShowcase() {
         isSyncingRef.current = true;
         rafIdRef.current = requestAnimationFrame(syncBackgrounds);
       }, 50);
-      
+
       return () => {
         clearTimeout(timeoutId);
         isSyncingRef.current = false;
@@ -126,15 +153,42 @@ export default function ProductShowcase() {
     };
   }, []);
 
-  const handleCardClick = (product: Product) => {
+  const handleCardClick = (product: Product, index: number) => {
     const hasChildren = products.some(p => p.parent_id === product.id);
-    
+
+    // On mobile, handle accordion expansion
+    if (isClient && isMobile) {
+      if (expandedMobileIndex === index) {
+        // If tapping the expanded card, check if it should navigate or toggle
+        if (hasChildren) {
+          // Navigate to children
+          setIsTransitioning(true);
+          isSyncingRef.current = false;
+          if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+          cardsRef.current = [];
+
+          setTimeout(() => {
+            setSelectedParent(product);
+            setIsTransitioning(false);
+          }, 100);
+        } else {
+          // Open modal
+          setActiveProduct(product);
+        }
+      } else {
+        // Toggle to this card
+        setExpandedMobileIndex(index);
+      }
+      return;
+    }
+
+    // Desktop behavior
     if (hasChildren) {
       setIsTransitioning(true);
       isSyncingRef.current = false;
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
       cardsRef.current = [];
-      
+
       setTimeout(() => {
         setSelectedParent(product);
         setIsTransitioning(false);
@@ -149,7 +203,7 @@ export default function ProductShowcase() {
     isSyncingRef.current = false;
     if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
     cardsRef.current = [];
-    
+
     setTimeout(() => {
       setSelectedParent(null);
       setIsTransitioning(false);
@@ -173,7 +227,7 @@ export default function ProductShowcase() {
   return (
     <section id="product-showcase" className="bg-black py-20 overflow-hidden">
       <div className="container mx-auto px-4">
-        
+
         {/* Header */}
         <div className="mb-8 h-16 flex items-center justify-between relative">
           <AnimatePresence mode="wait">
@@ -239,10 +293,24 @@ export default function ProductShowcase() {
         </div>
 
         {/* Products Grid */}
-        <div 
+        <div
           ref={containerRef}
-          className="relative z-10 flex flex-col md:flex-row gap-4 mx-4 md:mx-20 my-8 aspect-[9/16] md:aspect-video"
+          className="relative z-10 flex flex-col md:flex-row gap-3 md:gap-4 mx-0 md:mx-4 lg:mx-20 my-4 md:my-8 md:aspect-video rounded-2xl overflow-hidden"
+          style={{
+            // Fixed height on mobile to ensure accordion fills available space
+            minHeight: isClient && isMobile ? `${Math.max(displayedProducts.length * 70 + 150, 400)}px` : undefined,
+            // Shared background on mobile
+            backgroundImage: isClient && isMobile ? "url('/assets/solutions_bg.png')" : undefined,
+            backgroundSize: isClient && isMobile ? 'cover' : undefined,
+            backgroundPosition: isClient && isMobile ? 'center' : undefined,
+            backgroundRepeat: isClient && isMobile ? 'no-repeat' : undefined,
+          }}
         >
+          {/* Mobile background overlay for better readability */}
+          {isClient && isMobile && (
+            <div className="absolute inset-0 bg-black/40 z-0" />
+          )}
+
           <AnimatePresence mode="wait" onExitComplete={handleExitComplete}>
             <motion.div
               key={selectedParent ? 'children' : 'parents'}
@@ -250,65 +318,163 @@ export default function ProductShowcase() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="contents"
+              className="flex flex-col md:flex-row gap-3 md:gap-4 w-full h-full relative z-10"
             >
-              {displayedProducts.map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  onClick={() => handleCardClick(product)}
-                  ref={(el) => {
-                    if (el) cardsRef.current[index] = el;
-                  }}
-                  className={`
-                    group relative flex-1 hover:flex-[2] min-w-0
-                    transition-[flex] duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] 
-                    overflow-hidden cursor-pointer 
-                    border border-white/10 bg-[#111] rounded-2xl
-                    will-change-[flex]
-                  `}
-                  style={{
-                    backgroundImage: "url('/assets/solutions_bg.png')",
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  }}
-                >
-                  <div className="absolute inset-0 bg-black/60 group-hover:bg-black/30 transition-colors duration-500 z-10 pointer-events-none" />
+              {displayedProducts.map((product, index) => {
+                const hasChildren = products.some(p => p.parent_id === product.id);
+                const isExpanded = isClient && isMobile && expandedMobileIndex === index;
 
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 opacity-100 group-hover:opacity-0 transition-opacity duration-300">
-                    <h3 className="whitespace-nowrap text-xl md:text-2xl font-black tracking-widest text-white/90 uppercase rotate-0 md:-rotate-90 drop-shadow-lg">
-                      {product.name}
-                    </h3>
-                  </div>
+                return (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.4, delay: index * 0.05 }}
+                    onClick={() => handleCardClick(product, index)}
+                    ref={(el) => {
+                      if (el) cardsRef.current[index] = el;
+                    }}
+                    // Using inline styles for dynamic flex - this ALWAYS works
+                    style={{
+                      flex: isClient && isMobile
+                        ? (isExpanded ? '2 1 0%' : '1 1 0%')
+                        : undefined,
+                      minHeight: isClient && isMobile
+                        ? (isExpanded ? '200px' : '70px')
+                        : undefined,
+                      // Only apply background on desktop (for sync effect)
+                      backgroundImage: !(isClient && isMobile) ? "url('/assets/solutions_bg.png')" : undefined,
+                      backgroundRepeat: !(isClient && isMobile) ? "no-repeat" : undefined,
+                      backgroundSize: !(isClient && isMobile) ? 'cover' : undefined,
+                      backgroundPosition: !(isClient && isMobile) ? 'center' : undefined,
+                    }}
+                    className={`
+                      group relative overflow-hidden cursor-pointer 
+                      border border-white/10 rounded-2xl
+                      
+                      /* Mobile: semi-transparent background, Desktop: opaque */
+                      ${isClient && isMobile ? 'bg-black/30 backdrop-blur-sm' : 'bg-[#111]'}
+                      
+                      /* Transition for smooth animations */
+                      transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]
+                      
+                      /* Touch feedback */
+                      active:scale-[0.98] md:active:scale-100
+                      
+                      /* Desktop: flex expansion on hover */
+                      md:flex-1 md:hover:flex-[2] md:min-h-0
+                      
+                      /* Performance */
+                      md:will-change-[flex]
+                    `}
+                  >
+                    {/* Dark overlay - Only on desktop, mobile has container overlay */}
+                    <div
+                      className="hidden md:block absolute inset-0 z-10 pointer-events-none transition-colors duration-500 bg-black/60 group-hover:bg-black/30"
+                    />
 
-                  <div className="absolute inset-0 p-4 md:p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-75 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/60 to-transparent pointer-events-none z-20">
-                    <div className="w-full text-left pointer-events-auto transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
-                      <span className="text-blue-400 font-bold tracking-widest uppercase text-[10px] md:text-xs mb-2 block">
-                        {selectedParent ? 'View Details' : 'Click for Options'}
-                      </span>
-                      <h4 className="text-2xl md:text-4xl font-black text-white mb-2 leading-tight">
-                        {product.name}
-                      </h4>
-                      <p className="text-white/90 text-sm md:text-base line-clamp-2 mb-4 md:mb-6 font-medium">
-                        {product.shortDesc || product.short_desc || 'Premium Protection Solution'}
-                      </p>
-                      <button 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleCardClick(product);
+                    {/* ===== MOBILE LAYOUT ===== */}
+                    <div className="md:hidden absolute inset-0 z-20 flex flex-col">
+                      {/* Header Row - Always visible */}
+                      <div
+                        className="flex items-center justify-between px-5 transition-all duration-500"
+                        style={{
+                          paddingTop: isExpanded ? '16px' : '0',
+                          paddingBottom: isExpanded ? '8px' : '0',
+                          flex: isExpanded ? '0 0 auto' : '1 1 0%',
+                          alignItems: isExpanded ? 'flex-start' : 'center',
                         }}
-                        className="border border-blue-400 text-blue-400 font-bold tracking-widest uppercase text-[10px] md:text-xs px-5 py-2 hover:bg-blue-400 hover:text-white transition-colors duration-300 pointer-events-auto"
                       >
-                        {selectedParent ? 'View Solution' : 'Explore'}
-                      </button>
+                        <h3
+                          className="font-black tracking-wider text-white uppercase transition-all duration-300"
+                          style={{
+                            fontSize: isExpanded ? '18px' : '14px',
+                          }}
+                        >
+                          {product.name}
+                        </h3>
+
+                        {/* Indicator arrow */}
+                        <div
+                          className="text-blue-400 transition-transform duration-300"
+                          style={{
+                            transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+                          }}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+
+                      {/* Expandable Content */}
+                      <motion.div
+                        initial={false}
+                        animate={{
+                          opacity: isExpanded ? 1 : 0,
+                          height: isExpanded ? 'auto' : 0,
+                          paddingBottom: isExpanded ? '20px' : '0px',
+                        }}
+                        transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                        className="overflow-hidden px-5"
+                      >
+                        <p className="text-white/70 text-sm mb-4 line-clamp-2">
+                          {product.shortDesc || 'Premium Protection Solution'}
+                        </p>
+
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (hasChildren) {
+                              setIsTransitioning(true);
+                              setTimeout(() => {
+                                setSelectedParent(product);
+                                setIsTransitioning(false);
+                              }, 100);
+                            } else {
+                              setActiveProduct(product);
+                            }
+                          }}
+                          className="border border-blue-400 text-blue-400 font-bold tracking-widest uppercase text-xs px-5 py-2 hover:bg-blue-400 hover:text-white transition-colors duration-300 touch-manipulation"
+                        >
+                          {hasChildren ? 'Explore Options' : 'View Details'}
+                        </button>
+                      </motion.div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+
+                    {/* ===== DESKTOP LAYOUT (existing hover-based) ===== */}
+                    <div className="hidden md:flex absolute inset-0 items-center justify-center pointer-events-none z-20 opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+                      <h3 className="whitespace-nowrap text-xl md:text-2xl font-black tracking-widest text-white/90 uppercase -rotate-90 drop-shadow-lg">
+                        {product.name}
+                      </h3>
+                    </div>
+
+                    <div className="hidden md:flex absolute inset-0 p-4 md:p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-75 flex-col justify-end bg-gradient-to-t from-black/90 via-black/60 to-transparent pointer-events-none z-20">
+                      <div className="w-full text-left pointer-events-auto transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
+                        <span className="text-blue-400 font-bold tracking-widest uppercase text-xs mb-2 block">
+                          {selectedParent ? 'View Details' : 'Click for Options'}
+                        </span>
+                        <h4 className="text-2xl md:text-4xl font-black text-white mb-2 leading-tight">
+                          {product.name}
+                        </h4>
+                        <p className="text-white/90 text-sm md:text-base line-clamp-2 mb-4 md:mb-6 font-medium">
+                          {product.shortDesc || 'Premium Protection Solution'}
+                        </p>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCardClick(product, index);
+                          }}
+                          className="border border-blue-400 text-blue-400 font-bold tracking-widest uppercase text-[10px] md:text-xs px-5 py-2 hover:bg-blue-400 hover:text-white transition-colors duration-300 pointer-events-auto"
+                        >
+                          {selectedParent ? 'View Solution' : 'Explore'}
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -344,7 +510,7 @@ export default function ProductShowcase() {
               <div className="w-full md:w-2/5 bg-gradient-to-br from-gray-900 to-black relative overflow-hidden min-h-[300px] md:min-h-[500px] flex items-center justify-center p-6">
                 {/* Background decoration */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent" />
-                
+
                 {/* Product Image Container */}
                 <div className="relative z-10 w-full h-full flex items-center justify-center">
                   {activeProduct.image_url ? (
@@ -375,7 +541,7 @@ export default function ProductShowcase() {
 
               {/* Modal Right: Details */}
               <div className="w-full md:w-3/5 p-6 md:p-10 flex flex-col justify-center">
-                
+
                 {/* Product Name (only show if image exists, otherwise shown on left) */}
                 {activeProduct.image_url && (
                   <div className="mb-6">
@@ -383,7 +549,7 @@ export default function ProductShowcase() {
                       {activeProduct.name}
                     </h2>
                     <p className="text-gray-400 text-sm mt-2">
-                      {activeProduct.short_desc || activeProduct.shortDesc}
+                      {activeProduct.shortDesc}
                     </p>
                   </div>
                 )}
@@ -413,7 +579,7 @@ export default function ProductShowcase() {
                   <div className="grid grid-cols-2 gap-3">
                     {(() => {
                       const specEntries = parseSpecs(activeProduct.specs);
-                      
+
                       if (specEntries.length === 0) {
                         return (
                           <div className="col-span-2 text-white/30 text-sm italic bg-white/5 rounded-lg p-4 border border-white/5">
@@ -421,10 +587,10 @@ export default function ProductShowcase() {
                           </div>
                         );
                       }
-                      
+
                       return specEntries.map((spec, i) => (
-                        <div 
-                          key={i} 
+                        <div
+                          key={i}
                           className="bg-white/5 rounded-lg p-3 border border-white/5 hover:border-blue-400/30 transition-colors"
                         >
                           <p className="text-white/40 text-[10px] uppercase font-bold tracking-wider mb-1 line-clamp-1">

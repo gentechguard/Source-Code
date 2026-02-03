@@ -44,7 +44,7 @@ const itemVariants = {
     scale: 1,
     transition: {
       duration: 0.5,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as const,
     },
   },
   exit: {
@@ -81,8 +81,8 @@ export default function GalleryGrid() {
   };
 
   const navigateLightbox = (direction: 'prev' | 'next') => {
-    const newIndex = direction === 'prev' 
-      ? (selectedIndex - 1 + images.length) % images.length 
+    const newIndex = direction === 'prev'
+      ? (selectedIndex - 1 + images.length) % images.length
       : (selectedIndex + 1) % images.length;
     setSelectedIndex(newIndex);
     setSelectedImage(images[newIndex]);
@@ -92,7 +92,7 @@ export default function GalleryGrid() {
     <section className="relative px-4 md:px-8 lg:px-16 xl:px-24 pb-32 pt-8">
       <div className="max-w-7xl mx-auto">
         {/* Glass Filter Bar */}
-        <GalleryFilter 
+        <GalleryFilter
           categories={categories}
           activeCategory={activeCategory}
           onCategoryChange={setActiveCategory}
@@ -101,7 +101,7 @@ export default function GalleryGrid() {
         {/* Content Area with Animation */}
         <AnimatePresence mode="wait">
           {loading ? (
-            <motion.div 
+            <motion.div
               key="loader"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -128,8 +128,8 @@ export default function GalleryGrid() {
                   variants={itemVariants}
                   layoutId={`image-${image.id}`}
                 >
-                  <GalleryCard 
-                    image={image} 
+                  <GalleryCard
+                    image={image}
                     onClick={() => openLightbox(image, index)}
                     index={index}
                   />
@@ -137,7 +137,7 @@ export default function GalleryGrid() {
               ))}
             </motion.div>
           ) : (
-            <motion.div 
+            <motion.div
               key="empty"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}

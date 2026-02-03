@@ -27,7 +27,7 @@ export default function Header() {
 
     return (
         <header
-            className={`fixed top-0 left-0 w-full ${isOpen ? "px-0" : "px-8"} z-50 transition-all duration-300 ${scrolled ? "glass py-3" : "bg-transparent py-5"
+            className={`fixed top-0 left-0 w-full ${isOpen ? "px-4" : "px-4 sm:px-6 md:px-8"} z-50 transition-all duration-300 ${scrolled ? "glass py-3" : "bg-transparent py-4 sm:py-5"
                 }`}
             style={{
                 background: `${scrolled ? "linear-gradient(to right, #000, #111111b3 50%)" : "linear-gradient(to right, #000 25%, transparent 50%)"}`,
@@ -100,10 +100,11 @@ export default function Header() {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="lg:hidden bg-dark-bg border-b border-white/10 overflow-hidden relative z-50 py-8 shadow-[0_500px_0_rgba(0,0,0,0.9)]"
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] as const }}
+                        className="lg:hidden bg-dark-bg border-b border-white/10 overflow-hidden relative z-50 py-6 sm:py-8 shadow-[0_500px_0_rgba(0,0,0,0.9)] gpu-accelerated"
                     >
                         <div className="flex flex-col p-6 gap-6">
                             {navLinks.map((link) => (
@@ -119,12 +120,14 @@ export default function Header() {
                             ))}
                             <Link
                                 href="/home#contact"
-                                className="bg-primary-blue py-2 mt-2 text-white px-6 py-3 rounded-lg text-center font-black uppercase tracking-wider neon-glow"
+                                className="bg-primary-blue mt-2 text-white px-6 py-3 rounded-lg text-center font-black uppercase tracking-wider neon-glow active:scale-95 transition-transform touch-manipulation"
                                 onClick={() => setIsOpen(false)}
                             >
                                 Become a Dealer
                             </Link>
                         </div>
+                        {/* Safe area for notched devices */}
+                        <div className="h-[env(safe-area-inset-bottom)]" />
                     </motion.div>
                 )}
             </AnimatePresence>
