@@ -1,4 +1,2289 @@
-[00:00:02.978] Server  LOG     ✓ Ready in 1793ms
-[00:00:18.731] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:19.050] Browser WARN    Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly.
-[00:00:25.961] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+[00:00:01.143] Server  LOG     ✓ Ready in 835ms
+[00:00:01.834] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:03.555] Browser WARN    Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly.
+[00:00:08.711] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+[00:02:00.761] Browser WARN    GoTrueClient@sb-rnscmxjrkqelmaiwrouz-auth-token:1 (2.93.3) 2026-02-07T11:50:45.676Z Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+[00:13:53.140] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:13:53.541] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+      <LoadingBoundary name="home/" loading={null}>
+        <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+          <RedirectBoundary>
+            <RedirectErrorBoundary router={{...}}>
+              <InnerLayoutRouter url="/home/#pro..." tree={[...]} params={{}} cacheNode={{rsc:<Fragment>, ...}} ...>
+                <SegmentViewNode type="page" pagePath="home/page.tsx">
+                  <SegmentTrieNode>
+                  <Home>
+                    <main className="min-h-[100...">
+                      <Header>
+                      <Hero>
+                      <WhySection>
+                      <ProductShowcase>
+                      <ProcessSection>
+                      <WarrantySection>
+                        <section id="warranty" className="relative w...">
+                          <div>
+                          <div>
+                          <div>
+                          <div className="relative z...">
+                            <div>
+                            <p>
+                            <a href="/warranty" className="group">
+                              <GlassSurface borderRadius={100} width="fit-content" className="whitespace..." ...>
+                                <div
+                                  ref={{current:null}}
+                                  className="relative flex items-center justify-center overflow-hidden transition-opac..."
+                                  style={{
++                                   position: "absolute"
+-                                   position: "absolute"
++                                   maxWidth: "90dvw"
++                                   width: "fit-content"
+-                                   width: "fit-content"
++                                   height: "80px"
+-                                   height: "80px"
++                                   borderRadius: "100px"
++                                   --glass-frost: 0
+-                                   --glass-frost: "0"
++                                   --glass-saturation: 1
+-                                   --glass-saturation: "1"
++                                   background: "rgba(255, 255, 255, 0.25)"
++                                   backdropFilter: "blur(12px) saturate(1.8) brightness(1.1)"
++                                   WebkitBackdropFilter: "blur(12px) saturate(1.8) brightness(1.1)"
++                                   border: "1px solid rgba(255, 255, 255, 0.3)"
++                                   boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.2),\n                        0 2px 16..."
+-                                   max-width: "90dvw"
+-                                   border-top-left-radius: "100px"
+-                                   border-top-right-radius: "100px"
+-                                   border-bottom-right-radius: "100px"
+-                                   border-bottom-left-radius: "100px"
+-                                   background-image: "initial"
+-                                   background-position-x: "initial"
+-                                   background-position-y: "initial"
+-                                   background-size: "initial"
+-                                   background-repeat: "initial"
+-                                   background-attachment: "initial"
+-                                   background-origin: "initial"
+-                                   background-clip: "initial"
+-                                   background-color: "rgba(255, 255, 255, 0.4)"
+-                                   border-top-width: "1px"
+-                                   border-right-width: "1px"
+-                                   border-bottom-width: "1px"
+-                                   border-left-width: "1px"
+-                                   border-top-style: "solid"
+-                                   border-right-style: "solid"
+-                                   border-bottom-style: "solid"
+-                                   border-left-style: "solid"
+-                                   border-top-color: "rgba(255, 255, 255, 0.3)"
+-                                   border-right-color: "rgba(255, 255, 255, 0.3)"
+-                                   border-bottom-color: "rgba(255, 255, 255, 0.3)"
+-                                   border-left-color: "rgba(255, 255, 255, 0.3)"
+-                                   border-image-source: "initial"
+-                                   border-image-slice: "initial"
+-                                   border-image-width: "initial"
+-                                   border-image-outset: "initial"
+-                                   border-image-repeat: "initial"
+-                                   box-shadow: "rgba(255, 255, 255, 0.5) 0px 1px 0px 0px inset, rgba(255, 255, 255, 0..."
+                                  }}
+                                >
+                      ...
+                ...
+              ...
+
+[00:13:53.541] Browser WARN    Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly.
+[00:43:14.681] Server  LOG     ✓ Compiled in 92ms
+[00:43:15.143] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:43:15.143] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:43:45.665] Server  LOG     ✓ Compiled in 272ms
+[00:43:46.147] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:43:46.147] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:43:47.646] Server  LOG     ✓ Compiled in 331ms
+[00:43:48.145] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:43:48.145] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:44:08.421] Server  LOG     ✓ Compiled in 152ms
+[00:44:09.144] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:44:09.144] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:44:29.149] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:44:29.149] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:48:21.149] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:48:21.149] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:48:29.591] Server  ERROR   ⨯ ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+
+./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+[00:48:30.066] Browser ERROR   uncaughtError: Error: ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+[00:48:30.283] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:48:30.283] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:48:30.283] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:48:30.283] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:51:13.899] Server  ERROR   ⨯ ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+
+./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+[00:51:14.095] Browser ERROR   uncaughtError: Error: ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+[00:51:14.294] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:51:14.295] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:51:14.295] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:51:14.295] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:52:08.154] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import { GlassSurface } from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:52:08.154] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import { GlassSurface } from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:52:11.906] Server  ERROR   ⨯ ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import { GlassSurface } from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+
+./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import { GlassSurface } from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+[00:52:12.101] Browser ERROR   uncaughtError: Error: ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import { GlassSurface } from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+[00:52:12.297] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import { GlassSurface } from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:52:12.297] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import { GlassSurface } from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:52:12.297] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import { GlassSurface } from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:52:12.297] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import { GlassSurface } from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:52:41.153] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:52:41.153] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:52:44.958] Server  ERROR   ⨯ ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+
+./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+[00:52:45.145] Browser ERROR   uncaughtError: Error: ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+[00:52:45.347] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:52:45.347] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:52:45.347] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:52:45.347] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:53:23.151] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:53:23.151] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:53:24.155] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:53:24.155] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:53:24.155] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:53:24.155] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:53:24.155] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:53:24.155] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:53:24.155] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:53:24.155] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:53:24.155] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:53:24.155] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:54:24.144] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:54:24.144] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:54:27.861] Server  ERROR   ⨯ ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+
+./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+[00:54:28.082] Browser ERROR   uncaughtError: Error: ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+[00:54:28.174] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:54:28.174] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:54:28.285] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:54:28.285] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:57:25.143] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:57:25.143] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export default doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import GlassSurface from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export default was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:57:28.144] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import { GlassSurface } from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:57:28.144] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import { GlassSurface } from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:57:30.144] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[00:57:30.144] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import useGlobalStore?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[01:00:43.526] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:00:45.205] Browser LOG     Fetching products with sort_order...
+[01:00:47.143] Browser LOG     Raw data from Supabase: [{"name":"Paint Protection Film","sort_order":1},{"name":"Sun Film","sort_order":2},{"name":"Graphene Coating","sort_order":3},{"name":"Perfumes","sort_order":4},{"name":"Detailing Products","sort_order":5},{"name":"All Purpose Cleaner","sort_order":999},{"name":"Car Shampoo","sort_order":999},{"name":"GenTech 5","sort_order":999},{"name":"GenTech Ultra Pro 8","sort_order":999},{"name":"Glass Cleaner","sort_order":999},{"name":"Graphene Ultra","sort_order":999},{"name":"Graphene Ultra Pro","sort_order":999},{"name":"GT 50 Window Film","sort_order":999},{"name":"GT 70 Window Film","sort_order":999},{"name":"Luxurious Car Air Fresheners","sort_order":999},{"name":"Multi Surface Shiner","sort_order":999}]
+[01:00:47.143] Browser LOG     Mapped products: [{"name":"Paint Protection Film","sort_order":1},{"name":"Sun Film","sort_order":2},{"name":"Graphene Coating","sort_order":3},{"name":"Perfumes","sort_order":4},{"name":"Detailing Products","sort_order":5},{"name":"All Purpose Cleaner","sort_order":999},{"name":"Car Shampoo","sort_order":999},{"name":"GenTech 5","sort_order":999},{"name":"GenTech Ultra Pro 8","sort_order":999},{"name":"Glass Cleaner","sort_order":999},{"name":"Graphene Ultra","sort_order":999},{"name":"Graphene Ultra Pro","sort_order":999},{"name":"GT 50 Window Film","sort_order":999},{"name":"GT 70 Window Film","sort_order":999},{"name":"Luxurious Car Air Fresheners","sort_order":999},{"name":"Multi Surface Shiner","sort_order":999}]
+[01:00:49.820] Server  LOG     ✓ Compiled in 122ms
+[01:00:50.155] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[01:00:50.155] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[01:00:59.747] Browser WARN    Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly.
+[01:01:01.891] Server  ERROR   ⨯ ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+
+./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+[01:01:02.211] Browser ERROR   uncaughtError: Error: ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+
+
+[01:01:02.447] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[01:01:02.447] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[01:01:02.447] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[01:01:02.447] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass';
+> 6 | import { GlassSurface } from "./GlassSurface"; // Changed to named import
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { ArrowRight } from 'lucide-react';
+  8 | import Link from 'next/link';
+  9 |
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[01:01:12.146] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import { GlassSurface } from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-client] (ecmascript).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[01:01:12.146] Browser ERROR   ./components/WarrantySection.tsx:6:1
+Export GlassSurface doesn't exist in target module
+  4 | import FloatingLines from "./FloatingLines";
+  5 | import FluidGlass from './FluidGlass'
+> 6 | import { GlassSurface } from "./GlassSurface";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export default function WarrantySection() {
+  9 |     return (
+
+The export GlassSurface was not found in module [project]/components/GlassSurface.tsx [app-ssr] (ecmascript).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/WarrantySection.tsx
+    ./app/home/page.tsx
+[01:01:15.674] Server  LOG     ✓ Compiled in 61ms
+[01:01:16.256] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:01:17.493] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+      <LoadingBoundary name="home/" loading={null}>
+        <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+          <RedirectBoundary>
+            <RedirectErrorBoundary router={{...}}>
+              <InnerLayoutRouter url="/home/#pro..." tree={[...]} params={{}} cacheNode={{rsc:<Fragment>, ...}} ...>
+                <SegmentViewNode type="page" pagePath="home/page.tsx">
+                  <SegmentTrieNode>
+                  <Home>
+                    <main className="min-h-[100...">
+                      <Header>
+                      <Hero>
+                      <WhySection>
+                      <SolutionsSection>
+                      <ProcessSection>
+                      <WarrantySection>
+                        <section id="warranty" className="relative w...">
+                          <div>
+                          <div>
+                          <div>
+                          <div className="relative z...">
+                            <div>
+                            <p>
+                            <a href="/warranty" className="group">
+                              <GlassSurface borderRadius={100} width="fit-content" className="whitespace..." ...>
+                                <div
+                                  ref={{current:null}}
+                                  className="relative flex items-center justify-center overflow-hidden transition-opac..."
+                                  style={{
++                                   position: "absolute"
+-                                   position: "absolute"
++                                   maxWidth: "90dvw"
++                                   width: "fit-content"
+-                                   width: "fit-content"
++                                   height: "80px"
+-                                   height: "80px"
++                                   borderRadius: "100px"
++                                   --glass-frost: 0
+-                                   --glass-frost: "0"
++                                   --glass-saturation: 1
+-                                   --glass-saturation: "1"
++                                   background: "rgba(255, 255, 255, 0.25)"
++                                   backdropFilter: "blur(12px) saturate(1.8) brightness(1.1)"
++                                   WebkitBackdropFilter: "blur(12px) saturate(1.8) brightness(1.1)"
++                                   border: "1px solid rgba(255, 255, 255, 0.3)"
++                                   boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.2),\n                        0 2px 16..."
+-                                   max-width: "90dvw"
+-                                   border-top-left-radius: "100px"
+-                                   border-top-right-radius: "100px"
+-                                   border-bottom-right-radius: "100px"
+-                                   border-bottom-left-radius: "100px"
+-                                   background-image: "initial"
+-                                   background-position-x: "initial"
+-                                   background-position-y: "initial"
+-                                   background-size: "initial"
+-                                   background-repeat: "initial"
+-                                   background-attachment: "initial"
+-                                   background-origin: "initial"
+-                                   background-clip: "initial"
+-                                   background-color: "rgba(255, 255, 255, 0.4)"
+-                                   border-top-width: "1px"
+-                                   border-right-width: "1px"
+-                                   border-bottom-width: "1px"
+-                                   border-left-width: "1px"
+-                                   border-top-style: "solid"
+-                                   border-right-style: "solid"
+-                                   border-bottom-style: "solid"
+-                                   border-left-style: "solid"
+-                                   border-top-color: "rgba(255, 255, 255, 0.3)"
+-                                   border-right-color: "rgba(255, 255, 255, 0.3)"
+-                                   border-bottom-color: "rgba(255, 255, 255, 0.3)"
+-                                   border-left-color: "rgba(255, 255, 255, 0.3)"
+-                                   border-image-source: "initial"
+-                                   border-image-slice: "initial"
+-                                   border-image-width: "initial"
+-                                   border-image-outset: "initial"
+-                                   border-image-repeat: "initial"
+-                                   box-shadow: "rgba(255, 255, 255, 0.5) 0px 1px 0px 0px inset, rgba(255, 255, 255, 0..."
+                                  }}
+                                >
+                      ...
+                ...
+              ...
+
+[01:01:17.493] Browser LOG     Fetching products with sort_order...
+[01:01:17.493] Browser WARN    Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly.
+[01:01:23.324] Browser LOG     Raw data from Supabase: [{"name":"Paint Protection Film","sort_order":1},{"name":"Sun Film","sort_order":2},{"name":"Graphene Coating","sort_order":3},{"name":"Perfumes","sort_order":4},{"name":"Detailing Products","sort_order":5},{"name":"All Purpose Cleaner","sort_order":999},{"name":"Car Shampoo","sort_order":999},{"name":"GenTech 5","sort_order":999},{"name":"GenTech Ultra Pro 8","sort_order":999},{"name":"Glass Cleaner","sort_order":999},{"name":"Graphene Ultra","sort_order":999},{"name":"Graphene Ultra Pro","sort_order":999},{"name":"GT 50 Window Film","sort_order":999},{"name":"GT 70 Window Film","sort_order":999},{"name":"Luxurious Car Air Fresheners","sort_order":999},{"name":"Multi Surface Shiner","sort_order":999}]
+[01:01:23.324] Browser LOG     Mapped products: [{"name":"Paint Protection Film","sort_order":1},{"name":"Sun Film","sort_order":2},{"name":"Graphene Coating","sort_order":3},{"name":"Perfumes","sort_order":4},{"name":"Detailing Products","sort_order":5},{"name":"All Purpose Cleaner","sort_order":999},{"name":"Car Shampoo","sort_order":999},{"name":"GenTech 5","sort_order":999},{"name":"GenTech Ultra Pro 8","sort_order":999},{"name":"Glass Cleaner","sort_order":999},{"name":"Graphene Ultra","sort_order":999},{"name":"Graphene Ultra Pro","sort_order":999},{"name":"GT 50 Window Film","sort_order":999},{"name":"GT 70 Window Film","sort_order":999},{"name":"Luxurious Car Air Fresheners","sort_order":999},{"name":"Multi Surface Shiner","sort_order":999}]
+[01:27:04.769] Server  LOG     ✓ Compiled in 73ms
+[01:36:46.871] Server  LOG     ✓ Compiled in 212ms
+[01:37:09.555] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:37:10.357] Browser WARN    Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly.
+[01:37:10.357] Browser LOG     Fetching products with sort_order...
+[01:37:11.886] Browser LOG     Raw data from Supabase: [{"name":"Paint Protection Film","sort_order":1},{"name":"Sun Film","sort_order":2},{"name":"Graphene Coating","sort_order":3},{"name":"Perfumes","sort_order":4},{"name":"Detailing Products","sort_order":5},{"name":"All Purpose Cleaner","sort_order":999},{"name":"Car Shampoo","sort_order":999},{"name":"GenTech 5","sort_order":999},{"name":"GenTech Ultra Pro 8","sort_order":999},{"name":"Glass Cleaner","sort_order":999},{"name":"Graphene Ultra","sort_order":999},{"name":"Graphene Ultra Pro","sort_order":999},{"name":"GT 50 Window Film","sort_order":999},{"name":"GT 70 Window Film","sort_order":999},{"name":"Luxurious Car Air Fresheners","sort_order":999},{"name":"Multi Surface Shiner","sort_order":999}]
+[01:37:11.886] Browser LOG     Mapped products: [{"name":"Paint Protection Film","sort_order":1},{"name":"Sun Film","sort_order":2},{"name":"Graphene Coating","sort_order":3},{"name":"Perfumes","sort_order":4},{"name":"Detailing Products","sort_order":5},{"name":"All Purpose Cleaner","sort_order":999},{"name":"Car Shampoo","sort_order":999},{"name":"GenTech 5","sort_order":999},{"name":"GenTech Ultra Pro 8","sort_order":999},{"name":"Glass Cleaner","sort_order":999},{"name":"Graphene Ultra","sort_order":999},{"name":"Graphene Ultra Pro","sort_order":999},{"name":"GT 50 Window Film","sort_order":999},{"name":"GT 70 Window Film","sort_order":999},{"name":"Luxurious Car Air Fresheners","sort_order":999},{"name":"Multi Surface Shiner","sort_order":999}]
+[01:37:37.349] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:37:38.059] Browser WARN    Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly.
+[01:37:38.059] Browser LOG     Fetching products with sort_order...
+[01:37:38.542] Browser LOG     Raw data from Supabase: [{"name":"Paint Protection Film","sort_order":1},{"name":"Sun Film","sort_order":2},{"name":"Graphene Coating","sort_order":3},{"name":"Perfumes","sort_order":4},{"name":"Detailing Products","sort_order":5},{"name":"All Purpose Cleaner","sort_order":999},{"name":"Car Shampoo","sort_order":999},{"name":"GenTech 5","sort_order":999},{"name":"GenTech Ultra Pro 8","sort_order":999},{"name":"Glass Cleaner","sort_order":999},{"name":"Graphene Ultra","sort_order":999},{"name":"Graphene Ultra Pro","sort_order":999},{"name":"GT 50 Window Film","sort_order":999},{"name":"GT 70 Window Film","sort_order":999},{"name":"Luxurious Car Air Fresheners","sort_order":999},{"name":"Multi Surface Shiner","sort_order":999}]
+[01:37:38.542] Browser LOG     Mapped products: [{"name":"Paint Protection Film","sort_order":1},{"name":"Sun Film","sort_order":2},{"name":"Graphene Coating","sort_order":3},{"name":"Perfumes","sort_order":4},{"name":"Detailing Products","sort_order":5},{"name":"All Purpose Cleaner","sort_order":999},{"name":"Car Shampoo","sort_order":999},{"name":"GenTech 5","sort_order":999},{"name":"GenTech Ultra Pro 8","sort_order":999},{"name":"Glass Cleaner","sort_order":999},{"name":"Graphene Ultra","sort_order":999},{"name":"Graphene Ultra Pro","sort_order":999},{"name":"GT 50 Window Film","sort_order":999},{"name":"GT 70 Window Film","sort_order":999},{"name":"Luxurious Car Air Fresheners","sort_order":999},{"name":"Multi Surface Shiner","sort_order":999}]
+[01:39:45.106] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:39:45.962] Browser WARN    Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly.
+[01:39:45.962] Browser LOG     Fetching products with sort_order...
+[01:39:46.588] Browser LOG     Raw data from Supabase: [{"name":"Paint Protection Film","sort_order":1},{"name":"Sun Film","sort_order":2},{"name":"Graphene Coating","sort_order":3},{"name":"Perfumes","sort_order":4},{"name":"Detailing Products","sort_order":5},{"name":"All Purpose Cleaner","sort_order":999},{"name":"Car Shampoo","sort_order":999},{"name":"GenTech 5","sort_order":999},{"name":"GenTech Ultra Pro 8","sort_order":999},{"name":"Glass Cleaner","sort_order":999},{"name":"Graphene Ultra","sort_order":999},{"name":"Graphene Ultra Pro","sort_order":999},{"name":"GT 50 Window Film","sort_order":999},{"name":"GT 70 Window Film","sort_order":999},{"name":"Luxurious Car Air Fresheners","sort_order":999},{"name":"Multi Surface Shiner","sort_order":999}]
+[01:39:46.588] Browser LOG     Mapped products: [{"name":"Paint Protection Film","sort_order":1},{"name":"Sun Film","sort_order":2},{"name":"Graphene Coating","sort_order":3},{"name":"Perfumes","sort_order":4},{"name":"Detailing Products","sort_order":5},{"name":"All Purpose Cleaner","sort_order":999},{"name":"Car Shampoo","sort_order":999},{"name":"GenTech 5","sort_order":999},{"name":"GenTech Ultra Pro 8","sort_order":999},{"name":"Glass Cleaner","sort_order":999},{"name":"Graphene Ultra","sort_order":999},{"name":"Graphene Ultra Pro","sort_order":999},{"name":"GT 50 Window Film","sort_order":999},{"name":"GT 70 Window Film","sort_order":999},{"name":"Luxurious Car Air Fresheners","sort_order":999},{"name":"Multi Surface Shiner","sort_order":999}]
+[01:40:20.690] Server  LOG     ✓ Compiled in 80ms
+[01:41:43.423] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+[03:52:35.555] Server  LOG     ✓ Compiled in 182ms
+[03:53:02.665] Server  LOG     ✓ Compiled in 124ms
+[03:53:25.242] Server  LOG     ✓ Compiled in 79ms
+[03:53:47.653] Server  LOG     ✓ Compiled in 89ms
+[03:54:14.891] Server  LOG     ✓ Compiled in 97ms
+[03:54:50.840] Server  LOG     ✓ Compiled in 72ms
+[03:55:08.059] Server  LOG     ✓ Compiled in 89ms
+[03:55:09.150] Browser ERROR   ./hooks/useDealerData.ts:6:1
+Export dealers doesn't exist in target module
+  4 | import { useState, useMemo, useCallback } from "react";
+  5 | import { Dealer, DealerFilter } from "@/types/dealer";
+> 6 | import { dealers as allDealers } from "@/lib/dealers/data";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export function useDealerData() {
+  9 |   const [filters, setFilters] = useState<DealerFilter>({
+
+The export dealers was not found in module [project]/lib/dealers/data.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./hooks/useDealerData.ts [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./hooks/useDealerData.ts [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:55:09.150] Browser ERROR   ./hooks/useDealerData.ts:6:1
+Export dealers doesn't exist in target module
+  4 | import { useState, useMemo, useCallback } from "react";
+  5 | import { Dealer, DealerFilter } from "@/types/dealer";
+> 6 | import { dealers as allDealers } from "@/lib/dealers/data";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export function useDealerData() {
+  9 |   const [filters, setFilters] = useState<DealerFilter>({
+
+The export dealers was not found in module [project]/lib/dealers/data.ts [app-ssr] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./hooks/useDealerData.ts [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./hooks/useDealerData.ts [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:55:09.150] Browser ERROR   ./app/our-network/components/DealerFilter.tsx:7:1
+Export states doesn't exist in target module
+   5 | import { Search, MapPin, Store, Star, Clock, X } from "lucide-react";
+   6 | import { DealerFilter } from "@/types/dealer";
+>  7 | import { states } from "@/lib/dealers/data";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 |
+   9 | interface DealerFilterProps {
+  10 |   filters: DealerFilter;
+
+The export states was not found in module [project]/lib/dealers/data.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/our-network/components/DealerFilter.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/our-network/components/DealerFilter.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:55:09.150] Browser ERROR   ./app/our-network/components/DealerFilter.tsx:7:1
+Export states doesn't exist in target module
+   5 | import { Search, MapPin, Store, Star, Clock, X } from "lucide-react";
+   6 | import { DealerFilter } from "@/types/dealer";
+>  7 | import { states } from "@/lib/dealers/data";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 |
+   9 | interface DealerFilterProps {
+  10 |   filters: DealerFilter;
+
+The export states was not found in module [project]/lib/dealers/data.ts [app-ssr] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/our-network/components/DealerFilter.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/our-network/components/DealerFilter.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:55:16.659] Server  LOG     ✓ Compiled in 66ms
+[03:55:17.143] Browser ERROR   ./hooks/useDealerData.ts:6:1
+Export dealers doesn't exist in target module
+  4 | import { useState, useMemo, useCallback } from "react";
+  5 | import { Dealer, DealerFilter } from "@/types/dealer";
+> 6 | import { dealers as allDealers } from "@/lib/dealers/data";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export function useDealerData() {
+  9 |   const [filters, setFilters] = useState<DealerFilter>({
+
+The export dealers was not found in module [project]/lib/dealers/data.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./hooks/useDealerData.ts [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./hooks/useDealerData.ts [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:55:17.144] Browser ERROR   ./hooks/useDealerData.ts:6:1
+Export dealers doesn't exist in target module
+  4 | import { useState, useMemo, useCallback } from "react";
+  5 | import { Dealer, DealerFilter } from "@/types/dealer";
+> 6 | import { dealers as allDealers } from "@/lib/dealers/data";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export function useDealerData() {
+  9 |   const [filters, setFilters] = useState<DealerFilter>({
+
+The export dealers was not found in module [project]/lib/dealers/data.ts [app-ssr] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./hooks/useDealerData.ts [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./hooks/useDealerData.ts [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:55:17.144] Browser ERROR   ./app/our-network/components/DealerFilter.tsx:7:1
+Export states doesn't exist in target module
+   5 | import { Search, MapPin, Store, Star, Clock, X } from "lucide-react";
+   6 | import { DealerFilter } from "@/types/dealer";
+>  7 | import { states } from "@/lib/dealers/data";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 |
+   9 | interface DealerFilterProps {
+  10 |   filters: DealerFilter;
+
+The export states was not found in module [project]/lib/dealers/data.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/our-network/components/DealerFilter.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/our-network/components/DealerFilter.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:55:17.144] Browser ERROR   ./app/our-network/components/DealerFilter.tsx:7:1
+Export states doesn't exist in target module
+   5 | import { Search, MapPin, Store, Star, Clock, X } from "lucide-react";
+   6 | import { DealerFilter } from "@/types/dealer";
+>  7 | import { states } from "@/lib/dealers/data";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 |
+   9 | interface DealerFilterProps {
+  10 |   filters: DealerFilter;
+
+The export states was not found in module [project]/lib/dealers/data.ts [app-ssr] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/our-network/components/DealerFilter.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/our-network/components/DealerFilter.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:56:44.265] Server  ERROR   ⨯ ./hooks/useDealerData.ts:6:1
+Export dealers doesn't exist in target module
+  4 | import { useState, useMemo, useCallback } from "react";
+  5 | import { Dealer, DealerFilter } from "@/types/dealer";
+> 6 | import { dealers as allDealers } from "@/lib/dealers/data";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export function useDealerData() {
+  9 |   const [filters, setFilters] = useState<DealerFilter>({
+
+The export dealers was not found in module [project]/lib/dealers/data.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./hooks/useDealerData.ts [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./hooks/useDealerData.ts [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+
+
+
+./hooks/useDealerData.ts:6:1
+Export dealers doesn't exist in target module
+  4 | import { useState, useMemo, useCallback } from "react";
+  5 | import { Dealer, DealerFilter } from "@/types/dealer";
+> 6 | import { dealers as allDealers } from "@/lib/dealers/data";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export function useDealerData() {
+  9 |   const [filters, setFilters] = useState<DealerFilter>({
+
+The export dealers was not found in module [project]/lib/dealers/data.ts [app-ssr] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./hooks/useDealerData.ts [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./hooks/useDealerData.ts [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+
+
+
+./app/our-network/components/DealerFilter.tsx:7:1
+Export states doesn't exist in target module
+   5 | import { Search, MapPin, Store, Star, Clock, X } from "lucide-react";
+   6 | import { DealerFilter } from "@/types/dealer";
+>  7 | import { states } from "@/lib/dealers/data";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 |
+   9 | interface DealerFilterProps {
+  10 |   filters: DealerFilter;
+
+The export states was not found in module [project]/lib/dealers/data.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/our-network/components/DealerFilter.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/our-network/components/DealerFilter.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+
+
+
+./app/our-network/components/DealerFilter.tsx:7:1
+Export states doesn't exist in target module
+   5 | import { Search, MapPin, Store, Star, Clock, X } from "lucide-react";
+   6 | import { DealerFilter } from "@/types/dealer";
+>  7 | import { states } from "@/lib/dealers/data";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 |
+   9 | interface DealerFilterProps {
+  10 |   filters: DealerFilter;
+
+The export states was not found in module [project]/lib/dealers/data.ts [app-ssr] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/our-network/components/DealerFilter.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/our-network/components/DealerFilter.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+
+
+[03:56:44.823] Browser ERROR   uncaughtError: Error: ./hooks/useDealerData.ts:6:1
+Export dealers doesn't exist in target module
+  4 | import { useState, useMemo, useCallback } from "react";
+  5 | import { Dealer, DealerFilter } from "@/types/dealer";
+> 6 | import { dealers as allDealers } from "@/lib/dealers/data";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export function useDealerData() {
+  9 |   const [filters, setFilters] = useState<DealerFilter>({
+
+The export dealers was not found in module [project]/lib/dealers/data.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./hooks/useDealerData.ts [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./hooks/useDealerData.ts [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+
+
+[03:56:45.099] Browser ERROR   ./hooks/useDealerData.ts:6:1
+Export dealers doesn't exist in target module
+  4 | import { useState, useMemo, useCallback } from "react";
+  5 | import { Dealer, DealerFilter } from "@/types/dealer";
+> 6 | import { dealers as allDealers } from "@/lib/dealers/data";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export function useDealerData() {
+  9 |   const [filters, setFilters] = useState<DealerFilter>({
+
+The export dealers was not found in module [project]/lib/dealers/data.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./hooks/useDealerData.ts [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./hooks/useDealerData.ts [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:56:45.099] Browser ERROR   ./hooks/useDealerData.ts:6:1
+Export dealers doesn't exist in target module
+  4 | import { useState, useMemo, useCallback } from "react";
+  5 | import { Dealer, DealerFilter } from "@/types/dealer";
+> 6 | import { dealers as allDealers } from "@/lib/dealers/data";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export function useDealerData() {
+  9 |   const [filters, setFilters] = useState<DealerFilter>({
+
+The export dealers was not found in module [project]/lib/dealers/data.ts [app-ssr] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./hooks/useDealerData.ts [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./hooks/useDealerData.ts [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:56:45.099] Browser ERROR   ./app/our-network/components/DealerFilter.tsx:7:1
+Export states doesn't exist in target module
+   5 | import { Search, MapPin, Store, Star, Clock, X } from "lucide-react";
+   6 | import { DealerFilter } from "@/types/dealer";
+>  7 | import { states } from "@/lib/dealers/data";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 |
+   9 | interface DealerFilterProps {
+  10 |   filters: DealerFilter;
+
+The export states was not found in module [project]/lib/dealers/data.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/our-network/components/DealerFilter.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/our-network/components/DealerFilter.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:56:45.099] Browser ERROR   ./app/our-network/components/DealerFilter.tsx:7:1
+Export states doesn't exist in target module
+   5 | import { Search, MapPin, Store, Star, Clock, X } from "lucide-react";
+   6 | import { DealerFilter } from "@/types/dealer";
+>  7 | import { states } from "@/lib/dealers/data";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 |
+   9 | interface DealerFilterProps {
+  10 |   filters: DealerFilter;
+
+The export states was not found in module [project]/lib/dealers/data.ts [app-ssr] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/our-network/components/DealerFilter.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/our-network/components/DealerFilter.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:56:45.099] Browser ERROR   ./hooks/useDealerData.ts:6:1
+Export dealers doesn't exist in target module
+  4 | import { useState, useMemo, useCallback } from "react";
+  5 | import { Dealer, DealerFilter } from "@/types/dealer";
+> 6 | import { dealers as allDealers } from "@/lib/dealers/data";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export function useDealerData() {
+  9 |   const [filters, setFilters] = useState<DealerFilter>({
+
+The export dealers was not found in module [project]/lib/dealers/data.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./hooks/useDealerData.ts [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./hooks/useDealerData.ts [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:56:45.099] Browser ERROR   ./hooks/useDealerData.ts:6:1
+Export dealers doesn't exist in target module
+  4 | import { useState, useMemo, useCallback } from "react";
+  5 | import { Dealer, DealerFilter } from "@/types/dealer";
+> 6 | import { dealers as allDealers } from "@/lib/dealers/data";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | export function useDealerData() {
+  9 |   const [filters, setFilters] = useState<DealerFilter>({
+
+The export dealers was not found in module [project]/lib/dealers/data.ts [app-ssr] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./hooks/useDealerData.ts [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./hooks/useDealerData.ts [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:56:45.099] Browser ERROR   ./app/our-network/components/DealerFilter.tsx:7:1
+Export states doesn't exist in target module
+   5 | import { Search, MapPin, Store, Star, Clock, X } from "lucide-react";
+   6 | import { DealerFilter } from "@/types/dealer";
+>  7 | import { states } from "@/lib/dealers/data";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 |
+   9 | interface DealerFilterProps {
+  10 |   filters: DealerFilter;
+
+The export states was not found in module [project]/lib/dealers/data.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/our-network/components/DealerFilter.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/our-network/components/DealerFilter.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[03:56:45.099] Browser ERROR   ./app/our-network/components/DealerFilter.tsx:7:1
+Export states doesn't exist in target module
+   5 | import { Search, MapPin, Store, Star, Clock, X } from "lucide-react";
+   6 | import { DealerFilter } from "@/types/dealer";
+>  7 | import { states } from "@/lib/dealers/data";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 |
+   9 | interface DealerFilterProps {
+  10 |   filters: DealerFilter;
+
+The export states was not found in module [project]/lib/dealers/data.ts [app-ssr] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/our-network/components/DealerFilter.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Client Component Browser]
+    ./app/our-network/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/our-network/components/DealerFilter.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Client Component SSR]
+    ./app/our-network/page.tsx [Server Component]
+[04:25:10.060] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[04:25:11.146] Browser LOG     Fetching products with sort_order...
+[04:25:13.143] Browser LOG     Raw data from Supabase: [{"name":"Paint Protection Film","sort_order":1},{"name":"Sun Film","sort_order":2},{"name":"Graphene Coating","sort_order":3},{"name":"Perfumes","sort_order":4},{"name":"Detailing Products","sort_order":5},{"name":"All Purpose Cleaner","sort_order":999},{"name":"Car Shampoo","sort_order":999},{"name":"GenTech 5","sort_order":999},{"name":"GenTech Ultra Pro 8","sort_order":999},{"name":"Glass Cleaner","sort_order":999},{"name":"Graphene Ultra","sort_order":999},{"name":"Graphene Ultra Pro","sort_order":999},{"name":"GT 50 Window Film","sort_order":999},{"name":"GT 70 Window Film","sort_order":999},{"name":"Luxurious Car Air Fresheners","sort_order":999},{"name":"Multi Surface Shiner","sort_order":999}]
+[04:25:13.143] Browser LOG     Mapped products: [{"name":"Paint Protection Film","sort_order":1},{"name":"Sun Film","sort_order":2},{"name":"Graphene Coating","sort_order":3},{"name":"Perfumes","sort_order":4},{"name":"Detailing Products","sort_order":5},{"name":"All Purpose Cleaner","sort_order":999},{"name":"Car Shampoo","sort_order":999},{"name":"GenTech 5","sort_order":999},{"name":"GenTech Ultra Pro 8","sort_order":999},{"name":"Glass Cleaner","sort_order":999},{"name":"Graphene Ultra","sort_order":999},{"name":"Graphene Ultra Pro","sort_order":999},{"name":"GT 50 Window Film","sort_order":999},{"name":"GT 70 Window Film","sort_order":999},{"name":"Luxurious Car Air Fresheners","sort_order":999},{"name":"Multi Surface Shiner","sort_order":999}]
+[04:26:57.624] Server  LOG     ✓ Compiled in 152ms
+[04:26:57.889] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[04:26:59.142] Browser LOG     Fetching products with sort_order...
+[04:26:59.142] Browser LOG     Raw data from Supabase: [{"name":"Paint Protection Film","sort_order":1},{"name":"Sun Film","sort_order":2},{"name":"Graphene Coating","sort_order":3},{"name":"Perfumes","sort_order":4},{"name":"Detailing Products","sort_order":5},{"name":"All Purpose Cleaner","sort_order":999},{"name":"Car Shampoo","sort_order":999},{"name":"GenTech 5","sort_order":999},{"name":"GenTech Ultra Pro 8","sort_order":999},{"name":"Glass Cleaner","sort_order":999},{"name":"Graphene Ultra","sort_order":999},{"name":"Graphene Ultra Pro","sort_order":999},{"name":"GT 50 Window Film","sort_order":999},{"name":"GT 70 Window Film","sort_order":999},{"name":"Luxurious Car Air Fresheners","sort_order":999},{"name":"Multi Surface Shiner","sort_order":999}]
+[04:26:59.142] Browser LOG     Mapped products: [{"name":"Paint Protection Film","sort_order":1},{"name":"Sun Film","sort_order":2},{"name":"Graphene Coating","sort_order":3},{"name":"Perfumes","sort_order":4},{"name":"Detailing Products","sort_order":5},{"name":"All Purpose Cleaner","sort_order":999},{"name":"Car Shampoo","sort_order":999},{"name":"GenTech 5","sort_order":999},{"name":"GenTech Ultra Pro 8","sort_order":999},{"name":"Glass Cleaner","sort_order":999},{"name":"Graphene Ultra","sort_order":999},{"name":"Graphene Ultra Pro","sort_order":999},{"name":"GT 50 Window Film","sort_order":999},{"name":"GT 70 Window Film","sort_order":999},{"name":"Luxurious Car Air Fresheners","sort_order":999},{"name":"Multi Surface Shiner","sort_order":999}]
+[04:27:15.031] Browser WARN    Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly.

@@ -6,12 +6,27 @@ import { ChevronLeft, ChevronRight, X, ShieldCheck, Zap } from 'lucide-react';
 import { useGlobalStore, Product } from '@/context/GlobalStore';
 import Image from 'next/image';
 
-// Helper to get Supabase image URL
+// Helper to get Supabase image URL - SAME AS GALLERY
 const getProductImageUrl = (imagePath: string | null | undefined): string | null => {
   if (!imagePath) return null;
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://rnscmxjrkqelmaiwrouz.supabase.co';
-  const cleanPath = imagePath.startsWith('product/') ? imagePath : `product/${imagePath}`;
-  return `${supabaseUrl}/storage/v1/object/public/${cleanPath}`;
+  
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!supabaseUrl) {
+    console.warn('NEXT_PUBLIC_SUPABASE_URL not set');
+    return null;
+  }
+  
+  // Handle different path formats
+  let cleanPath = imagePath;
+  
+  // Remove leading slashes
+  cleanPath = cleanPath.replace(/^\/+/, '');
+  
+  // Remove 'products/' or 'product/' prefix if present
+  cleanPath = cleanPath.replace(/^(products?|gallery)\//, '');
+  
+  // Construct full URL - use 'products' bucket
+  return `${supabaseUrl}/storage/v1/object/public/product/${cleanPath}`;
 };
 
 // Helper to safely parse specs
@@ -83,22 +98,25 @@ export default function ProductShowcase() {
 
   // Reset expanded index when switching to desktop, and auto-expand first on mobile
   useEffect(() => {
+    if (!isClient) return;
+    
     if (!isMobile) {
       setExpandedMobileIndex(null);
     } else if (isMobile && displayedProducts.length > 0 && expandedMobileIndex === null) {
-      // Auto-expand first item on mobile for better UX
       setExpandedMobileIndex(0);
     }
-  }, [isMobile, displayedProducts.length, expandedMobileIndex]);
+  }, [isMobile, displayedProducts.length, expandedMobileIndex, isClient]);
 
   // Reset expanded index when products change, then auto-expand first
   useEffect(() => {
+    if (!isClient) return;
+    
     if (isMobile) {
       setExpandedMobileIndex(0);
     } else {
       setExpandedMobileIndex(null);
     }
-  }, [selectedParent, isMobile]);
+  }, [selectedParent, isMobile, isClient]);
 
   // Desktop-only background sync
   const syncBackgrounds = useCallback(() => {
@@ -126,6 +144,8 @@ export default function ProductShowcase() {
   }, [isMobile]);
 
   useEffect(() => {
+    if (!isClient) return;
+    
     if (!isTransitioning && !loading && displayedProducts.length > 0 && !isMobile) {
       const timeoutId = setTimeout(() => {
         isSyncingRef.current = true;
@@ -141,7 +161,7 @@ export default function ProductShowcase() {
       isSyncingRef.current = false;
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
     }
-  }, [displayedProducts.length, loading, isTransitioning, syncBackgrounds, isMobile]);
+  }, [displayedProducts.length, loading, isTransitioning, syncBackgrounds, isMobile, isClient]);
 
   useEffect(() => {
     return () => {
@@ -209,7 +229,7 @@ export default function ProductShowcase() {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: isMobile ? 0.05 : 0.08, // Faster stagger on mobile
+        staggerChildren: isMobile ? 0.05 : 0.08,
         delayChildren: isMobile ? 0.05 : 0.1
       }
     },
@@ -219,7 +239,7 @@ export default function ProductShowcase() {
   const cardVariants = {
     hidden: {
       opacity: 0,
-      y: isMobile ? 15 : 30, // Reduced movement on mobile
+      y: isMobile ? 15 : 30,
       scale: isMobile ? 0.98 : 0.95
     },
     show: {
@@ -227,7 +247,7 @@ export default function ProductShowcase() {
       y: 0,
       scale: 1,
       transition: {
-        duration: isMobile ? 0.3 : 0.5, // Faster on mobile
+        duration: isMobile ? 0.3 : 0.5,
         ease: [0.25, 1, 0.5, 1] as const
       }
     },
@@ -322,7 +342,6 @@ export default function ProductShowcase() {
           ref={containerRef}
           className="relative z-10 flex flex-col md:flex-row gap-3 md:gap-4 mx-0 md:mx-4 lg:mx-20 my-4 md:my-8 md:aspect-video"
           style={{
-            // Fixed height on mobile to ensure accordion fills available space
             minHeight: isClient && isMobile ? `${Math.max(displayedProducts.length * 70 + 150, 400)}px` : undefined,
           }}
         >
@@ -347,7 +366,6 @@ export default function ProductShowcase() {
                     ref={(el) => {
                       if (el) cardsRef.current[index] = el;
                     }}
-                    // Using inline styles for dynamic flex - this ALWAYS works
                     style={{
                       flex: isClient && isMobile
                         ? (isExpanded ? '2 1 0%' : '1 1 0%')
@@ -364,16 +382,12 @@ export default function ProductShowcase() {
                       group relative overflow-hidden cursor-pointer 
                       border border-white/10 bg-[#111] rounded-2xl
                       
-                      /* Transition for smooth animations */
                       transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]
                       
-                      /* Touch feedback */
                       active:scale-[0.98] md:active:scale-100
                       
-                      /* Desktop: flex expansion on hover */
                       md:flex-1 md:hover:flex-[2] md:min-h-0
                       
-                      /* Performance */
                       md:will-change-[flex]
                     `}
                   >
@@ -531,7 +545,15 @@ export default function ProductShowcase() {
                   }
                   return (
                     <div className="relative w-full h-full">
-                      <Image src={imageUrl} alt={activeProduct.name} fill className="object-contain p-6" sizes="100vw" priority />
+                      <Image 
+                        src={imageUrl} 
+                        alt={activeProduct.name} 
+                        fill 
+                        className="object-contain p-6" 
+                        sizes="100vw" 
+                        priority 
+                        unoptimized // Add this for external URLs
+                      />
                     </div>
                   );
                 })()}
@@ -614,6 +636,7 @@ export default function ProductShowcase() {
                             className="object-contain drop-shadow-2xl"
                             sizes="40vw"
                             priority
+                            unoptimized // Add this for external URLs
                           />
                         </div>
                       );

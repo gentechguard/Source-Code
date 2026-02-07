@@ -1107,10 +1107,6 @@
     display: none;
   }
 
-  .inline {
-    display: inline;
-  }
-
   .inline-block {
     display: inline-block;
   }
@@ -1331,8 +1327,16 @@
     max-height: 300px;
   }
 
+  .max-h-\[600px\] {
+    max-height: 600px;
+  }
+
   .max-h-\[700px\] {
     max-height: 700px;
+  }
+
+  .max-h-\[800px\] {
+    max-height: 800px;
   }
 
   .max-h-full {
@@ -1605,6 +1609,10 @@
 
   .max-w-\[200px\] {
     max-width: 200px;
+  }
+
+  .max-w-\[800px\] {
+    max-width: 800px;
   }
 
   .max-w-lg {
@@ -2190,6 +2198,11 @@
     border-color: lab(65.0682% -12.949 -54.1467 / .2);
   }
 
+  .border-\[\#00A8FF\]\/30 {
+    border-color: #00a8ff4d;
+    border-color: lab(65.0682% -12.9491 -54.1467 / .3);
+  }
+
   .border-\[\#00b8db\]\/30 {
     border-color: #00b8db4d;
     border-color: lab(68.5014% -30.8007 -29.2688 / .3);
@@ -2201,6 +2214,11 @@
 
   .border-\[\#1e293988\] {
     border-color: #1e293988;
+  }
+
+  .border-\[\#F59E0B\]\/30 {
+    border-color: #f59e0b4d;
+    border-color: lab(72.7914% 26.933 75.434 / .3);
   }
 
   .border-\[\#a3f4fd\] {
@@ -2504,6 +2522,11 @@
     background-color: #00a8ff;
   }
 
+  .bg-\[\#00A8FF\]\/5 {
+    background-color: #00a8ff0d;
+    background-color: lab(65.0682% -12.949 -54.1467 / .05);
+  }
+
   .bg-\[\#00A8FF\]\/10 {
     background-color: #00a8ff1a;
     background-color: lab(65.0682% -12.949 -54.1467 / .1);
@@ -2552,6 +2575,15 @@
 
   .bg-\[\#101828\] {
     background-color: #101828;
+  }
+
+  .bg-\[\#F59E0B\] {
+    background-color: #f59e0b;
+  }
+
+  .bg-\[\#F59E0B\]\/5 {
+    background-color: #f59e0b0d;
+    background-color: lab(72.7914% 26.933 75.434 / .05);
   }
 
   .bg-\[\#f8fafc\] {
@@ -4374,6 +4406,10 @@
     color: #99a1af;
   }
 
+  .text-\[\#F59E0B\] {
+    color: #f59e0b;
+  }
+
   .text-\[\#d1d5dc\] {
     color: #d1d5dc;
   }
@@ -4818,6 +4854,11 @@
 
   .shadow-\[0_0_8px_rgba\(59\,130\,246\,0\.6\)\] {
     --tw-shadow: 0 0 8px var(--tw-shadow-color, #3b82f699);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+
+  .shadow-\[0_0_8px_rgba\(245\,158\,11\,0\.6\)\] {
+    --tw-shadow: 0 0 8px var(--tw-shadow-color, #f59e0b99);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
 
@@ -7277,6 +7318,12 @@
   }
 
   @media (min-width: 64rem) {
+    .lg\:min-h-\[600px\] {
+      min-height: 600px;
+    }
+  }
+
+  @media (min-width: 64rem) {
     .lg\:min-h-\[700px\] {
       min-height: 700px;
     }
@@ -7975,6 +8022,96 @@ button:focus:not(:focus-visible), a:focus:not(:focus-visible) {
 
 .map-state-hover:hover {
   filter: brightness(1.2) drop-shadow(0 0 10px #00a8ff80);
+}
+
+.mobile-accordion-item {
+  will-change: flex, min-height;
+  transition: flex .5s cubic-bezier(.25, 1, .5, 1), min-height .5s cubic-bezier(.25, 1, .5, 1);
+}
+
+@keyframes loading-pulse {
+  0%, 100% {
+    opacity: .4;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+:root {
+  --glass-frost: 0;
+  --glass-saturation: 1;
+  --glass-opacity: .25;
+}
+
+[data-hydrated="true"] {
+  --glass-frost: 0;
+  --glass-saturation: 1;
+}
+
+#product-showcase {
+  isolation: isolate;
+  contain: layout style paint;
+}
+
+.product-card-bg {
+  background-image: url("/assets/solutions_bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transform: translateZ(0);
+}
+
+.loading-pulse {
+  animation: 1.5s ease-in-out infinite loading-pulse;
+}
+
+.error-container {
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  display: flex;
+}
+
+.error-message {
+  color: #ef4444;
+  margin-bottom: 1rem;
+}
+
+.retry-button {
+  color: #000;
+  background: #0af;
+  border-radius: .5rem;
+  padding: .5rem 1rem;
+  font-weight: 600;
+  transition: background .2s;
+}
+
+.retry-button:hover {
+  background: #09e;
+}
+
+.modal-scroll-container {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #fff3 transparent;
+  overflow-y: auto;
+}
+
+.modal-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-scroll-container::-webkit-scrollbar-track {
+  background: none;
+}
+
+.modal-scroll-container::-webkit-scrollbar-thumb {
+  background: #fff3;
+  border-radius: 3px;
 }
 
 @property --tw-translate-x {

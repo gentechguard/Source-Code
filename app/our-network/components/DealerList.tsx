@@ -1,8 +1,9 @@
+// app/our-network/components/DealerList.tsx
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Dealer } from "@/types/dealer";
-import { MapPin, Phone, Mail, Star, Store, Clock, ArrowRight } from "lucide-react";
+import { MapPin, Phone, Mail, Star, Clock, Store } from "lucide-react";
 
 interface DealerListProps {
   dealers: Dealer[];
@@ -10,68 +11,28 @@ interface DealerListProps {
 }
 
 export function DealerList({ dealers, onSelectDealer }: DealerListProps) {
-  // Group dealers by state
-  const groupedDealers = dealers.reduce((acc, dealer) => {
-    if (!acc[dealer.state]) {
-      acc[dealer.state] = [];
-    }
-    acc[dealer.state].push(dealer);
-    return acc;
-  }, {} as Record<string, Dealer[]>);
-
-  const sortedStates = Object.keys(groupedDealers).sort();
+  if (dealers.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full text-center p-8">
+        <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4">
+          <Store className="w-8 h-8 text-white/40" />
+        </div>
+        <h3 className="text-xl font-bold text-white mb-2">No dealers found</h3>
+        <p className="text-white/60">Try adjusting your filters to see more results.</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="w-full h-full overflow-y-auto pr-2 space-y-6">
-      <AnimatePresence mode="popLayout">
-        {sortedStates.map((state, stateIndex) => (
-          <motion.div
-            key={state}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ delay: stateIndex * 0.1 }}
-          >
-            {/* State Header */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-[#00A8FF]/10 flex items-center justify-center">
-                <MapPin className="w-4 h-4 text-[#00A8FF]" />
-              </div>
-              <h3 className="text-lg font-bold text-white">{state}</h3>
-              <div className="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" />
-              <span className="text-sm text-white/40">
-                {groupedDealers[state].length} dealers
-              </span>
-            </div>
-
-            {/* Dealers Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {groupedDealers[state].map((dealer, index) => (
-                <DealerCard
-                  key={dealer.id}
-                  dealer={dealer}
-                  index={index}
-                  onClick={() => onSelectDealer(dealer.id)}
-                />
-              ))}
-            </div>
-          </motion.div>
-        ))}
-      </AnimatePresence>
-
-      {dealers.length === 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex flex-col items-center justify-center py-20 text-center"
-        >
-          <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-4">
-            <Store className="w-10 h-10 text-white/20" />
-          </div>
-          <h3 className="text-xl font-semibold text-white mb-2">No dealers found</h3>
-          <p className="text-white/60">Try adjusting your filters</p>
-        </motion.div>
-      )}
+    <div className="space-y-4 h-full overflow-y-auto pr-2 custom-scrollbar">
+      {dealers.map((dealer, index) => (
+        <DealerCard
+          key={dealer.id}
+          dealer={dealer}
+          index={index}
+          onClick={() => onSelectDealer(dealer.id)}
+        />
+      ))}
     </div>
   );
 }
@@ -83,86 +44,76 @@ interface DealerCardProps {
 }
 
 function DealerCard({ dealer, index, onClick }: DealerCardProps) {
-  const getTypeConfig = () => {
+  const getTypeIcon = () => {
     switch (dealer.dealer_type) {
       case "premium":
-        return {
-          icon: <Star className="w-4 h-4" />,
-          color: "#00A8FF",
-          label: "Premium"
-        };
+        return <Star className="w-4 h-4 text-[#00A8FF]" />;
       case "coming_soon":
-        return {
-          icon: <Clock className="w-4 h-4" />,
-          color: "#F59E0B",
-          label: "Coming Soon"
-        };
+        return <Clock className="w-4 h-4 text-[#F59E0B]" />;
       default:
-        return {
-          icon: <Store className="w-4 h-4" />,
-          color: "#FFFFFF",
-          label: "Standard"
-        };
+        return <Store className="w-4 h-4 text-white/60" />;
     }
   };
 
-  const config = getTypeConfig();
+  const getTypeColor = () => {
+    switch (dealer.dealer_type) {
+      case "premium":
+        return "border-[#00A8FF]/30 bg-[#00A8FF]/5";
+      case "coming_soon":
+        return "border-[#F59E0B]/30 bg-[#F59E0B]/5";
+      default:
+        return "border-white/10 bg-white/5";
+    }
+  };
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
       onClick={onClick}
-      className="group p-5 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 hover:bg-white/10 transition-all cursor-pointer"
+      className={`p-4 rounded-xl border cursor-pointer transition-all hover:scale-[1.02] ${getTypeColor()}`}
     >
-      {/* Header */}
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <span 
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold"
-            style={{ 
-              backgroundColor: `${config.color}20`,
-              color: config.color
-            }}
-          >
-            {config.icon}
-            {config.label}
-          </span>
+      <div className="flex items-start justify-between mb-2">
+        <div>
+          <h3 className="font-bold text-white text-lg">{dealer.dealer_name}</h3>
+          <div className="flex items-center gap-2 mt-1">
+            {getTypeIcon()}
+            <span className="text-xs text-white/60 capitalize">
+              {dealer.dealer_type.replace("_", " ")}
+            </span>
+          </div>
         </div>
-        <ArrowRight className="w-5 h-5 text-white/20 group-hover:text-[#00A8FF] group-hover:translate-x-1 transition-all" />
       </div>
 
-      {/* Name */}
-      <h4 className="text-lg font-bold text-white mb-2 group-hover:text-[#00A8FF] transition-colors">
-        {dealer.dealer_name}
-      </h4>
-
-      {/* Location */}
-      <div className="flex items-start gap-2 mb-3">
-        <MapPin className="w-4 h-4 text-white/40 mt-0.5 flex-shrink-0" />
-        <p className="text-sm text-white/60">{dealer.city}, {dealer.state}</p>
-      </div>
-
-      {/* Contact */}
-      <div className="flex flex-wrap gap-3">
-        <a
-          href={`tel:${dealer.phone}`}
-          onClick={(e) => e.stopPropagation()}
-          className="flex items-center gap-1.5 text-sm text-white/60 hover:text-[#00A8FF] transition-colors"
-        >
-          <Phone className="w-4 h-4" />
-          {dealer.phone}
-        </a>
-        {dealer.email && (
-          <a
-            href={`mailto:${dealer.email}`}
+      <div className="space-y-2 mt-3">
+        <div className="flex items-start gap-2 text-sm text-white/70">
+          <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-white/40" />
+          <span>{dealer.address}, {dealer.city}, {dealer.state}</span>
+        </div>
+        
+        <div className="flex items-center gap-2 text-sm">
+          <Phone className="w-4 h-4 text-white/40" />
+          <a 
+            href={`tel:${dealer.phone}`}
+            className="text-[#00A8FF] hover:underline"
             onClick={(e) => e.stopPropagation()}
-            className="flex items-center gap-1.5 text-sm text-white/60 hover:text-[#00A8FF] transition-colors"
           >
-            <Mail className="w-4 h-4" />
-            Email
+            {dealer.phone}
           </a>
+        </div>
+
+        {dealer.email && (
+          <div className="flex items-center gap-2 text-sm">
+            <Mail className="w-4 h-4 text-white/40" />
+            <a 
+              href={`mailto:${dealer.email}`}
+              className="text-white/60 hover:text-white truncate"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {dealer.email}
+            </a>
+          </div>
         )}
       </div>
     </motion.div>

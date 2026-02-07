@@ -1,3 +1,4 @@
+// app/our-network/components/PinPopup.tsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -25,7 +26,8 @@ export function PinPopup({ dealer, onClose }: PinPopupProps) {
 
   return (
     <motion.div
-      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50"
+      className="absolute top-1/2 left-1/2 z-50"
+      style={{ transform: 'translate(-50%, -50%)' }}
       initial={{ opacity: 0, scale: 0.8, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.8, y: 20 }}
@@ -113,7 +115,7 @@ export function PinPopup({ dealer, onClose }: PinPopupProps) {
         {/* Action Buttons */}
         <div className="flex gap-2 mt-4">
           <a
-            href={`https://maps.google.com/?q=${dealer.latitude},${dealer.longitude}`}
+            href={`https://maps.google.com/?q=${dealer.latitude || dealer.city}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#00A8FF] hover:bg-[#00A8FF]/90 text-black font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98]"

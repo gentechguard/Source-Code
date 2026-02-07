@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { GlobalProvider } from "@/context/GlobalStore";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Our Network | Gentech Guard - Find Authorized Dealers Across India",
-  description: "Find authorized Gentech Guard dealers across India. Premium Paint Protection Film, Sun Film, and Graphene Coating dealers in 15+ cities.",
+  title: "Gentech Guard | Premium Paint Protection Film",
+  description: "Next-generation automotive protection solutions backed by industry expertise and advanced Aliphatic TPU technology.",
 };
 
 export default function RootLayout({
@@ -23,11 +24,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0A0A0A] text-white`}
+        suppressHydrationWarning
       >
-        {children}
+        <GlobalProvider>
+          {children}
+        </GlobalProvider>
       </body>
     </html>
   );

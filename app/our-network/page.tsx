@@ -1,3 +1,4 @@
+// app/our-network/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -34,7 +35,7 @@ export default function OurNetworkPage() {
       <NetworkHero stats={stats} />
 
       {/* Map Section */}
-      <section className="relative py-20 px-5 sm:px-6 lg:px-8 ">
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <motion.div
@@ -102,7 +103,7 @@ export default function OurNetworkPage() {
 
             {/* Map or List */}
             <motion.div
-              className="flex-1 min-h-[600px] lg:min-h-[700px]"
+              className="flex-1 min-h-[500px] lg:min-h-[600px]"
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -133,7 +134,7 @@ export default function OurNetworkPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
-                    className="h-full max-h-[700px] overflow-hidden rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 p-6"
+                    className="h-full max-h-[600px] overflow-hidden rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 p-6"
                   >
                     <DealerList
                       dealers={dealers}

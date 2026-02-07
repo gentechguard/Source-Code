@@ -1,3 +1,4 @@
+// lib/dealers/data.ts
 import { Dealer } from "@/types/dealer";
 
 export const dealers: Dealer[] = [

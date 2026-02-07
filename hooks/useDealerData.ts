@@ -1,3 +1,4 @@
+// hooks/useDealerData.ts
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
@@ -45,9 +46,9 @@ export function useDealerData() {
     const active = allDealers.filter(d => d.is_active);
     return {
       total: active.length,
-      premium: active.filter(d => d.dealer_type === "premium").length,
-      standard: active.filter(d => d.dealer_type === "standard").length,
-      comingSoon: active.filter(d => d.dealer_type === "coming_soon").length,
+      premium: active.filter(d => d.dealer_type === 'premium').length,
+      standard: active.filter(d => d.dealer_type === 'standard').length,
+      comingSoon: active.filter(d => d.dealer_type === 'coming_soon').length,
       cities: new Set(active.map(d => d.city)).size,
       states: new Set(active.map(d => d.state)).size
     };

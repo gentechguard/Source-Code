@@ -1,3 +1,4 @@
+// app/our-network/components/NetworkHero.tsx
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -9,6 +10,9 @@ interface NetworkHeroProps {
     total: number;
     cities: number;
     states: number;
+    premium?: number;
+    standard?: number;
+    comingSoon?: number;
   };
 }
 
@@ -25,7 +29,7 @@ export function NetworkHero({ stats }: NetworkHeroProps) {
   return (
     <section 
       ref={containerRef}
-      className="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-40"
+      className="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-32 pb-20"
     >
       {/* Animated Background */}
       <div className="absolute inset-0 bg-[#0A0A0A]">
@@ -199,27 +203,9 @@ function StatCard({ icon, value, label, delay }: StatCardProps) {
         {icon}
       </div>
       <div className="text-4xl md:text-5xl font-bold text-white">
-        <CountUp end={value} duration={2} />
+        {value}+
       </div>
       <div className="text-sm text-white/60 uppercase tracking-wider">{label}</div>
     </motion.div>
-  );
-}
-
-// Simple count-up animation component
-function CountUp({ end, duration }: { end: number; duration: number }) {
-  return (
-    <motion.span
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <motion.span
-        initial={{ opacity: 1 }}
-        animate={{ opacity: 1 }}
-      >
-        {end}+
-      </motion.span>
-    </motion.span>
   );
 }

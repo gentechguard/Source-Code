@@ -2,7 +2,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import IndiaMap from "@react-map/india";
 import { Dealer } from "@/types/dealer";
 import { PinPopup } from "./PinPopup";
@@ -23,6 +23,8 @@ export function IndiaMapComponent({
   onHoverDealer 
 }: IndiaMapProps) {
   const [hoveredState, setHoveredState] = useState<string | null>(null);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const [mapDimensions, setMapDimensions] = useState({ width: 0, height: 0 });
 
   // Create a map of state names to dealer counts for coloring
   const stateData = useMemo(() => {
@@ -64,10 +66,27 @@ export function IndiaMapComponent({
     }
   };
 
+  // Update map dimensions on resize
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (mapContainerRef.current) {
+        const rect = mapContainerRef.current.getBoundingClientRect();
+        setMapDimensions({ width: rect.width, height: rect.height });
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
   return (
-    <div className="relative w-full h-full min-h-[600px] bg-gradient-to-br from-[#0A0A0A] via-[#0F172A] to-[#0A0A0A] rounded-3xl overflow-hidden border border-white/10">
+    <div 
+      ref={mapContainerRef}
+      className="relative w-full h-full min-h-[500px] lg:min-h-[600px] bg-gradient-to-br from-[#0A0A0A] via-[#0F172A] to-[#0A0A0A] rounded-3xl overflow-hidden border border-white/10"
+    >
       {/* Background Grid Pattern */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
         <svg width="100%" height="100%">
           <defs>
             <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -95,44 +114,46 @@ export function IndiaMapComponent({
         }}
       />
 
-      {/* India Map */}
-      <div className="absolute inset-0 p-8">
-        <IndiaMap
-          type="select-single"
-          size="100%"
-          mapColor={getStateColor(hoveredState || "")}
-          strokeColor="#00A8FF"
-          strokeWidth="0.5"
-          hoverColor="#00A8FF"
-          hoverStrokeColor="#FFFFFF"
-          hoverStrokeWidth="1"
-          onSelect={(stateName) => handleStateClick(stateName)}
-          onHover={(stateName) => setHoveredState(stateName)}
-          selectColor="#00A8FF"
-          hints={true}
-          hintTextColor="#FFFFFF"
-          hintBackgroundColor="rgba(0, 168, 255, 0.9)"
-          hintPadding="10px"
-          hintBorderRadius="8px"
-          hintFontSize="14px"
-          hintFontWeight="600"
-        />
-      </div>
-
-      {/* Dealer Pins Overlay */}
-      <div className="absolute inset-0 pointer-events-none">
-        {dealers.map((dealer, index) => (
-          <DealerPinOverlay
-            key={dealer.id}
-            dealer={dealer}
-            index={index}
-            isSelected={selectedDealer === dealer.id}
-            isHovered={hoveredDealer === dealer.id}
-            onSelect={() => onSelectDealer(dealer.id)}
-            onHover={() => onHoverDealer(dealer.id)}
-            onLeave={() => onHoverDealer(null)}
+      {/* India Map Container - Fixed sizing for proper display */}
+      <div className="absolute inset-0 flex items-center justify-center p-4 lg:p-8">
+        <div className="relative w-full h-full max-w-[800px] max-h-[800px]">
+          <IndiaMap
+            type="select-single"
+            size="100%"
+            mapColor={getStateColor(hoveredState || "")}
+            strokeColor="#00A8FF"
+            strokeWidth="0.5"
+            hoverColor="#00A8FF"
+            hoverStrokeColor="#FFFFFF"
+            hoverStrokeWidth="1"
+            onSelect={(stateName) => handleStateClick(stateName)}
+            onHover={(stateName) => setHoveredState(stateName)}
+            selectColor="#00A8FF"
+            hints={true}
+            hintTextColor="#FFFFFF"
+            hintBackgroundColor="rgba(0, 168, 255, 0.9)"
+            hintPadding="10px"
+            hintBorderRadius="8px"
+            hintFontSize="14px"
+            hintFontWeight="600"
           />
-        ))}
+          
+          {/* Dealer Pins Overlay - Positioned absolutely over the map */}
+          <div className="absolute inset-0 pointer-events-none">
+            {dealers.map((dealer, index) => (
+              <DealerPinOverlay
+                key={dealer.id}
+                dealer={dealer}
+                index={index}
+                isSelected={selectedDealer === dealer.id}
+                isHovered={hoveredDealer === dealer.id}
+                onSelect={() => onSelectDealer(dealer.id)}
+                onHover={() => onHoverDealer(dealer.id)}
+                onLeave={() => onHoverDealer(null)}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Selected Dealer Popup */}
@@ -147,7 +168,7 @@ export function IndiaMapComponent({
 
       {/* Map Legend */}
       <motion.div
-        className="absolute bottom-6 left-6 flex flex-col gap-3 p-4 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10"
+        className="absolute bottom-6 left-6 flex flex-col gap-3 p-4 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 z-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.5 }}
@@ -164,6 +185,10 @@ export function IndiaMapComponent({
           <span className="text-sm text-white/80">Standard Dealer</span>
         </div>
         <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-[#F59E0B] shadow-[0_0_8px_rgba(245,158,11,0.6)]" />
+          <span className="text-sm text-white/80">Coming Soon</span>
+        </div>
+        <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-[#1E293B] border border-white/20" />
           <span className="text-sm text-white/80">No Dealers Yet</span>
         </div>
@@ -171,7 +196,7 @@ export function IndiaMapComponent({
 
       {/* Stats Overlay */}
       <motion.div
-        className="absolute top-6 right-6 flex flex-col gap-2"
+        className="absolute top-6 right-6 flex flex-col gap-2 z-10"
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.6, duration: 0.5 }}
@@ -191,7 +216,7 @@ export function IndiaMapComponent({
   );
 }
 
-// Individual dealer pin component
+// Individual dealer pin component with corrected positioning
 interface DealerPinOverlayProps {
   dealer: Dealer;
   index: number;
@@ -221,18 +246,25 @@ function DealerPinOverlay({
 
   const color = getColor();
   
-  // Convert percentage coordinates to CSS positioning
+  // Use percentage coordinates directly - the map uses a viewBox that maps to percentages
   const left = `${dealer.map_position_x}%`;
   const top = `${dealer.map_position_y}%`;
 
   return (
     <motion.div
       className="absolute pointer-events-auto cursor-pointer"
-      style={{ left, top }}
+      style={{ 
+        left, 
+        top,
+        transform: 'translate(-50%, -50%)' // Center the pin on the coordinate
+      }}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ delay: 0.8 + index * 0.1, type: "spring", stiffness: 300 }}
-      onClick={onSelect}
+      onClick={(e) => {
+        e.stopPropagation();
+        onSelect();
+      }}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
     >
@@ -254,7 +286,7 @@ function DealerPinOverlay({
 
       {/* Pin */}
       <motion.div
-        className="relative w-4 h-4 -ml-2 -mt-2"
+        className="relative w-4 h-4"
         animate={{
           scale: isHovered || isSelected ? 1.5 : 1,
         }}
@@ -277,7 +309,7 @@ function DealerPinOverlay({
             initial={{ opacity: 0, y: 5, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 5, scale: 0.8 }}
-            className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-1.5 rounded-lg bg-black/80 backdrop-blur-sm border border-white/10 whitespace-nowrap pointer-events-none z-10"
+            className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-1.5 rounded-lg bg-black/80 backdrop-blur-sm border border-white/10 whitespace-nowrap pointer-events-none z-20"
           >
             <div className="text-xs font-semibold text-white">{dealer.city}</div>
             <div className="text-[10px] text-white/60 capitalize">{dealer.dealer_type.replace("_", " ")}</div>

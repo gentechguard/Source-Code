@@ -1,3 +1,4 @@
+// types/dealer.ts
 export interface Dealer {
   id: string;
   dealer_name: string;
@@ -8,8 +9,10 @@ export interface Dealer {
   city: string;
   state: string;
   pincode: string | null;
-  map_position_x: number; // 0-100 percentage
-  map_position_y: number; // 0-100 percentage
+  latitude?: number | null;
+  longitude?: number | null;
+  map_position_x: number;
+  map_position_y: number;
   is_active: boolean;
   dealer_type: 'premium' | 'standard' | 'coming_soon';
   created_at: string;

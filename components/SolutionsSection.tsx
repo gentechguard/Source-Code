@@ -12,21 +12,19 @@ const getProductImageUrl = (imagePath?: string | null) => {
   if (!supabaseUrl) return '/assets/gentech-tall.png';
 
   let clean = imagePath.replace(/^\/+/, '');
-  clean = clean.replace(/^products?\//, ''); // handles product/ or products/
+  clean = clean.replace(/^products?\//, '');
 
-  return `${supabaseUrl}/storage/v1/object/public/products/${clean}`;
+  return `${supabaseUrl}/storage/v1/object/public/product/${clean}`;
 };
 
 // Helper to safely parse specs
 const parseSpecs = (specs: any): Array<{ label: string, value: string }> => {
   if (!specs) return [];
 
-  // If it's already an array of label/value objects
   if (Array.isArray(specs) && specs.length > 0 && specs[0].label) {
     return specs;
   }
 
-  // If it's an object (JSONB from Supabase)
   if (typeof specs === 'object' && !Array.isArray(specs)) {
     return Object.entries(specs).map(([key, value]) => ({
       label: key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
@@ -34,7 +32,6 @@ const parseSpecs = (specs: any): Array<{ label: string, value: string }> => {
     }));
   }
 
-  // If it's a string (JSON stringified)
   if (typeof specs === 'string') {
     try {
       const parsed = JSON.parse(specs);
@@ -50,7 +47,6 @@ const parseSpecs = (specs: any): Array<{ label: string, value: string }> => {
   return [];
 };
 
-// Helper to safely parse features
 const parseFeatures = (features: any): string[] => {
   if (!features) return [];
   if (Array.isArray(features)) return features;
@@ -64,16 +60,12 @@ const parseFeatures = (features: any): string[] => {
   return [];
 };
 
-export default function ProductShowcase() {
-  const { products, loading } = useGlobalStore();
+export default function SolutionsSection() {
+  const { products, loading, error } = useGlobalStore();
   const [selectedParent, setSelectedParent] = useState<Product | null>(null);
   const [activeProduct, setActiveProduct] = useState<Product | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
-
-  // Mobile accordion expansion state
   const [expandedMobileIndex, setExpandedMobileIndex] = useState<number | null>(0);
-
-  // Track if we're on mobile - with proper SSR handling
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
@@ -82,7 +74,7 @@ export default function ProductShowcase() {
   const rafIdRef = useRef<number | null>(null);
   const isSyncingRef = useRef(false);
 
-  // Client-side only detection to avoid hydration mismatch
+  // Client-side only detection
   useEffect(() => {
     setIsClient(true);
     const checkMobile = () => {
@@ -97,7 +89,6 @@ export default function ProductShowcase() {
     ? products.filter(p => p.parent_id === selectedParent.id)
     : products.filter(p => !p.parent_id);
 
-  // Auto-expand first on mobile when products change
   useEffect(() => {
     if (isMobile && displayedProducts.length > 0) {
       setExpandedMobileIndex(0);
@@ -158,46 +149,36 @@ export default function ProductShowcase() {
   const handleCardClick = (product: Product, index: number) => {
     const hasChildren = products.some(p => p.parent_id === product.id);
 
-    // On mobile, handle accordion expansion
     if (isClient && isMobile) {
       if (expandedMobileIndex === index) {
-        // If tapping the expanded card, check if it should navigate or toggle
         if (hasChildren) {
-          // Navigate to children
-          setIsTransitioning(true);
-          isSyncingRef.current = false;
-          if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
-          cardsRef.current = [];
-
-          setTimeout(() => {
-            setSelectedParent(product);
-            setIsTransitioning(false);
-          }, 100);
+          navigateToChildren(product);
         } else {
-          // Open modal
           setActiveProduct(product);
         }
       } else {
-        // Toggle to this card
         setExpandedMobileIndex(index);
       }
       return;
     }
 
-    // Desktop behavior
     if (hasChildren) {
-      setIsTransitioning(true);
-      isSyncingRef.current = false;
-      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
-      cardsRef.current = [];
-
-      setTimeout(() => {
-        setSelectedParent(product);
-        setIsTransitioning(false);
-      }, 100);
+      navigateToChildren(product);
     } else {
       setActiveProduct(product);
     }
+  };
+
+  const navigateToChildren = (product: Product) => {
+    setIsTransitioning(true);
+    isSyncingRef.current = false;
+    if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+    cardsRef.current = [];
+
+    setTimeout(() => {
+      setSelectedParent(product);
+      setIsTransitioning(false);
+    }, 100);
   };
 
   const handleBackClick = () => {
@@ -212,10 +193,6 @@ export default function ProductShowcase() {
     }, 100);
   };
 
-  const handleExitComplete = () => {
-    // RAF resumes via useEffect
-  };
-
   if (loading) {
     return (
       <section id="product-showcase" className="bg-black py-20">
@@ -226,10 +203,25 @@ export default function ProductShowcase() {
     );
   }
 
+  if (error) {
+    return (
+      <section id="product-showcase" className="bg-black py-20">
+        <div className="h-[500px] flex flex-col items-center justify-center text-white px-4">
+          <p className="text-red-400 mb-4">Error: {error}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          >
+            Retry
+          </button>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="product-showcase" className="bg-black py-20 overflow-hidden">
       <div className="container mx-auto px-4">
-
         {/* Header */}
         <div className="mb-8 h-16 flex items-center justify-between relative">
           <AnimatePresence mode="wait">
@@ -299,21 +291,18 @@ export default function ProductShowcase() {
           ref={containerRef}
           className="relative z-10 flex flex-col md:flex-row gap-3 md:gap-4 mx-0 md:mx-4 lg:mx-20 my-4 md:my-8 md:aspect-video rounded-2xl overflow-hidden"
           style={{
-            // Fixed height on mobile to ensure accordion fills available space
             minHeight: isClient && isMobile ? `${Math.max(displayedProducts.length * 70 + 150, 400)}px` : undefined,
-            // Shared background on mobile
             backgroundImage: isClient && isMobile ? "url('/assets/solutions_bg.png')" : undefined,
             backgroundSize: isClient && isMobile ? 'cover' : undefined,
             backgroundPosition: isClient && isMobile ? 'center' : undefined,
             backgroundRepeat: isClient && isMobile ? 'no-repeat' : undefined,
           }}
         >
-          {/* Mobile background overlay for better readability */}
           {isClient && isMobile && (
             <div className="absolute inset-0 bg-black/40 z-0" />
           )}
 
-          <AnimatePresence mode="wait" onExitComplete={handleExitComplete}>
+          <AnimatePresence mode="wait">
             <motion.div
               key={selectedParent ? 'children' : 'parents'}
               initial={{ opacity: 0 }}
@@ -337,7 +326,6 @@ export default function ProductShowcase() {
                     ref={(el) => {
                       if (el) cardsRef.current[index] = el;
                     }}
-                    // Using inline styles for dynamic flex - this ALWAYS works
                     style={{
                       flex: isClient && isMobile
                         ? (isExpanded ? '2 1 0%' : '1 1 0%')
@@ -345,7 +333,6 @@ export default function ProductShowcase() {
                       minHeight: isClient && isMobile
                         ? (isExpanded ? '200px' : '70px')
                         : undefined,
-                      // Only apply background on desktop (for sync effect)
                       backgroundImage: !(isClient && isMobile) ? "url('/assets/solutions_bg.png')" : undefined,
                       backgroundRepeat: !(isClient && isMobile) ? "no-repeat" : undefined,
                       backgroundSize: !(isClient && isMobile) ? 'cover' : undefined,
@@ -354,31 +341,19 @@ export default function ProductShowcase() {
                     className={`
                       group relative overflow-hidden cursor-pointer 
                       border border-white/10 rounded-2xl
-                      
-                      /* Mobile: semi-transparent background, Desktop: opaque */
                       ${isClient && isMobile ? 'bg-black/30 backdrop-blur-sm' : 'bg-[#111]'}
-                      
-                      /* Transition for smooth animations */
                       transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]
-                      
-                      /* Touch feedback */
                       active:scale-[0.98] md:active:scale-100
-                      
-                      /* Desktop: flex expansion on hover */
                       md:flex-1 md:hover:flex-[2] md:min-h-0
-                      
-                      /* Performance */
                       md:will-change-[flex]
                     `}
                   >
-                    {/* Dark overlay - Only on desktop, mobile has container overlay */}
                     <div
                       className="hidden md:block absolute inset-0 z-10 pointer-events-none transition-colors duration-500 bg-black/60 group-hover:bg-black/30"
                     />
 
-                    {/* ===== MOBILE LAYOUT ===== */}
+                    {/* Mobile Layout */}
                     <div className="md:hidden absolute inset-0 z-20 flex flex-col">
-                      {/* Header Row - Always visible */}
                       <div
                         className="flex items-center justify-between px-5 transition-all duration-500"
                         style={{
@@ -390,19 +365,13 @@ export default function ProductShowcase() {
                       >
                         <h3
                           className="font-black tracking-wider text-white uppercase transition-all duration-300"
-                          style={{
-                            fontSize: isExpanded ? '18px' : '14px',
-                          }}
+                          style={{ fontSize: isExpanded ? '18px' : '14px' }}
                         >
                           {product.name}
                         </h3>
-
-                        {/* Indicator arrow */}
                         <div
                           className="text-blue-400 transition-transform duration-300"
-                          style={{
-                            transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-                          }}
+                          style={{ transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)' }}
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="9 18 15 12 9 6"></polyline>
@@ -410,7 +379,6 @@ export default function ProductShowcase() {
                         </div>
                       </div>
 
-                      {/* Expandable Content */}
                       <motion.div
                         initial={false}
                         animate={{
@@ -424,16 +392,11 @@ export default function ProductShowcase() {
                         <p className="text-white/70 text-sm mb-4 line-clamp-2">
                           {product.shortDesc || 'Premium Protection Solution'}
                         </p>
-
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             if (hasChildren) {
-                              setIsTransitioning(true);
-                              setTimeout(() => {
-                                setSelectedParent(product);
-                                setIsTransitioning(false);
-                              }, 100);
+                              navigateToChildren(product);
                             } else {
                               setActiveProduct(product);
                             }
@@ -445,7 +408,7 @@ export default function ProductShowcase() {
                       </motion.div>
                     </div>
 
-                    {/* ===== DESKTOP LAYOUT (existing hover-based) ===== */}
+                    {/* Desktop Layout */}
                     <div className="hidden md:flex absolute inset-0 items-center justify-center pointer-events-none z-20 opacity-100 group-hover:opacity-0 transition-opacity duration-300">
                       <h3 className="whitespace-nowrap text-xl md:text-2xl font-black tracking-widest text-white/90 uppercase -rotate-90 drop-shadow-lg">
                         {product.name}
@@ -482,7 +445,7 @@ export default function ProductShowcase() {
         </div>
       </div>
 
-      {/* PRODUCT DETAIL MODAL - FIXED VERSION */}
+      {/* Product Detail Modal */}
       <AnimatePresence>
         {activeProduct && (
           <motion.div
@@ -510,10 +473,7 @@ export default function ProductShowcase() {
 
               {/* Modal Left: Product Image */}
               <div className="w-full md:w-2/5 bg-gradient-to-br from-gray-900 to-black relative overflow-hidden min-h-[300px] md:min-h-[500px] flex items-center justify-center p-6">
-                {/* Background decoration */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent" />
-
-                {/* Product Image Container */}
                 <div className="relative z-10 w-full h-full flex items-center justify-center">
                   {activeProduct.image_url ? (
                     <div className="relative w-full h-[250px] md:h-[400px]">
@@ -527,7 +487,6 @@ export default function ProductShowcase() {
                       />
                     </div>
                   ) : (
-                    // Fallback if no image - show stylized text
                     <div className="text-center">
                       <h2 className="text-4xl md:text-5xl font-black text-white mb-2 uppercase leading-none drop-shadow-lg">
                         {activeProduct.name}
@@ -536,15 +495,11 @@ export default function ProductShowcase() {
                     </div>
                   )}
                 </div>
-
-                {/* Decorative elements */}
                 <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent z-20" />
               </div>
 
               {/* Modal Right: Details */}
               <div className="w-full md:w-3/5 p-6 md:p-10 flex flex-col justify-center">
-
-                {/* Product Name (only show if image exists, otherwise shown on left) */}
                 {activeProduct.image_url && (
                   <div className="mb-6">
                     <h2 className="text-3xl md:text-4xl font-black text-white uppercase leading-tight">
@@ -572,7 +527,7 @@ export default function ProductShowcase() {
                   </div>
                 </div>
 
-                {/* Specs Section - FIXED */}
+                {/* Specs Section */}
                 <div>
                   <h3 className="text-lg md:text-xl font-bold text-white mb-4 uppercase tracking-widest flex items-center gap-2">
                     <Zap size={20} className="text-blue-400" />
