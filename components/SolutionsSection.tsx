@@ -291,7 +291,7 @@ export default function SolutionsSection() {
           ref={containerRef}
           className="relative z-10 flex flex-col md:flex-row gap-3 md:gap-4 mx-0 md:mx-4 lg:mx-20 my-4 md:my-8 md:aspect-video rounded-2xl overflow-hidden"
           style={{
-            minHeight: isClient && isMobile ? `${Math.max(displayedProducts.length * 70 + 150, 400)}px` : undefined,
+            minHeight: isClient && isMobile ? `${Math.max(displayedProducts.length * 80 + 230, 480)}px` : undefined,
             backgroundImage: isClient && isMobile ? "url('/assets/solutions_bg.png')" : undefined,
             backgroundSize: isClient && isMobile ? 'cover' : undefined,
             backgroundPosition: isClient && isMobile ? 'center' : undefined,
@@ -299,7 +299,7 @@ export default function SolutionsSection() {
           }}
         >
           {isClient && isMobile && (
-            <div className="absolute inset-0 bg-black/40 z-0" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60 z-0" />
           )}
 
           <AnimatePresence mode="wait">
@@ -331,7 +331,7 @@ export default function SolutionsSection() {
                         ? (isExpanded ? '2 1 0%' : '1 1 0%')
                         : undefined,
                       minHeight: isClient && isMobile
-                        ? (isExpanded ? '200px' : '70px')
+                        ? (isExpanded ? '320px' : '64px')
                         : undefined,
                       backgroundImage: !(isClient && isMobile) ? "url('/assets/solutions_bg.png')" : undefined,
                       backgroundRepeat: !(isClient && isMobile) ? "no-repeat" : undefined,
@@ -339,13 +339,16 @@ export default function SolutionsSection() {
                       backgroundPosition: !(isClient && isMobile) ? 'center' : undefined,
                     }}
                     className={`
-                      group relative overflow-hidden cursor-pointer 
-                      border border-white/10 rounded-2xl
-                      ${isClient && isMobile ? 'bg-black/30 backdrop-blur-sm' : 'bg-[#111]'}
+                      group relative overflow-hidden cursor-pointer rounded-2xl
                       transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]
                       active:scale-[0.98] md:active:scale-100
                       md:flex-1 md:hover:flex-[2] md:min-h-0
                       md:will-change-[flex]
+                      ${isClient && isMobile
+                        ? isExpanded
+                          ? 'bg-gradient-to-r from-blue-500/15 via-black/60 to-black/50 backdrop-blur-md border border-blue-400/30 shadow-[0_0_25px_rgba(0,168,255,0.12)]'
+                          : 'bg-black/40 backdrop-blur-sm border border-white/10 hover:border-white/20'
+                        : 'bg-[#111] border border-white/10'}
                     `}
                   >
                     <div
@@ -389,9 +392,30 @@ export default function SolutionsSection() {
                         transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
                         className="overflow-hidden px-5"
                       >
-                        <p className="text-white/70 text-sm mb-4 line-clamp-2">
+                        {product.image_url && (
+                          <div className="relative w-full h-28 mb-3 rounded-xl overflow-hidden bg-gradient-to-br from-white/5 to-transparent">
+                            <Image
+                              src={getProductImageUrl(product.image_url)}
+                              alt={product.name}
+                              fill
+                              className="object-contain p-2"
+                              sizes="(max-width: 768px) 85vw"
+                            />
+                          </div>
+                        )}
+                        <p className="text-white/70 text-sm mb-3 line-clamp-2">
                           {product.shortDesc || 'Premium Protection Solution'}
                         </p>
+                        {parseFeatures(product.features).length > 0 && (
+                          <div className="mb-3 space-y-1.5">
+                            {parseFeatures(product.features).slice(0, 3).map((feature, i) => (
+                              <div key={i} className="flex items-center gap-2">
+                                <div className="w-1 h-1 rounded-full bg-blue-400 shrink-0" />
+                                <span className="text-white/60 text-xs">{feature}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -401,7 +425,7 @@ export default function SolutionsSection() {
                               setActiveProduct(product);
                             }
                           }}
-                          className="border border-blue-400 text-blue-400 font-bold tracking-widest uppercase text-xs px-5 py-2 hover:bg-blue-400 hover:text-white transition-colors duration-300 touch-manipulation"
+                          className="border border-blue-400/60 text-blue-400 font-bold tracking-widest uppercase text-xs px-5 py-2.5 rounded-lg hover:bg-blue-400 hover:text-white transition-colors duration-300 touch-manipulation"
                         >
                           {hasChildren ? 'Explore Options' : 'View Details'}
                         </button>
@@ -448,122 +472,246 @@ export default function SolutionsSection() {
       {/* Product Detail Modal */}
       <AnimatePresence>
         {activeProduct && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-lg"
-            onClick={() => setActiveProduct(null)}
-          >
+          <>
+            {/* Backdrop */}
             <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
-              className="bg-[#0a0a0a] border border-white/10 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative flex flex-col md:flex-row shadow-2xl shadow-blue-400/10"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-lg"
+              onClick={() => setActiveProduct(null)}
+            />
+
+            {/* Mobile Bottom Sheet */}
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              className="fixed inset-x-0 bottom-0 z-50 md:hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              <button
-                onClick={() => setActiveProduct(null)}
-                className="absolute top-4 right-4 z-30 text-white/50 hover:text-white transition-colors hover:bg-white/10 rounded-full p-1"
-              >
-                <X size={24} />
-              </button>
+              <div className="bg-[#0a0a0a] rounded-t-3xl border-t border-x border-white/10 flex flex-col max-h-[92vh] overflow-hidden shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+                {/* Drag Handle */}
+                <div className="flex justify-center pt-3 pb-2 shrink-0">
+                  <div className="w-10 h-1 rounded-full bg-white/20" />
+                </div>
 
-              {/* Modal Left: Product Image */}
-              <div className="w-full md:w-2/5 bg-gradient-to-br from-gray-900 to-black relative overflow-hidden min-h-[300px] md:min-h-[500px] flex items-center justify-center p-6">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent" />
-                <div className="relative z-10 w-full h-full flex items-center justify-center">
-                  {activeProduct.image_url ? (
-                    <div className="relative w-full h-[250px] md:h-[400px]">
+                {/* Close Button */}
+                <button
+                  onClick={() => setActiveProduct(null)}
+                  className="absolute top-3 right-4 z-30 text-white/50 hover:text-white transition-colors hover:bg-white/10 rounded-full p-1.5"
+                >
+                  <X size={20} />
+                </button>
+
+                {/* Scrollable Content */}
+                <div className="overflow-y-auto flex-1 overscroll-contain">
+                  {/* Product Image */}
+                  <div className="relative w-full h-52 bg-gradient-to-br from-gray-900 to-black overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent" />
+                    {activeProduct.image_url ? (
                       <Image
                         src={getProductImageUrl(activeProduct.image_url)}
                         alt={activeProduct.name}
                         fill
-                        className="object-contain drop-shadow-2xl"
-                        sizes="(max-width: 768px) 100vw, 40vw"
+                        className="object-contain p-6"
+                        sizes="100vw"
                         priority
                       />
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <h2 className="text-4xl md:text-5xl font-black text-white mb-2 uppercase leading-none drop-shadow-lg">
-                        {activeProduct.name}
-                      </h2>
-                      <div className="h-1 w-24 bg-blue-400 mx-auto mt-4 shadow-[0_0_20px_rgba(0,170,255,0.8)]" />
-                    </div>
-                  )}
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent z-20" />
-              </div>
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <h2 className="text-3xl font-black text-white uppercase drop-shadow-lg">
+                          {activeProduct.name}
+                        </h2>
+                      </div>
+                    )}
+                    <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
+                  </div>
 
-              {/* Modal Right: Details */}
-              <div className="w-full md:w-3/5 p-6 md:p-10 flex flex-col justify-center">
-                {activeProduct.image_url && (
-                  <div className="mb-6">
-                    <h2 className="text-3xl md:text-4xl font-black text-white uppercase leading-tight">
+                  {/* Product Info */}
+                  <div className="px-5 pb-8 -mt-2">
+                    {/* Type Badge */}
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-400/10 border border-blue-400/20 mb-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_6px_rgba(0,168,255,0.6)]" />
+                      <span className="text-blue-400 text-[10px] font-bold uppercase tracking-wider">
+                        Premium PPF
+                      </span>
+                    </div>
+
+                    <h2 className="text-2xl font-black text-white uppercase leading-tight mb-1">
                       {activeProduct.name}
                     </h2>
-                    <p className="text-gray-400 text-sm mt-2">
+                    <p className="text-gray-400 text-sm mb-5">
                       {activeProduct.shortDesc}
                     </p>
-                  </div>
-                )}
 
-                {/* Features Section */}
-                <div className="mb-8">
-                  <h3 className="text-lg md:text-xl font-bold text-blue-400 mb-4 uppercase tracking-widest flex items-center gap-2">
-                    <ShieldCheck size={20} />
-                    Product Highlights
-                  </h3>
-                  <div className="grid grid-cols-1 gap-3">
-                    {parseFeatures(activeProduct.features).map((feature, i) => (
-                      <div key={i} className="flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 shrink-0" />
-                        <span className="text-white/80 text-sm font-medium leading-relaxed">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Specs Section */}
-                <div>
-                  <h3 className="text-lg md:text-xl font-bold text-white mb-4 uppercase tracking-widest flex items-center gap-2">
-                    <Zap size={20} className="text-blue-400" />
-                    Technical Specs
-                  </h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    {(() => {
-                      const specEntries = parseSpecs(activeProduct.specs);
-
-                      if (specEntries.length === 0) {
-                        return (
-                          <div className="col-span-2 text-white/30 text-sm italic bg-white/5 rounded-lg p-4 border border-white/5">
-                            Specifications not available for this product
-                          </div>
-                        );
-                      }
-
-                      return specEntries.map((spec, i) => (
-                        <div
-                          key={i}
-                          className="bg-white/5 rounded-lg p-3 border border-white/5 hover:border-blue-400/30 transition-colors"
-                        >
-                          <p className="text-white/40 text-[10px] uppercase font-bold tracking-wider mb-1 line-clamp-1">
-                            {spec.label}
-                          </p>
-                          <p className="text-white font-bold text-sm md:text-base break-words">
-                            {spec.value}
-                          </p>
+                    {/* Features */}
+                    {parseFeatures(activeProduct.features).length > 0 && (
+                      <div className="mb-6">
+                        <h3 className="text-sm font-bold text-blue-400 mb-3 uppercase tracking-widest flex items-center gap-2">
+                          <ShieldCheck size={16} />
+                          Product Highlights
+                        </h3>
+                        <div className="space-y-2.5">
+                          {parseFeatures(activeProduct.features).map((feature, i) => (
+                            <div key={i} className="flex items-start gap-2.5">
+                              <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 shrink-0" />
+                              <span className="text-white/80 text-sm leading-relaxed">{feature}</span>
+                            </div>
+                          ))}
                         </div>
-                      ));
-                    })()}
+                      </div>
+                    )}
+
+                    {/* Specs */}
+                    <div>
+                      <h3 className="text-sm font-bold text-white mb-3 uppercase tracking-widest flex items-center gap-2">
+                        <Zap size={16} className="text-blue-400" />
+                        Technical Specs
+                      </h3>
+                      <div className="grid grid-cols-2 gap-2">
+                        {(() => {
+                          const specEntries = parseSpecs(activeProduct.specs);
+                          if (specEntries.length === 0) {
+                            return (
+                              <div className="col-span-2 text-white/30 text-sm italic bg-white/5 rounded-lg p-3 border border-white/5">
+                                Specifications not available
+                              </div>
+                            );
+                          }
+                          return specEntries.map((spec, i) => (
+                            <div key={i} className="bg-white/5 rounded-lg p-3 border border-white/5">
+                              <p className="text-white/40 text-[10px] uppercase font-bold tracking-wider mb-0.5 line-clamp-1">
+                                {spec.label}
+                              </p>
+                              <p className="text-white font-bold text-sm break-words">{spec.value}</p>
+                            </div>
+                          ));
+                        })()}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </motion.div>
-          </motion.div>
+
+            {/* Desktop Modal */}
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.92, opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
+              className="hidden md:flex fixed inset-0 z-50 items-center justify-center p-8"
+              onClick={() => setActiveProduct(null)}
+            >
+              <div
+                className="bg-[#0a0a0a] border border-white/10 rounded-2xl w-full max-w-5xl max-h-[85vh] overflow-hidden relative flex shadow-2xl shadow-blue-400/10"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setActiveProduct(null)}
+                  className="absolute top-5 right-5 z-30 text-white/50 hover:text-white transition-colors hover:bg-white/10 rounded-full p-1.5"
+                >
+                  <X size={24} />
+                </button>
+
+                {/* Left: Product Image */}
+                <div className="w-2/5 bg-gradient-to-br from-gray-900 via-[#0a0a0a] to-black relative flex items-center justify-center p-8 border-r border-white/5">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent" />
+                  <div className="relative z-10 w-full h-full flex items-center justify-center">
+                    {activeProduct.image_url ? (
+                      <div className="relative w-full h-full min-h-[400px]">
+                        <Image
+                          src={getProductImageUrl(activeProduct.image_url)}
+                          alt={activeProduct.name}
+                          fill
+                          className="object-contain drop-shadow-2xl"
+                          sizes="40vw"
+                          priority
+                        />
+                      </div>
+                    ) : (
+                      <div className="text-center">
+                        <h2 className="text-5xl font-black text-white mb-2 uppercase leading-none drop-shadow-lg">
+                          {activeProduct.name}
+                        </h2>
+                        <div className="h-1 w-24 bg-blue-400 mx-auto mt-4 shadow-[0_0_20px_rgba(0,170,255,0.8)]" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Right: Details */}
+                <div className="w-3/5 overflow-y-auto max-h-[85vh] p-10">
+                  {/* Type Badge */}
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-400/10 border border-blue-400/20 mb-4">
+                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_6px_rgba(0,168,255,0.6)]" />
+                    <span className="text-blue-400 text-[10px] font-bold uppercase tracking-wider">
+                      Premium PPF
+                    </span>
+                  </div>
+
+                  <h2 className="text-4xl font-black text-white uppercase leading-tight mb-2 pr-10">
+                    {activeProduct.name}
+                  </h2>
+                  <p className="text-gray-400 text-base mb-8">
+                    {activeProduct.shortDesc}
+                  </p>
+
+                  {/* Features */}
+                  <div className="mb-8">
+                    <h3 className="text-lg font-bold text-blue-400 mb-4 uppercase tracking-widest flex items-center gap-2">
+                      <ShieldCheck size={20} />
+                      Product Highlights
+                    </h3>
+                    <div className="grid grid-cols-1 gap-3">
+                      {parseFeatures(activeProduct.features).map((feature, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 shrink-0" />
+                          <span className="text-white/80 text-sm font-medium leading-relaxed">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Specs */}
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-4 uppercase tracking-widest flex items-center gap-2">
+                      <Zap size={20} className="text-blue-400" />
+                      Technical Specs
+                    </h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      {(() => {
+                        const specEntries = parseSpecs(activeProduct.specs);
+                        if (specEntries.length === 0) {
+                          return (
+                            <div className="col-span-2 text-white/30 text-sm italic bg-white/5 rounded-lg p-4 border border-white/5">
+                              Specifications not available for this product
+                            </div>
+                          );
+                        }
+                        return specEntries.map((spec, i) => (
+                          <div
+                            key={i}
+                            className="bg-white/5 rounded-lg p-3 border border-white/5 hover:border-blue-400/30 transition-colors"
+                          >
+                            <p className="text-white/40 text-[10px] uppercase font-bold tracking-wider mb-1 line-clamp-1">
+                              {spec.label}
+                            </p>
+                            <p className="text-white font-bold text-sm break-words">
+                              {spec.value}
+                            </p>
+                          </div>
+                        ));
+                      })()}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </section>
