@@ -9,10 +9,8 @@ export interface Dealer {
   city: string;
   state: string;
   pincode: string | null;
-  latitude?: number | null;
-  longitude?: number | null;
-  map_position_x: number;
-  map_position_y: number;
+  latitude: number;
+  longitude: number;
   is_active: boolean;
   dealer_type: 'premium' | 'standard' | 'coming_soon';
   created_at: string;

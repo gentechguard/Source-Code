@@ -122,7 +122,8 @@ For Android builds, also set `JAVA_HOME` and `ANDROID_HOME` (see `package.json` 
 │   │   └── useDeviceCapability.ts # Device detection, WebGL support, reduced motion
 │   ├── site-config.ts            # Centralized site configuration (company, contact, socials)
 │   ├── gallery-service.ts        # Gallery image fetching from Supabase storage
-│   ├── dealers/data.ts           # Hardcoded dealer location data
+│   ├── dealers/data.ts           # Static fallback dealer data (Supabase is primary)
+│   ├── dealers/map-utils.ts      # Lat/lng to SVG map percentage converter
 │   └── utils.ts                  # cn() helper (clsx + tailwind-merge)
 │
 ├── types/
@@ -145,7 +146,8 @@ For Android builds, also set `JAVA_HOME` and `ANDROID_HOME` (see `package.json` 
 ├── API_DOCS.md                   # API route documentation
 ├── CONFIG_MIGRATION_PLAN.md      # Config centralization plan
 ├── ADMIN_SQL_SETUP.sql           # SQL: admin_profiles table + auth trigger
-└── ADMIN_PRODUCTS_SETUP.sql      # SQL: products table + seed data
+├── ADMIN_PRODUCTS_SETUP.sql      # SQL: products table + seed data
+└── DEALERS_SETUP.sql             # SQL: dealers table + seed data
 ```
 
 ## Key Architecture Patterns
@@ -200,6 +202,7 @@ import { useGlobalStore } from "@/context/GlobalStore"
 | `admin_profiles` | Admin user profiles with approval gate (`is_active`) | Public SELECT, self INSERT/UPDATE |
 | `warranty_registrations` | Customer warranty submissions | Public INSERT, authenticated SELECT/UPDATE/DELETE |
 | `products` | PPF product catalog (JSONB features/specs) | Public SELECT, admin full access |
+| `dealers` | Dealer locations with lat/lng for map pins | Public SELECT (active), admin full access |
 | `site_settings` | Dynamic config overrides (key/value) | Varies |
 | `gallery_images` | Gallery image metadata | Varies |
 
@@ -214,6 +217,7 @@ import { useGlobalStore } from "@/context/GlobalStore"
 
 - `ADMIN_SQL_SETUP.sql` - Creates `admin_profiles` table, RLS policies, and `on_auth_user_created` trigger
 - `ADMIN_PRODUCTS_SETUP.sql` - Creates `products` table with RLS and seeds 5 PPF products
+- `DEALERS_SETUP.sql` - Creates `dealers` table with lat/lng, RLS policies, and seeds 15 dealers
 
 ## Build & Deployment
 
@@ -284,8 +288,9 @@ import { useGlobalStore } from "@/context/GlobalStore"
 2. Alternatively, update `site_settings` table in Supabase for runtime overrides
 
 ### Adding a dealer
-1. Add dealer data to `lib/dealers/data.ts` (currently hardcoded)
-2. Include `map_position_x` / `map_position_y` for the custom India map component
+1. Insert into `dealers` table via Supabase (authoritative source)
+2. Include `latitude` / `longitude` fields — map pin positions are computed automatically via `lib/dealers/map-utils.ts`
+3. Static fallback data in `lib/dealers/data.ts` is used when Supabase is unavailable
 
 ### Adding a new admin page
 1. Create route under `app/admin/dashboard/<page>/page.tsx`

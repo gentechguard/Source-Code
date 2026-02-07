@@ -1,6 +1,8 @@
 // lib/dealers/data.ts
 import { Dealer } from "@/types/dealer";
 
+// Static fallback data — used when Supabase is unavailable.
+// Authoritative data lives in the `dealers` table in Supabase.
 export const dealers: Dealer[] = [
   {
     id: "1",
@@ -12,8 +14,8 @@ export const dealers: Dealer[] = [
     city: "Mumbai",
     state: "Maharashtra",
     pincode: "400002",
-    map_position_x: 28.5,
-    map_position_y: 65.2,
+    latitude: 19.076,
+    longitude: 72.878,
     is_active: true,
     dealer_type: "premium",
     created_at: "2024-01-15"
@@ -28,8 +30,8 @@ export const dealers: Dealer[] = [
     city: "Delhi",
     state: "Delhi",
     pincode: "110001",
-    map_position_x: 42.8,
-    map_position_y: 32.5,
+    latitude: 28.614,
+    longitude: 77.209,
     is_active: true,
     dealer_type: "premium",
     created_at: "2024-01-20"
@@ -44,8 +46,8 @@ export const dealers: Dealer[] = [
     city: "Bangalore",
     state: "Karnataka",
     pincode: "560034",
-    map_position_x: 32.1,
-    map_position_y: 78.4,
+    latitude: 12.972,
+    longitude: 77.594,
     is_active: true,
     dealer_type: "premium",
     created_at: "2024-02-01"
@@ -60,8 +62,8 @@ export const dealers: Dealer[] = [
     city: "Hyderabad",
     state: "Telangana",
     pincode: "500034",
-    map_position_x: 38.5,
-    map_position_y: 68.3,
+    latitude: 17.385,
+    longitude: 78.486,
     is_active: true,
     dealer_type: "premium",
     created_at: "2024-02-10"
@@ -76,8 +78,8 @@ export const dealers: Dealer[] = [
     city: "Chennai",
     state: "Tamil Nadu",
     pincode: "600002",
-    map_position_x: 35.2,
-    map_position_y: 85.6,
+    latitude: 13.083,
+    longitude: 80.270,
     is_active: true,
     dealer_type: "standard",
     created_at: "2024-02-15"
@@ -92,8 +94,8 @@ export const dealers: Dealer[] = [
     city: "Kolkata",
     state: "West Bengal",
     pincode: "700016",
-    map_position_x: 62.5,
-    map_position_y: 48.3,
+    latitude: 22.572,
+    longitude: 88.364,
     is_active: true,
     dealer_type: "standard",
     created_at: "2024-02-20"
@@ -108,8 +110,8 @@ export const dealers: Dealer[] = [
     city: "Pune",
     state: "Maharashtra",
     pincode: "411004",
-    map_position_x: 30.2,
-    map_position_y: 62.8,
+    latitude: 18.520,
+    longitude: 73.856,
     is_active: true,
     dealer_type: "standard",
     created_at: "2024-03-01"
@@ -124,8 +126,8 @@ export const dealers: Dealer[] = [
     city: "Ahmedabad",
     state: "Gujarat",
     pincode: "380009",
-    map_position_x: 22.5,
-    map_position_y: 48.6,
+    latitude: 23.023,
+    longitude: 72.571,
     is_active: true,
     dealer_type: "standard",
     created_at: "2024-03-05"
@@ -140,8 +142,8 @@ export const dealers: Dealer[] = [
     city: "Jaipur",
     state: "Rajasthan",
     pincode: "302001",
-    map_position_x: 35.8,
-    map_position_y: 38.2,
+    latitude: 26.912,
+    longitude: 75.787,
     is_active: true,
     dealer_type: "standard",
     created_at: "2024-03-10"
@@ -156,8 +158,8 @@ export const dealers: Dealer[] = [
     city: "Kochi",
     state: "Kerala",
     pincode: "682011",
-    map_position_x: 30.5,
-    map_position_y: 88.2,
+    latitude: 9.932,
+    longitude: 76.267,
     is_active: true,
     dealer_type: "standard",
     created_at: "2024-03-15"
@@ -172,8 +174,8 @@ export const dealers: Dealer[] = [
     city: "Chandigarh",
     state: "Chandigarh",
     pincode: "160017",
-    map_position_x: 40.2,
-    map_position_y: 28.5,
+    latitude: 30.734,
+    longitude: 76.779,
     is_active: true,
     dealer_type: "standard",
     created_at: "2024-03-20"
@@ -188,8 +190,8 @@ export const dealers: Dealer[] = [
     city: "Lucknow",
     state: "Uttar Pradesh",
     pincode: "226001",
-    map_position_x: 45.5,
-    map_position_y: 38.8,
+    latitude: 26.847,
+    longitude: 80.947,
     is_active: true,
     dealer_type: "standard",
     created_at: "2024-03-25"
@@ -204,8 +206,8 @@ export const dealers: Dealer[] = [
     city: "Bhopal",
     state: "Madhya Pradesh",
     pincode: "462011",
-    map_position_x: 38.8,
-    map_position_y: 52.5,
+    latitude: 23.260,
+    longitude: 77.413,
     is_active: true,
     dealer_type: "standard",
     created_at: "2024-04-01"
@@ -220,8 +222,8 @@ export const dealers: Dealer[] = [
     city: "Visakhapatnam",
     state: "Andhra Pradesh",
     pincode: "530002",
-    map_position_x: 48.5,
-    map_position_y: 62.5,
+    latitude: 17.686,
+    longitude: 83.218,
     is_active: true,
     dealer_type: "coming_soon",
     created_at: "2024-04-05"
@@ -236,33 +238,16 @@ export const dealers: Dealer[] = [
     city: "Indore",
     state: "Madhya Pradesh",
     pincode: "452001",
-    map_position_x: 36.5,
-    map_position_y: 50.2,
+    latitude: 22.720,
+    longitude: 75.857,
     is_active: true,
     dealer_type: "standard",
     created_at: "2024-04-10"
   }
 ];
 
-export const states = [
-  "All States",
-  "Andhra Pradesh",
-  "Chandigarh",
-  "Delhi",
-  "Gujarat",
-  "Karnataka",
-  "Kerala",
-  "Madhya Pradesh",
-  "Maharashtra",
-  "Rajasthan",
-  "Tamil Nadu",
-  "Telangana",
-  "Uttar Pradesh",
-  "West Bengal"
-];
-
-export const getDealerStats = () => {
-  const activeDealers = dealers.filter(d => d.is_active);
+export const getDealerStats = (dealerList: Dealer[] = dealers) => {
+  const activeDealers = dealerList.filter(d => d.is_active);
   return {
     total: activeDealers.length,
     premium: activeDealers.filter(d => d.dealer_type === 'premium').length,

@@ -15,6 +15,7 @@ export default function OurNetworkPage() {
   const {
     dealers,
     allDealers,
+    availableStates,
     filters,
     stats,
     selectedDealer,
@@ -95,10 +96,12 @@ export default function OurNetworkPage() {
             {/* Sidebar */}
             <DealerFilterSidebar
               filters={filters}
+              states={availableStates}
               onUpdateFilter={updateFilter}
               onClearFilters={clearFilters}
               dealerCount={dealers.length}
               totalDealers={allDealers.length}
+              stats={stats}
             />
 
             {/* Map or List */}
