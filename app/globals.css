@@ -382,20 +382,19 @@ a:focus:not(:focus-visible) {
   0% {
     background-position: 200% 0;
   }
+
   100% {
     background-position: -200% 0;
   }
 }
 
 .shimmer-effect {
-  background: linear-gradient(
-    105deg,
-    transparent 20%,
-    rgba(255, 255, 255, 0.1) 35%,
-    rgba(255, 255, 255, 0.25) 50%,
-    rgba(255, 255, 255, 0.1) 65%,
-    transparent 80%
-  );
+  background: linear-gradient(105deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.1) 35%,
+      rgba(255, 255, 255, 0.25) 50%,
+      rgba(255, 255, 255, 0.1) 65%,
+      transparent 80%);
   background-size: 200% 100%;
   animation: mobile-shimmer 3s ease-in-out infinite;
 }
@@ -406,12 +405,15 @@ a:focus:not(:focus-visible) {
     transform: rotate(-25deg) translateY(-100%);
     opacity: 0;
   }
+
   20% {
     opacity: 0.15;
   }
+
   80% {
     opacity: 0.15;
   }
+
   100% {
     transform: rotate(-25deg) translateY(100%);
     opacity: 0;
@@ -448,14 +450,14 @@ a:focus:not(:focus-visible) {
     min-height: 44px;
     min-width: 44px;
   }
-  
+
   /* Improve button/link touch feedback */
   button,
   a,
   [role="button"] {
     -webkit-tap-highlight-color: transparent;
   }
-  
+
   /* Touch manipulation for better scrolling */
   .touch-manipulation {
     touch-action: manipulation;
@@ -465,13 +467,14 @@ a:focus:not(:focus-visible) {
 /* ===== MOBILE ENTRY PAGE SPECIFIC ===== */
 
 @media (max-width: 767px) {
+
   /* Reduce animation durations on mobile for snappier feel */
   .mobile-fast-animation {
     --animation-duration: 0.3s;
     transition-duration: 0.3s !important;
     animation-duration: 0.3s !important;
   }
-  
+
   /* Ensure proper text sizing on mobile */
   .mobile-text-responsive {
     font-size: clamp(1.5rem, 5vw, 2.5rem);
@@ -481,6 +484,7 @@ a:focus:not(:focus-visible) {
 /* ===== ENHANCED REDUCED MOTION SUPPORT ===== */
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -489,7 +493,7 @@ a:focus:not(:focus-visible) {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  
+
   /* Disable WebGL-like effects */
   .shimmer-effect,
   .mobile-beam,
@@ -507,7 +511,8 @@ a:focus:not(:focus-visible) {
 
 @media (max-width: 767px) {
   .scroll-container {
-    scroll-behavior: auto; /* Disable smooth scroll on mobile for performance */
+    scroll-behavior: auto;
+    /* Disable smooth scroll on mobile for performance */
   }
 }
 
@@ -523,4 +528,31 @@ a:focus:not(:focus-visible) {
 /* Safe bottom area for mobile modals */
 .safe-bottom-modal {
   padding-bottom: max(env(safe-area-inset-bottom), 20px);
+}
+
+/* Add to globals.css */
+.map-pin-pulse {
+  animation: pinPulse 2s ease-in-out infinite;
+}
+
+@keyframes pinPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+}
+
+.map-state-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.map-state-hover:hover {
+  filter: brightness(1.2) drop-shadow(0 0 10px rgba(0, 168, 255, 0.5));
 }

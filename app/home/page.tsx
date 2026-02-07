@@ -14,8 +14,8 @@ export default function Home() {
       <Header />
       <Hero />
       <WhySection />
-      <ProcessSection />
       <SolutionsSection />
+      <ProcessSection />
       <WarrantySection />
       {/*DealerMap />*/}
       <ContactForm />

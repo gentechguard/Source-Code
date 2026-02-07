@@ -28,12 +28,11 @@ export const siteConfig = {
     },
     navigation: [
         { name: "Home", href: "/home" },
-        { name: "About Us", href: "/about" },
-        { name: "Solutions", href: "/home#solutions" },
-        { name: "GALLERY", href: "/gallery" },
+        { name: "Products", href: "/home#product-showcase" },
         { name: "Process", href: "/home#process" },
+        { name: "About Us", href: "/about" },
+        { name: "GALLERY", href: "/gallery" },
         { name: "E-Warranty", href: "/warranty" },
-        { name: "Contact", href: "/home#contact" } // Unified 'Contact' vs 'Contact Us'
     ],
     // Fallback products if DB fails or for static generation references
     productCategories: [

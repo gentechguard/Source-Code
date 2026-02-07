@@ -1,46 +1,20 @@
 import type { Metadata } from "next";
-import { Montserrat, Roboto_Condensed } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  weight: ["400", "700", "900"],
 });
 
-const roboto = Roboto_Condensed({
-  variable: "--font-roboto",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  weight: ["300", "400", "700"],
 });
-
-import { GlobalProvider } from "@/context/GlobalStore";
-import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: siteConfig.metadata.title,
-  description: siteConfig.metadata.description,
-  keywords: ["PPF India", "Automotive Protection", "TPU Film", "Ceramic Coating", "Gentech Guard", "Car Armor"],
-  openGraph: {
-    title: siteConfig.metadata.title,
-    description: siteConfig.metadata.description,
-    url: "https://gentechguard.com",
-    siteName: siteConfig.company.name,
-    images: [
-      {
-        url: "/assets/logo-final.png",
-        width: 800,
-        height: 600,
-      },
-    ],
-    locale: "en_IN",
-    type: "website",
-  },
-  icons: {
-    icon: "/assets/gentech-favicon.ico",
-    shortcut: "/assets/gentech-favicon.ico",
-    apple: "/assets/gentech-favicon.ico",
-  },
+  title: "Our Network | Gentech Guard - Find Authorized Dealers Across India",
+  description: "Find authorized Gentech Guard dealers across India. Premium Paint Protection Film, Sun Film, and Graphene Coating dealers in 15+ cities.",
 };
 
 export default function RootLayout({
@@ -49,14 +23,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body
-        className={`${montserrat.variable} ${roboto.variable} antialiased`}
-        suppressHydrationWarning
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0A0A0A] text-white`}
       >
-        <GlobalProvider>
-          {children}
-        </GlobalProvider>
+        {children}
       </body>
     </html>
   );

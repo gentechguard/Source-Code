@@ -6,13 +6,15 @@ import { ChevronLeft, X, ShieldCheck, Zap } from 'lucide-react';
 import { useGlobalStore, Product } from '@/context/GlobalStore';
 import Image from 'next/image';
 
-// Helper to get Supabase image URL
-const getProductImageUrl = (imagePath: string | null | undefined) => {
-  if (!imagePath) return '/assets/gentech-tall.png'; // fallback
+const getProductImageUrl = (imagePath?: string | null) => {
+  if (!imagePath) return '/assets/gentech-tall.png';
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!supabaseUrl) return '/assets/gentech-tall.png';
 
-  // Replace with your actual Supabase URL from env or config
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://your-project-ref.supabase.co';
-  return `${supabaseUrl}/storage/v1/object/public/products/${imagePath}`;
+  let clean = imagePath.replace(/^\/+/, '');
+  clean = clean.replace(/^products?\//, ''); // handles product/ or products/
+
+  return `${supabaseUrl}/storage/v1/object/public/products/${clean}`;
 };
 
 // Helper to safely parse specs
@@ -282,7 +284,7 @@ export default function ProductShowcase() {
                 className="absolute inset-0 flex flex-col items-center justify-center text-center"
               >
                 <h2 className="text-3xl md:text-5xl font-black text-white mb-4 uppercase tracking-tight">
-                  Our <span className="text-blue-400">PPF Solution</span> Range
+                  Our <span className="text-blue-400">Products</span> Range
                 </h2>
                 <p className="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
                   Click any product to explore specific variants tailored to your needs

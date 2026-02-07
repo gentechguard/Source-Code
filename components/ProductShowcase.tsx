@@ -307,7 +307,7 @@ export default function ProductShowcase() {
                 className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
               >
                 <h2 className="text-xl md:text-3xl lg:text-5xl font-black text-white mb-2 md:mb-4 uppercase tracking-tight">
-                  Our <span className="text-blue-400">PPF Solution</span> Range
+                  Our <span className="text-blue-400">Products</span> Range
                 </h2>
                 <p className="text-gray-400 max-w-2xl mx-auto text-xs md:text-sm lg:text-base">
                   Click any product to explore specific variants tailored to your needs
