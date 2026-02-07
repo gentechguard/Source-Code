@@ -2,10 +2,11 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import IndiaMap from "@react-map/india";
 import { Dealer } from "@/types/dealer";
 import { PinPopup } from "./PinPopup";
+import { latLngToMapPercent } from "@/lib/dealers/map-utils";
 
 interface IndiaMapProps {
   dealers: Dealer[];
@@ -15,82 +16,79 @@ interface IndiaMapProps {
   onHoverDealer: (id: string | null) => void;
 }
 
-export function IndiaMapComponent({ 
-  dealers, 
-  selectedDealer, 
+export function IndiaMapComponent({
+  dealers,
+  selectedDealer,
   hoveredDealer,
-  onSelectDealer, 
-  onHoverDealer 
+  onSelectDealer,
+  onHoverDealer,
 }: IndiaMapProps) {
   const [hoveredState, setHoveredState] = useState<string | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const [mapDimensions, setMapDimensions] = useState({ width: 0, height: 0 });
 
-  // Create a map of state names to dealer counts for coloring
+  // Dealer grouped by state for map coloring
   const stateData = useMemo(() => {
-    const data: Record<string, { 
-      count: number; 
-      hasPremium: boolean;
-      dealers: Dealer[];
-    }> = {};
-    
-    dealers.forEach(dealer => {
+    const data: Record<string, { count: number; hasPremium: boolean; dealers: Dealer[] }> = {};
+    dealers.forEach((dealer) => {
       const stateName = dealer.state;
       if (!data[stateName]) {
         data[stateName] = { count: 0, hasPremium: false, dealers: [] };
       }
       data[stateName].count += 1;
       data[stateName].dealers.push(dealer);
-      if (dealer.dealer_type === 'premium') {
+      if (dealer.dealer_type === "premium") {
         data[stateName].hasPremium = true;
       }
     });
-    
     return data;
   }, [dealers]);
 
-  // Custom color scheme matching Gentech Guard theme
   const getStateColor = (stateName: string) => {
     const state = stateData[stateName];
-    if (!state) return "#1E293B"; // Dark blue-gray for no dealers
-    
-    if (state.hasPremium) return "#00A8FF"; // Cyan for premium
-    return "#3B82F6"; // Blue for standard
+    if (!state) return "#1E293B";
+    if (state.hasPremium) return "#00A8FF";
+    return "#3B82F6";
   };
 
   const handleStateClick = (stateName: string) => {
     const stateDealers = stateData[stateName]?.dealers || [];
     if (stateDealers.length > 0) {
-      // Select first dealer in state or cycle through them
       onSelectDealer(stateDealers[0].id);
     }
   };
 
-  // Update map dimensions on resize
+  // Close popup when clicking outside (on the map background)
+  const handleBackgroundClick = useCallback(() => {
+    if (selectedDealer) {
+      onSelectDealer(null);
+    }
+  }, [selectedDealer, onSelectDealer]);
+
+  // Close popup on Escape key
   useEffect(() => {
-    const updateDimensions = () => {
-      if (mapContainerRef.current) {
-        const rect = mapContainerRef.current.getBoundingClientRect();
-        setMapDimensions({ width: rect.width, height: rect.height });
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && selectedDealer) {
+        onSelectDealer(null);
       }
     };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedDealer, onSelectDealer]);
 
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
-  }, []);
+  const selectedDealerData = dealers.find((d) => d.id === selectedDealer);
 
   return (
-    <div 
+    <div
       ref={mapContainerRef}
-      className="relative w-full h-full min-h-[500px] lg:min-h-[600px] bg-gradient-to-br from-[#0A0A0A] via-[#0F172A] to-[#0A0A0A] rounded-3xl overflow-hidden border border-white/10"
+      className="relative w-full bg-gradient-to-br from-[#0A0A0A] via-[#0F172A] to-[#0A0A0A] rounded-3xl overflow-hidden border border-white/10"
+      onClick={handleBackgroundClick}
     >
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 opacity-10 pointer-events-none">
         <svg width="100%" height="100%">
           <defs>
             <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00A8FF" strokeWidth="0.5"/>
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00A8FF" strokeWidth="0.5" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
@@ -101,22 +99,24 @@ export function IndiaMapComponent({
       <motion.div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
         style={{
-          background: "radial-gradient(circle, rgba(0,168,255,0.1) 0%, transparent 70%)"
+          background: "radial-gradient(circle, rgba(0,168,255,0.1) 0%, transparent 70%)",
         }}
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.5, 0.8, 0.5]
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
+        animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* India Map Container - Fixed sizing for proper display */}
-      <div className="absolute inset-0 flex items-center justify-center p-4 lg:p-8">
-        <div className="relative w-full h-full max-w-[800px] max-h-[800px]">
+      {/*
+        Map + Pins container.
+        The SVG viewBox for @react-map/india is ~764×792.
+        We lock the container to that aspect-ratio so percentage-based pin
+        positions align exactly with the rendered SVG content.
+      */}
+      <div className="relative w-full mx-auto p-4 sm:p-6 lg:p-8">
+        <div
+          className="relative w-full mx-auto"
+          style={{ aspectRatio: "764 / 792", maxWidth: "650px" }}
+        >
+          {/* The SVG map */}
           <IndiaMap
             type="select-single"
             size="100%"
@@ -126,100 +126,108 @@ export function IndiaMapComponent({
             hoverColor="#00A8FF"
             hoverStrokeColor="#FFFFFF"
             hoverStrokeWidth="1"
-            onSelect={(stateName) => handleStateClick(stateName)}
-            onHover={(stateName) => setHoveredState(stateName)}
+            onSelect={(stateName: string) => handleStateClick(stateName)}
+            onHover={(stateName: string) => setHoveredState(stateName)}
             selectColor="#00A8FF"
             hints={true}
             hintTextColor="#FFFFFF"
             hintBackgroundColor="rgba(0, 168, 255, 0.9)"
-            hintPadding="10px"
-            hintBorderRadius="8px"
-            hintFontSize="14px"
+            hintPadding="8px"
+            hintBorderRadius="6px"
+            hintFontSize="12px"
             hintFontWeight="600"
           />
-          
-          {/* Dealer Pins Overlay - Positioned absolutely over the map */}
-          <div className="absolute inset-0 pointer-events-none">
-            {dealers.map((dealer, index) => (
-              <DealerPinOverlay
-                key={dealer.id}
-                dealer={dealer}
-                index={index}
-                isSelected={selectedDealer === dealer.id}
-                isHovered={hoveredDealer === dealer.id}
-                onSelect={() => onSelectDealer(dealer.id)}
-                onHover={() => onHoverDealer(dealer.id)}
-                onLeave={() => onHoverDealer(null)}
-              />
-            ))}
+
+          {/* Dealer Pins Overlay — same bounding box as the SVG */}
+          <div className="absolute inset-0 pointer-events-none z-10">
+            {dealers.map((dealer, index) => {
+              const pos = latLngToMapPercent(dealer.latitude, dealer.longitude);
+              return (
+                <DealerPinOverlay
+                  key={dealer.id}
+                  dealer={dealer}
+                  index={index}
+                  posX={pos.x}
+                  posY={pos.y}
+                  isSelected={selectedDealer === dealer.id}
+                  isHovered={hoveredDealer === dealer.id}
+                  onSelect={() => {
+                    onSelectDealer(selectedDealer === dealer.id ? null : dealer.id);
+                  }}
+                  onHover={() => onHoverDealer(dealer.id)}
+                  onLeave={() => onHoverDealer(null)}
+                />
+              );
+            })}
           </div>
         </div>
       </div>
 
       {/* Selected Dealer Popup */}
       <AnimatePresence>
-        {selectedDealer && (
-          <PinPopup
-            dealer={dealers.find(d => d.id === selectedDealer)!}
-            onClose={() => onSelectDealer(null)}
-          />
+        {selectedDealer && selectedDealerData && (
+          <PinPopup dealer={selectedDealerData} onClose={() => onSelectDealer(null)} />
         )}
       </AnimatePresence>
 
       {/* Map Legend */}
       <motion.div
-        className="absolute bottom-6 left-6 flex flex-col gap-3 p-4 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 z-10"
+        className="absolute bottom-4 left-4 lg:bottom-6 lg:left-6 flex flex-col gap-2 lg:gap-3 p-3 lg:p-4 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 z-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.5 }}
       >
-        <div className="text-xs font-semibold text-white/60 uppercase tracking-wider mb-1">
+        <div className="text-[10px] lg:text-xs font-semibold text-white/60 uppercase tracking-wider mb-0.5 lg:mb-1">
           Dealer Network
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-[#00A8FF] shadow-[0_0_10px_rgba(0,168,255,0.8)]" />
-          <span className="text-sm text-white/80">Premium Dealer</span>
+          <div className="w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full bg-[#00A8FF] shadow-[0_0_10px_rgba(0,168,255,0.8)]" />
+          <span className="text-xs lg:text-sm text-white/80">Premium Dealer</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
-          <span className="text-sm text-white/80">Standard Dealer</span>
+          <span className="text-xs lg:text-sm text-white/80">Standard Dealer</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-[#F59E0B] shadow-[0_0_8px_rgba(245,158,11,0.6)]" />
-          <span className="text-sm text-white/80">Coming Soon</span>
+          <span className="text-xs lg:text-sm text-white/80">Coming Soon</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-[#1E293B] border border-white/20" />
-          <span className="text-sm text-white/80">No Dealers Yet</span>
+          <span className="text-xs lg:text-sm text-white/80">No Dealers Yet</span>
         </div>
       </motion.div>
 
       {/* Stats Overlay */}
       <motion.div
-        className="absolute top-6 right-6 flex flex-col gap-2 z-10"
+        className="absolute top-4 right-4 lg:top-6 lg:right-6 flex flex-col gap-2 z-10"
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.6, duration: 0.5 }}
       >
-        <div className="px-4 py-2 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10">
-          <div className="text-2xl font-bold text-[#00A8FF]">{dealers.length}</div>
-          <div className="text-xs text-white/60">Total Dealers</div>
+        <div className="px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10">
+          <div className="text-xl lg:text-2xl font-bold text-[#00A8FF]">{dealers.length}</div>
+          <div className="text-[10px] lg:text-xs text-white/60">Total Dealers</div>
         </div>
-        <div className="px-4 py-2 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10">
-          <div className="text-2xl font-bold text-white">
+        <div className="px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10">
+          <div className="text-xl lg:text-2xl font-bold text-white">
             {Object.keys(stateData).length}
           </div>
-          <div className="text-xs text-white/60">States Covered</div>
+          <div className="text-[10px] lg:text-xs text-white/60">States Covered</div>
         </div>
       </motion.div>
     </div>
   );
 }
 
-// Individual dealer pin component with corrected positioning
+// ──────────────────────────────────────────────
+// Individual dealer pin
+// ──────────────────────────────────────────────
 interface DealerPinOverlayProps {
   dealer: Dealer;
   index: number;
+  posX: number;
+  posY: number;
   isSelected: boolean;
   isHovered: boolean;
   onSelect: () => void;
@@ -230,37 +238,38 @@ interface DealerPinOverlayProps {
 function DealerPinOverlay({
   dealer,
   index,
+  posX,
+  posY,
   isSelected,
   isHovered,
   onSelect,
   onHover,
-  onLeave
+  onLeave,
 }: DealerPinOverlayProps) {
   const getColor = () => {
     switch (dealer.dealer_type) {
-      case "premium": return "#00A8FF";
-      case "coming_soon": return "#F59E0B";
-      default: return "#3B82F6";
+      case "premium":
+        return "#00A8FF";
+      case "coming_soon":
+        return "#F59E0B";
+      default:
+        return "#3B82F6";
     }
   };
 
   const color = getColor();
-  
-  // Use percentage coordinates directly - the map uses a viewBox that maps to percentages
-  const left = `${dealer.map_position_x}%`;
-  const top = `${dealer.map_position_y}%`;
 
   return (
     <motion.div
       className="absolute pointer-events-auto cursor-pointer"
-      style={{ 
-        left, 
-        top,
-        transform: 'translate(-50%, -50%)' // Center the pin on the coordinate
+      style={{
+        left: `${posX}%`,
+        top: `${posY}%`,
+        transform: "translate(-50%, -50%)",
       }}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ delay: 0.8 + index * 0.1, type: "spring", stiffness: 300 }}
+      transition={{ delay: 0.8 + index * 0.08, type: "spring", stiffness: 300 }}
       onClick={(e) => {
         e.stopPropagation();
         onSelect();
@@ -270,33 +279,28 @@ function DealerPinOverlay({
     >
       {/* Pulse Ring */}
       <motion.div
-        className="absolute -inset-4 rounded-full"
+        className="absolute -inset-3 sm:-inset-4 rounded-full"
         style={{ backgroundColor: color, opacity: 0.2 }}
-        animate={{
-          scale: [1, 1.5, 1],
-          opacity: [0.3, 0, 0.3]
-        }}
+        animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0, 0.3] }}
         transition={{
           duration: 2,
           repeat: Infinity,
           ease: "easeInOut",
-          delay: index * 0.2
+          delay: index * 0.2,
         }}
       />
 
-      {/* Pin */}
+      {/* Pin Dot */}
       <motion.div
-        className="relative w-4 h-4"
-        animate={{
-          scale: isHovered || isSelected ? 1.5 : 1,
-        }}
+        className="relative w-3 h-3 sm:w-4 sm:h-4"
+        animate={{ scale: isHovered || isSelected ? 1.5 : 1 }}
         transition={{ type: "spring", stiffness: 400, damping: 25 }}
       >
         <div
           className="w-full h-full rounded-full border-2 border-[#0A0A0A]"
-          style={{ 
+          style={{
             backgroundColor: color,
-            boxShadow: `0 0 ${isHovered || isSelected ? 12 : 6}px ${color}`
+            boxShadow: `0 0 ${isHovered || isSelected ? 12 : 6}px ${color}`,
           }}
         />
         <div className="absolute inset-1 rounded-full bg-[#0A0A0A]" />
@@ -309,10 +313,12 @@ function DealerPinOverlay({
             initial={{ opacity: 0, y: 5, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 5, scale: 0.8 }}
-            className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-1.5 rounded-lg bg-black/80 backdrop-blur-sm border border-white/10 whitespace-nowrap pointer-events-none z-20"
+            className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-sm border border-white/10 whitespace-nowrap pointer-events-none z-20"
           >
-            <div className="text-xs font-semibold text-white">{dealer.city}</div>
-            <div className="text-[10px] text-white/60 capitalize">{dealer.dealer_type.replace("_", " ")}</div>
+            <div className="text-[10px] sm:text-xs font-semibold text-white">{dealer.city}</div>
+            <div className="text-[8px] sm:text-[10px] text-white/60 capitalize">
+              {dealer.dealer_type.replace("_", " ")}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

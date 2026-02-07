@@ -4,22 +4,29 @@
 import { motion } from "framer-motion";
 import { Search, MapPin, Store, Star, Clock, X } from "lucide-react";
 import { DealerFilter } from "@/types/dealer";
-import { states } from "@/lib/dealers/data";
 
 interface DealerFilterProps {
   filters: DealerFilter;
-  onUpdateFilter: (key: keyof DealerFilter, value: any) => void;
+  states: string[];
+  onUpdateFilter: (key: keyof DealerFilter, value: string | null) => void;
   onClearFilters: () => void;
   dealerCount: number;
   totalDealers: number;
+  stats: {
+    total: number;
+    cities: number;
+    states: number;
+  };
 }
 
 export function DealerFilterSidebar({
   filters,
+  states,
   onUpdateFilter,
   onClearFilters,
   dealerCount,
-  totalDealers
+  totalDealers,
+  stats,
 }: DealerFilterProps) {
   const hasFilters = filters.type !== "all" || filters.state || filters.search;
 
@@ -73,7 +80,6 @@ export function DealerFilterSidebar({
           <div className="space-y-2">
             <FilterOption
               label="All Dealers"
-              count={totalDealers}
               isSelected={filters.type === "all"}
               onClick={() => onUpdateFilter("type", "all")}
               icon={<Store className="w-4 h-4" />}
@@ -81,7 +87,6 @@ export function DealerFilterSidebar({
             />
             <FilterOption
               label="Premium"
-              count={totalDealers}
               isSelected={filters.type === "premium"}
               onClick={() => onUpdateFilter("type", "premium")}
               icon={<Star className="w-4 h-4" />}
@@ -89,7 +94,6 @@ export function DealerFilterSidebar({
             />
             <FilterOption
               label="Standard"
-              count={totalDealers}
               isSelected={filters.type === "standard"}
               onClick={() => onUpdateFilter("type", "standard")}
               icon={<Store className="w-4 h-4" />}
@@ -97,7 +101,6 @@ export function DealerFilterSidebar({
             />
             <FilterOption
               label="Coming Soon"
-              count={totalDealers}
               isSelected={filters.type === "coming_soon"}
               onClick={() => onUpdateFilter("type", "coming_soon")}
               icon={<Clock className="w-4 h-4" />}
@@ -115,7 +118,9 @@ export function DealerFilterSidebar({
             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
             <select
               value={filters.state || "All States"}
-              onChange={(e) => onUpdateFilter("state", e.target.value === "All States" ? null : e.target.value)}
+              onChange={(e) =>
+                onUpdateFilter("state", e.target.value === "All States" ? null : e.target.value)
+              }
               className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white appearance-none focus:outline-none focus:border-[#00A8FF]/50 focus:ring-1 focus:ring-[#00A8FF]/50 transition-all cursor-pointer"
             >
               {states.map((state) => (
@@ -124,10 +129,10 @@ export function DealerFilterSidebar({
                 </option>
               ))}
             </select>
-            <svg 
+            <svg
               className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none"
-              fill="none" 
-              viewBox="0 0 24 24" 
+              fill="none"
+              viewBox="0 0 24 24"
               stroke="currentColor"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -148,11 +153,11 @@ export function DealerFilterSidebar({
       {/* Quick Stats */}
       <div className="grid grid-cols-2 gap-3">
         <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-          <div className="text-2xl font-bold text-white">15+</div>
+          <div className="text-2xl font-bold text-white">{stats.cities}+</div>
           <div className="text-xs text-white/60">Cities</div>
         </div>
         <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-          <div className="text-2xl font-bold text-white">14</div>
+          <div className="text-2xl font-bold text-white">{stats.states}</div>
           <div className="text-xs text-white/60">States</div>
         </div>
       </div>
@@ -162,7 +167,6 @@ export function DealerFilterSidebar({
 
 interface FilterOptionProps {
   label: string;
-  count: number;
   isSelected: boolean;
   onClick: () => void;
   icon: React.ReactNode;
@@ -174,14 +178,12 @@ function FilterOption({ label, isSelected, onClick, icon, color }: FilterOptionP
     <button
       onClick={onClick}
       className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-        isSelected 
-          ? "bg-white/10 border border-white/20" 
+        isSelected
+          ? "bg-white/10 border border-white/20"
           : "bg-transparent border border-transparent hover:bg-white/5"
       }`}
     >
-      <span style={{ color: isSelected ? color : "rgba(255,255,255,0.4)" }}>
-        {icon}
-      </span>
+      <span style={{ color: isSelected ? color : "rgba(255,255,255,0.4)" }}>{icon}</span>
       <span className={`text-sm font-medium ${isSelected ? "text-white" : "text-white/60"}`}>
         {label}
       </span>

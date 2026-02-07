@@ -73,12 +73,15 @@ export default function SolutionsSection() {
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const rafIdRef = useRef<number | null>(null);
   const isSyncingRef = useRef(false);
+  const isMobileRef = useRef(false);
 
   // Client-side only detection
   useEffect(() => {
     setIsClient(true);
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      isMobileRef.current = mobile;
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -97,6 +100,7 @@ export default function SolutionsSection() {
     }
   }, [selectedParent, isMobile, displayedProducts.length]);
 
+  // Synchronized background - vertical on mobile, horizontal on desktop
   const syncBackgrounds = useCallback(() => {
     if (!isSyncingRef.current) return;
 
@@ -107,15 +111,25 @@ export default function SolutionsSection() {
     }
 
     const containerRect = container.getBoundingClientRect();
+    const mobile = isMobileRef.current;
 
     cardsRef.current.forEach((card) => {
       if (!card) return;
       const cardRect = card.getBoundingClientRect();
-      const xOffset = containerRect.left - cardRect.left;
 
       card.style.backgroundSize = `${containerRect.width}px ${containerRect.height}px`;
-      card.style.backgroundPositionX = `${xOffset}px`;
-      card.style.backgroundPositionY = 'center';
+
+      if (mobile) {
+        // Vertical sync for mobile accordion
+        const yOffset = containerRect.top - cardRect.top;
+        card.style.backgroundPositionX = 'center';
+        card.style.backgroundPositionY = `${yOffset}px`;
+      } else {
+        // Horizontal sync for desktop
+        const xOffset = containerRect.left - cardRect.left;
+        card.style.backgroundPositionX = `${xOffset}px`;
+        card.style.backgroundPositionY = 'center';
+      }
     });
 
     rafIdRef.current = requestAnimationFrame(syncBackgrounds);
@@ -208,7 +222,7 @@ export default function SolutionsSection() {
       <section id="product-showcase" className="bg-black py-20">
         <div className="h-[500px] flex flex-col items-center justify-center text-white px-4">
           <p className="text-red-400 mb-4">Error: {error}</p>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
           >
@@ -276,7 +290,7 @@ export default function SolutionsSection() {
                 className="absolute inset-0 flex flex-col items-center justify-center text-center"
               >
                 <h2 className="text-3xl md:text-5xl font-black text-white mb-4 uppercase tracking-tight">
-                  Our <span className="text-blue-400">Products</span> Range
+                  Our <span className="text-blue-400">PPF</span> Solution Range
                 </h2>
                 <p className="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
                   Click any product to explore specific variants tailored to your needs
@@ -289,19 +303,8 @@ export default function SolutionsSection() {
         {/* Products Grid */}
         <div
           ref={containerRef}
-          className="relative z-10 flex flex-col md:flex-row gap-3 md:gap-4 mx-0 md:mx-4 lg:mx-20 my-4 md:my-8 md:aspect-video rounded-2xl overflow-hidden"
-          style={{
-            minHeight: isClient && isMobile ? `${Math.max(displayedProducts.length * 70 + 150, 400)}px` : undefined,
-            backgroundImage: isClient && isMobile ? "url('/assets/solutions_bg.png')" : undefined,
-            backgroundSize: isClient && isMobile ? 'cover' : undefined,
-            backgroundPosition: isClient && isMobile ? 'center' : undefined,
-            backgroundRepeat: isClient && isMobile ? 'no-repeat' : undefined,
-          }}
+          className="relative z-10 flex flex-col md:flex-row gap-4 mx-0 md:mx-4 lg:mx-20 my-0 md:my-8 pt-6 pb-20 md:pt-0 md:pb-0 aspect-[9/16] md:aspect-video rounded-2xl overflow-hidden"
         >
-          {isClient && isMobile && (
-            <div className="absolute inset-0 bg-black/40 z-0" />
-          )}
-
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedParent ? 'children' : 'parents'}
@@ -309,7 +312,7 @@ export default function SolutionsSection() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="flex flex-col md:flex-row gap-3 md:gap-4 w-full h-full relative z-10"
+              className="flex flex-col md:flex-row gap-3 md:gap-4 w-full h-full"
             >
               {displayedProducts.map((product, index) => {
                 const hasChildren = products.some(p => p.parent_id === product.id);
@@ -328,68 +331,62 @@ export default function SolutionsSection() {
                     }}
                     style={{
                       flex: isClient && isMobile
-                        ? (isExpanded ? '2 1 0%' : '1 1 0%')
+                        ? (isExpanded ? '3 1 0%' : '1 1 0%')
                         : undefined,
-                      minHeight: isClient && isMobile
-                        ? (isExpanded ? '200px' : '70px')
-                        : undefined,
-                      backgroundImage: !(isClient && isMobile) ? "url('/assets/solutions_bg.png')" : undefined,
-                      backgroundRepeat: !(isClient && isMobile) ? "no-repeat" : undefined,
-                      backgroundSize: !(isClient && isMobile) ? 'cover' : undefined,
-                      backgroundPosition: !(isClient && isMobile) ? 'center' : undefined,
+                      backgroundImage: "url('/assets/solutions_bg.png')",
+                      backgroundRepeat: "no-repeat",
                     }}
                     className={`
-                      group relative overflow-hidden cursor-pointer 
-                      border border-white/10 rounded-2xl
-                      ${isClient && isMobile ? 'bg-black/30 backdrop-blur-sm' : 'bg-[#111]'}
+                      group relative overflow-hidden cursor-pointer rounded-2xl
                       transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]
                       active:scale-[0.98] md:active:scale-100
                       md:flex-1 md:hover:flex-[2] md:min-h-0
                       md:will-change-[flex]
+                      bg-[#111] border border-white/10
                     `}
                   >
+                    {/* Dark overlay - Desktop */}
                     <div
                       className="hidden md:block absolute inset-0 z-10 pointer-events-none transition-colors duration-500 bg-black/60 group-hover:bg-black/30"
                     />
 
-                    {/* Mobile Layout */}
-                    <div className="md:hidden absolute inset-0 z-20 flex flex-col">
-                      <div
-                        className="flex items-center justify-between px-5 transition-all duration-500"
-                        style={{
-                          paddingTop: isExpanded ? '16px' : '0',
-                          paddingBottom: isExpanded ? '8px' : '0',
-                          flex: isExpanded ? '0 0 auto' : '1 1 0%',
-                          alignItems: isExpanded ? 'flex-start' : 'center',
-                        }}
-                      >
-                        <h3
-                          className="font-black tracking-wider text-white uppercase transition-all duration-300"
-                          style={{ fontSize: isExpanded ? '18px' : '14px' }}
-                        >
-                          {product.name}
-                        </h3>
-                        <div
-                          className="text-blue-400 transition-transform duration-300"
-                          style={{ transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)' }}
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                          </svg>
-                        </div>
-                      </div>
+                    {/* Dark overlay - Mobile */}
+                    <div
+                      className="md:hidden absolute inset-0 z-10 pointer-events-none transition-all duration-500"
+                      style={{
+                        background: isExpanded
+                          ? 'linear-gradient(to top, rgba(0,0,0,0.85) 25%, rgba(0,0,0,0.4) 55%, rgba(0,0,0,0.15) 100%)'
+                          : 'rgba(0,0,0,0.55)',
+                      }}
+                    />
 
+                    {/* Mobile Layout - Collapsed: Centered name */}
+                    <div
+                      className="md:hidden absolute inset-0 z-20 flex items-center justify-center pointer-events-none transition-opacity duration-300"
+                      style={{ opacity: isExpanded ? 0 : 1 }}
+                    >
+                      <h3 className="text-sm font-black tracking-widest text-white/90 uppercase drop-shadow-lg">
+                        {product.name}
+                      </h3>
+                    </div>
+
+                    {/* Mobile Layout - Expanded: Content at bottom */}
+                    <div
+                      className="md:hidden absolute inset-0 z-20 flex flex-col justify-end p-5 transition-opacity duration-500"
+                      style={{ opacity: isExpanded ? 1 : 0, pointerEvents: isExpanded ? 'auto' : 'none' }}
+                    >
                       <motion.div
                         initial={false}
                         animate={{
                           opacity: isExpanded ? 1 : 0,
-                          height: isExpanded ? 'auto' : 0,
-                          paddingBottom: isExpanded ? '20px' : '0px',
+                          y: isExpanded ? 0 : 15,
                         }}
-                        transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                        className="overflow-hidden px-5"
+                        transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
                       >
-                        <p className="text-white/70 text-sm mb-4 line-clamp-2">
+                        <h3 className="text-lg font-black tracking-wider text-white uppercase mb-1">
+                          {product.name}
+                        </h3>
+                        <p className="text-white/70 text-sm mb-3 line-clamp-2">
                           {product.shortDesc || 'Premium Protection Solution'}
                         </p>
                         <button
@@ -408,13 +405,14 @@ export default function SolutionsSection() {
                       </motion.div>
                     </div>
 
-                    {/* Desktop Layout */}
+                    {/* Desktop Layout - Default: Rotated name centered */}
                     <div className="hidden md:flex absolute inset-0 items-center justify-center pointer-events-none z-20 opacity-100 group-hover:opacity-0 transition-opacity duration-300">
                       <h3 className="whitespace-nowrap text-xl md:text-2xl font-black tracking-widest text-white/90 uppercase -rotate-90 drop-shadow-lg">
                         {product.name}
                       </h3>
                     </div>
 
+                    {/* Desktop Layout - Hover: Content at bottom */}
                     <div className="hidden md:flex absolute inset-0 p-4 md:p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-75 flex-col justify-end bg-gradient-to-t from-black/90 via-black/60 to-transparent pointer-events-none z-20">
                       <div className="w-full text-left pointer-events-auto transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
                         <span className="text-blue-400 font-bold tracking-widest uppercase text-xs mb-2 block">
@@ -453,107 +451,109 @@ export default function SolutionsSection() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-lg"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-lg"
             onClick={() => setActiveProduct(null)}
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              initial={{ scale: 0.92, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              exit={{ scale: 0.92, opacity: 0, y: 20 }}
               transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
-              className="bg-[#0a0a0a] border border-white/10 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative flex flex-col md:flex-row shadow-2xl shadow-blue-400/10"
+              className="bg-[#0a0a0a] border border-white/10 rounded-2xl w-full max-w-md md:max-w-5xl max-h-[90vh] overflow-y-auto relative flex flex-col md:flex-row shadow-2xl shadow-blue-400/10"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setActiveProduct(null)}
-                className="absolute top-4 right-4 z-30 text-white/50 hover:text-white transition-colors hover:bg-white/10 rounded-full p-1"
+                className="absolute top-4 right-4 z-30 text-white/50 hover:text-white transition-colors hover:bg-white/10 rounded-full p-1.5"
               >
-                <X size={24} />
+                <X size={22} />
               </button>
 
-              {/* Modal Left: Product Image */}
-              <div className="w-full md:w-2/5 bg-gradient-to-br from-gray-900 to-black relative overflow-hidden min-h-[300px] md:min-h-[500px] flex items-center justify-center p-6">
+              {/* Image Section */}
+              <div className="w-full md:w-2/5 relative overflow-hidden bg-gradient-to-br from-gray-900 to-black min-h-[200px] md:min-h-[500px]">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent" />
-                <div className="relative z-10 w-full h-full flex items-center justify-center">
-                  {activeProduct.image_url ? (
-                    <div className="relative w-full h-[250px] md:h-[400px]">
-                      <Image
-                        src={getProductImageUrl(activeProduct.image_url)}
-                        alt={activeProduct.name}
-                        fill
-                        className="object-contain drop-shadow-2xl"
-                        sizes="(max-width: 768px) 100vw, 40vw"
-                        priority
-                      />
-                    </div>
-                  ) : (
+                {activeProduct.image_url ? (
+                  <div className="relative w-full h-full min-h-[200px] md:min-h-[400px]">
+                    <Image
+                      src={getProductImageUrl(activeProduct.image_url)}
+                      alt={activeProduct.name}
+                      fill
+                      className="object-contain p-4 md:p-8 drop-shadow-2xl"
+                      sizes="(max-width: 768px) 100vw, 40vw"
+                      priority
+                    />
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <h2 className="text-4xl md:text-5xl font-black text-white mb-2 uppercase leading-none drop-shadow-lg">
+                      <h2 className="text-3xl md:text-5xl font-black text-white uppercase leading-none drop-shadow-lg">
                         {activeProduct.name}
                       </h2>
-                      <div className="h-1 w-24 bg-blue-400 mx-auto mt-4 shadow-[0_0_20px_rgba(0,170,255,0.8)]" />
+                      <div className="h-1 w-16 bg-blue-400 mx-auto mt-4 shadow-[0_0_20px_rgba(0,170,255,0.8)]" />
                     </div>
-                  )}
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent z-20" />
+                  </div>
+                )}
+                <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#0a0a0a] to-transparent z-10 md:hidden" />
               </div>
 
-              {/* Modal Right: Details */}
-              <div className="w-full md:w-3/5 p-6 md:p-10 flex flex-col justify-center">
-                {activeProduct.image_url && (
+              {/* Details Section */}
+              <div className="w-full md:w-3/5 p-5 md:p-10">
+                {/* Product Name with blue underline */}
+                <div className="mb-5 md:mb-6 text-center md:text-left">
+                  <h2 className="text-2xl md:text-4xl font-black text-white uppercase leading-tight pr-8 md:pr-10">
+                    {activeProduct.name}
+                  </h2>
+                  <div className="h-1 w-16 bg-blue-400 mx-auto md:mx-0 mt-3 shadow-[0_0_15px_rgba(0,170,255,0.6)]" />
+                  {activeProduct.shortDesc && (
+                    <p className="text-gray-400 text-sm mt-3">{activeProduct.shortDesc}</p>
+                  )}
+                </div>
+
+                {/* Features */}
+                {parseFeatures(activeProduct.features).length > 0 && (
                   <div className="mb-6">
-                    <h2 className="text-3xl md:text-4xl font-black text-white uppercase leading-tight">
-                      {activeProduct.name}
-                    </h2>
-                    <p className="text-gray-400 text-sm mt-2">
-                      {activeProduct.shortDesc}
-                    </p>
+                    <h3 className="text-sm md:text-lg font-bold text-blue-400 mb-3 md:mb-4 uppercase tracking-widest flex items-center gap-2">
+                      <ShieldCheck size={18} />
+                      Product Highlights
+                    </h3>
+                    <div className="space-y-2.5">
+                      {parseFeatures(activeProduct.features).map((feature, i) => (
+                        <div key={i} className="flex items-start gap-2.5">
+                          <div className="w-5 h-5 rounded-full bg-blue-400/20 flex items-center justify-center shrink-0 mt-0.5">
+                            <div className="w-2 h-2 rounded-full bg-blue-400" />
+                          </div>
+                          <span className="text-white/80 text-sm leading-relaxed">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
 
-                {/* Features Section */}
-                <div className="mb-8">
-                  <h3 className="text-lg md:text-xl font-bold text-blue-400 mb-4 uppercase tracking-widest flex items-center gap-2">
-                    <ShieldCheck size={20} />
-                    Product Highlights
-                  </h3>
-                  <div className="grid grid-cols-1 gap-3">
-                    {parseFeatures(activeProduct.features).map((feature, i) => (
-                      <div key={i} className="flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 shrink-0" />
-                        <span className="text-white/80 text-sm font-medium leading-relaxed">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Specs Section */}
+                {/* Specs */}
                 <div>
-                  <h3 className="text-lg md:text-xl font-bold text-white mb-4 uppercase tracking-widest flex items-center gap-2">
-                    <Zap size={20} className="text-blue-400" />
+                  <h3 className="text-sm md:text-lg font-bold text-white mb-3 md:mb-4 uppercase tracking-widest flex items-center gap-2">
+                    <Zap size={18} className="text-blue-400" />
                     Technical Specs
                   </h3>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-2 md:gap-3">
                     {(() => {
                       const specEntries = parseSpecs(activeProduct.specs);
-
                       if (specEntries.length === 0) {
                         return (
-                          <div className="col-span-2 text-white/30 text-sm italic bg-white/5 rounded-lg p-4 border border-white/5">
-                            Specifications not available for this product
+                          <div className="col-span-2 text-white/30 text-sm italic bg-white/5 rounded-lg p-3 border border-white/5">
+                            Specifications not available
                           </div>
                         );
                       }
-
                       return specEntries.map((spec, i) => (
                         <div
                           key={i}
                           className="bg-white/5 rounded-lg p-3 border border-white/5 hover:border-blue-400/30 transition-colors"
                         >
-                          <p className="text-white/40 text-[10px] uppercase font-bold tracking-wider mb-1 line-clamp-1">
+                          <p className="text-white/40 text-[10px] uppercase font-bold tracking-wider mb-0.5 line-clamp-1">
                             {spec.label}
                           </p>
-                          <p className="text-white font-bold text-sm md:text-base break-words">
+                          <p className="text-white font-bold text-sm break-words">
                             {spec.value}
                           </p>
                         </div>
