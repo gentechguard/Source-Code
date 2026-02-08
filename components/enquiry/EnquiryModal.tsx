@@ -97,21 +97,15 @@ export default function EnquiryModal({ isOpen, onClose, type }: EnquiryModalProp
               }}
               className={`
                 relative w-full
-                ${isMobile 
-                  ? 'h-full max-h-full rounded-none' 
+                ${isMobile
+                  ? 'h-full max-h-full rounded-none'
                   : 'max-w-lg max-h-[90vh] rounded-3xl'
                 }
-                overflow-hidden
+                overflow-y-auto
               `}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Scrollable content wrapper */}
-              <div className={`
-                w-full h-full 
-                ${isMobile ? 'overflow-y-auto' : 'overflow-y-auto'}
-              `}>
-                {renderForm()}
-              </div>
+              {renderForm()}
               
               {/* Mobile Close Button - Inside modal */}
               {isMobile && (
