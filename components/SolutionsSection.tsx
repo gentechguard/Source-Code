@@ -61,7 +61,7 @@ const parseFeatures = (features: any): string[] => {
 };
 
 export default function SolutionsSection() {
-  const { products, loading, error } = useGlobalStore();
+  const { products, loading } = useGlobalStore();
   const [selectedParent, setSelectedParent] = useState<Product | null>(null);
   const [activeProduct, setActiveProduct] = useState<Product | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -217,21 +217,6 @@ export default function SolutionsSection() {
     );
   }
 
-  if (error) {
-    return (
-      <section id="product-showcase" className="bg-black py-20">
-        <div className="h-[500px] flex flex-col items-center justify-center text-white px-4">
-          <p className="text-red-400 mb-4">Error: {error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-          >
-            Retry
-          </button>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="product-showcase" className="bg-black py-20 overflow-hidden">

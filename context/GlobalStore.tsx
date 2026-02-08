@@ -40,13 +40,18 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
     const [fetchKey, setFetchKey] = useState(0); // Used to force refetch
 
     const fetchData = async () => {
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-        );
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+        if (!supabaseUrl || !supabaseKey) {
+            console.warn('Supabase env vars not set, skipping data fetch');
+            setLoading(false);
+            return;
+        }
+
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
         try {
-            console.log('Fetching products with sort_order...'); // Debug log
 
             // Fetch Products with cache-busting
             const { data: productsData, error: productsError } = await supabase
