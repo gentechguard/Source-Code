@@ -119,8 +119,7 @@ export default function SolutionsSection() {
         // Container is tall & narrow, so size by height to ensure full coverage
         card.style.backgroundSize = `auto ${containerRect.height}px`;
         const yOffset = containerRect.top - cardRect.top;
-        const xOffset = containerRect.left - cardRect.left;
-        card.style.backgroundPositionX = `${xOffset}px`;
+        card.style.backgroundPositionX = 'center';
         card.style.backgroundPositionY = `${yOffset}px`;
       } else {
         // Horizontal sync for desktop
