@@ -45,7 +45,7 @@ const HeroSection = () => {
                     <span className="inline-block px-4 py-2 rounded-full border border-primary-blue/30 bg-primary-blue/10 text-primary-blue font-black tracking-[0.3em] uppercase text-xs mb-8 backdrop-blur-md">
                         Gentech Guard
                     </span>
-                    <h1 className="text-6xl md:text-9xl font-black text-white leading-[0.9] tracking-tighter mb-16 relative">
+                    <h1 className="text-5xl sm:text-6xl md:text-9xl font-black text-white leading-[0.9] tracking-tighter mb-16 relative">
                         <span className="block text-transparent bg-clip-text bg-gradient-to-b from-white to-white/50">PROTECTION</span>
                         <span className="block text-primary-blue drop-shadow-[0_0_30px_rgba(0,170,255,0.4)]">REDEFINED</span>
                     </h1>
@@ -355,7 +355,7 @@ const QualitySection = () => {
 
 export default function AboutPage() {
     return (
-        <main className="min-h-[100dvh] bg-dark-bg text-white selection:bg-primary-blue selection:text-white">
+        <main className="min-h-[100dvh] bg-dark-bg text-white selection:bg-primary-blue selection:text-white" style={{ background: '#050505', color: '#fff' }}>
             <Header />
             <HeroSection />
             <SpecsTicker />
