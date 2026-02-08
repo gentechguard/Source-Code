@@ -272,7 +272,7 @@ export default function SolutionsSection() {
                 className="flex flex-col items-center justify-center text-center min-h-[4rem]"
               >
                 <h2 className="text-3xl md:text-5xl font-black text-white mb-4 uppercase tracking-tight">
-                  Our <span className="text-blue-400">PPF</span> Solution Range
+                  Our <span className="text-blue-400">Products</span> Range
                 </h2>
                 <p className="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
                   Click any product to explore specific variants tailored to your needs
