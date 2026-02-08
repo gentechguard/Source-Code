@@ -63,7 +63,7 @@ export default function ContactForm() {
                     viewport={{ once: true }}
                     className="max-w-5xl mx-auto"
                 >
-                    <div className="relative rounded-[3rem] overflow-hidden border border-white/10 bg-gradient-to-br from-primary-blue/20 to-dark-bg/50 backdrop-blur-xl group hover:border-primary-blue/30 transition-all duration-500">
+                    <div className="relative rounded-2xl md:rounded-[3rem] overflow-hidden border border-white/10 bg-gradient-to-br from-primary-blue/20 to-dark-bg/50 backdrop-blur-xl group hover:border-primary-blue/30 transition-all duration-500">
                         {/* Dealer Background Effect */}
                         <div className="absolute inset-0 bg-[url('/assets/solutions_bg.png')] opacity-10 bg-cover bg-center mix-blend-overlay" />
 
@@ -89,7 +89,7 @@ export default function ContactForm() {
                                     href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(dealerMessage)}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-3 bg-gradient-to-r from-primary-blue to-blue-600 text-white px-10 py-5 rounded-2xl font-black uppercase tracking-widest hover:scale-105 hover:shadow-[0_0_30px_rgba(0,170,255,0.4)] transition-all duration-300 group-hover:animate-pulse-slow"
+                                    className="inline-flex items-center gap-3 bg-gradient-to-r from-primary-blue to-blue-600 text-white px-6 py-4 md:px-10 md:py-5 rounded-xl md:rounded-2xl font-black uppercase tracking-widest text-sm md:text-base hover:scale-105 hover:shadow-[0_0_30px_rgba(0,170,255,0.4)] transition-all duration-300 group-hover:animate-pulse-slow"
                                 >
                                     Apply For Dealership
                                     <ArrowRight className="w-5 h-5" />
@@ -97,7 +97,7 @@ export default function ContactForm() {
                             </div>
 
                             {/* Visual/Image Side */}
-                            <div className="relative h-full min-h-[300px] flex flex-col items-center justify-center">
+                            <div className="relative h-full min-h-[200px] md:min-h-[300px] flex flex-col items-center justify-center">
                                 <div className="absolute inset-0 bg-primary-blue/20 blur-[100px] rounded-full" />
                                 <Image
                                     src="/assets/gentech-tall.png"
@@ -106,7 +106,7 @@ export default function ContactForm() {
                                     height={300}
                                     className="hidden relative z-10 drop-shadow-[0_0_50px_rgba(0,170,255,0.3)] animate-float"
                                 />
-                                <div className="h-64 w-64 justify-self-center">
+                                <div className="h-40 w-40 md:h-64 md:w-64 justify-self-center">
                                     <MetallicPaint
                                         src="/assets/gentech-shield-bitmap.svg"
                                         params={{
@@ -117,7 +117,7 @@ export default function ContactForm() {
                                         }}
                                     />
                                 </div>
-                                <div className="h-24 w-80 justify-self-center">
+                                <div className="h-16 w-48 md:h-24 md:w-80 justify-self-center">
                                     <MetallicPaint
                                         src="/assets/gentech-text-bitmap.svg"
                                         params={{

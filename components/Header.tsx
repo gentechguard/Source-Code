@@ -123,7 +123,7 @@ export default function Header() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -20 }}
                             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                            className="lg:hidden fixed top-0 left-0 right-0 bg-dark-bg border-b border-white/10 z-40 pt-20 pb-8 px-6"
+                            className="lg:hidden fixed inset-0 bg-dark-bg z-40 pt-20 pb-8 px-6 overflow-y-auto"
                         >
                             <div className="flex flex-col gap-4">
                                 {navLinks.map((link) => (
