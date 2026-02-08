@@ -107,11 +107,11 @@ export default function EntryPage() {
 
   // While checking or if redirecting desktop, show minimal loader
   if (!isClient || (shouldRedirect && !isMobile)) {
-    return <div className="min-h-[100dvh] bg-black" />;
+    return <div className="min-h-[100dvh] bg-black" style={{ minHeight: '100dvh', background: '#000' }} />;
   }
 
   return (
-    <main className="min-h-[100dvh] bg-black flex flex-col items-center justify-center relative overflow-hidden">
+    <main className="min-h-[100dvh] bg-black flex flex-col items-center justify-center relative overflow-hidden" style={{ minHeight: '100dvh', background: '#000' }}>
 
       {/* Background Ambience */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-black to-black" />
@@ -156,6 +156,7 @@ export default function EntryPage() {
                 width={240}
                 height={80}
                 className="object-contain w-full h-auto hidden"
+                style={{ display: 'none' }}
                 priority
               />
 
