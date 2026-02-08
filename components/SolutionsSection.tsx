@@ -115,11 +115,12 @@ export default function SolutionsSection() {
       const cardRect = card.getBoundingClientRect();
 
       if (mobile) {
-        // Vertical sync for mobile accordion - use cover-like sizing
-        // Make the image cover the full container width while maintaining aspect ratio
-        card.style.backgroundSize = `${containerRect.width}px auto`;
+        // Vertical sync for mobile accordion - cover-like sizing
+        // Container is tall & narrow, so size by height to ensure full coverage
+        card.style.backgroundSize = `auto ${containerRect.height}px`;
         const yOffset = containerRect.top - cardRect.top;
-        card.style.backgroundPositionX = 'center';
+        const xOffset = containerRect.left - cardRect.left;
+        card.style.backgroundPositionX = `${xOffset}px`;
         card.style.backgroundPositionY = `${yOffset}px`;
       } else {
         // Horizontal sync for desktop
