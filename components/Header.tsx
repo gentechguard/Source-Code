@@ -46,7 +46,7 @@ export default function Header() {
     return (
         <>
             <header
-                className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+                className={`fixed top-0 left-0 w-full z-[60] transition-all duration-300 ${
                     scrolled ? "glass py-3" : "bg-transparent py-4 sm:py-5"
                 }`}
                 style={{
