@@ -210,13 +210,28 @@ export default function SolutionsSection() {
   if (loading) {
     return (
       <section id="product-showcase" className="bg-black py-20">
-        <div className="h-[500px] flex items-center justify-center text-white">
-          <div className="animate-pulse">Loading Products...</div>
+        <div className="h-[300px] flex items-center justify-center text-white">
+          <div className="animate-pulse text-white/40 text-sm uppercase tracking-widest">Loading Products...</div>
         </div>
       </section>
     );
   }
 
+  if (!loading && products.length === 0) {
+    return (
+      <section id="product-showcase" className="bg-black py-20">
+        <div className="h-[300px] flex flex-col items-center justify-center text-white gap-4">
+          <p className="text-white/40 text-sm uppercase tracking-widest">No products available</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-6 py-2 bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors text-sm"
+          >
+            Retry
+          </button>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="product-showcase" className="bg-black py-20 overflow-hidden">

@@ -29,7 +29,7 @@ export default function OurNetworkPage() {
   const [viewMode, setViewMode] = useState<"map" | "list">("map");
 
   return (
-    <main className="min-h-screen bg-[#0A0A0A]">
+    <main className="min-h-screen bg-[#0A0A0A]" style={{ background: '#0A0A0A', color: '#fff' }}>
       <Header />
       
       {/* Hero Section */}

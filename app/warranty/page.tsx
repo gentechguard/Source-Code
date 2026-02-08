@@ -33,7 +33,7 @@ function WarrantyPageContent() {
 
 
     return (
-        <main className="min-h-[100dvh] bg-dark-bg text-white selection:bg-primary-blue selection:text-white">
+        <main className="min-h-[100dvh] bg-dark-bg text-white selection:bg-primary-blue selection:text-white" style={{ background: '#050505', color: '#fff' }}>
             <Header />
 
             {/* HERO SECTION */}

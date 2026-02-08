@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function GalleryPage() {
   return (
-    <main className="relative min-h-screen bg-black overflow-hidden">
+    <main className="relative min-h-screen bg-black overflow-hidden" style={{ background: '#000', color: '#fff' }}>
       <Header />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-900/20 via-black to-black pointer-events-none" />
       <GalleryHero />

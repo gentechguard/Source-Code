@@ -65,8 +65,6 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
             }
 
             if (productsData) {
-                console.log('Raw data from Supabase:', productsData.map(p => ({ name: p.name, sort_order: p.sort_order })));
-                
                 const mapped = productsData.map((p: any) => ({
                     id: String(p.id),
                     name: p.name,
@@ -78,7 +76,6 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
                     sort_order: p.sort_order ?? 999,
                 }));
                 
-                console.log('Mapped products:', mapped.map(p => ({ name: p.name, sort_order: p.sort_order })));
                 setProducts(mapped);
             }
 
