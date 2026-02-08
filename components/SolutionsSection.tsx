@@ -65,7 +65,7 @@ export default function SolutionsSection() {
   const [selectedParent, setSelectedParent] = useState<Product | null>(null);
   const [activeProduct, setActiveProduct] = useState<Product | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [expandedMobileIndex, setExpandedMobileIndex] = useState<number | null>(0);
+  const [expandedMobileIndex, setExpandedMobileIndex] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
@@ -93,12 +93,9 @@ export default function SolutionsSection() {
     : products.filter(p => !p.parent_id);
 
   useEffect(() => {
-    if (isMobile && displayedProducts.length > 0) {
-      setExpandedMobileIndex(0);
-    } else if (!isMobile) {
-      setExpandedMobileIndex(null);
-    }
-  }, [selectedParent, isMobile, displayedProducts.length]);
+    // Reset expanded state when navigating between parent/children or switching views
+    setExpandedMobileIndex(null);
+  }, [selectedParent, isMobile]);
 
   // Synchronized background - vertical on mobile, horizontal on desktop
   const syncBackgrounds = useCallback(() => {
@@ -117,15 +114,16 @@ export default function SolutionsSection() {
       if (!card) return;
       const cardRect = card.getBoundingClientRect();
 
-      card.style.backgroundSize = `${containerRect.width}px ${containerRect.height}px`;
-
       if (mobile) {
-        // Vertical sync for mobile accordion
+        // Vertical sync for mobile accordion - cover-like sizing
+        // Container is tall & narrow, so size by height to ensure full coverage
+        card.style.backgroundSize = `auto ${containerRect.height}px`;
         const yOffset = containerRect.top - cardRect.top;
         card.style.backgroundPositionX = 'center';
         card.style.backgroundPositionY = `${yOffset}px`;
       } else {
         // Horizontal sync for desktop
+        card.style.backgroundSize = `${containerRect.width}px ${containerRect.height}px`;
         const xOffset = containerRect.left - cardRect.left;
         card.style.backgroundPositionX = `${xOffset}px`;
         card.style.backgroundPositionY = 'center';
@@ -237,16 +235,16 @@ export default function SolutionsSection() {
     <section id="product-showcase" className="bg-black py-20 overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="mb-8 h-16 flex items-center justify-between relative">
+        <div className="mb-8 min-h-[4rem] relative">
           <AnimatePresence mode="wait">
             {selectedParent ? (
               <motion.div
-                key="back-button"
+                key="back-header"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
-                className="flex items-center"
+                className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
               >
                 <button
                   onClick={handleBackClick}
@@ -255,23 +253,7 @@ export default function SolutionsSection() {
                   <ChevronLeft className="group-hover:-translate-x-1 transition-transform duration-300" size={20} />
                   <span className="uppercase tracking-widest text-sm font-bold">Back to All Solutions</span>
                 </button>
-              </motion.div>
-            ) : (
-              <div key="spacer" className="w-px" />
-            )}
-          </AnimatePresence>
-
-          <AnimatePresence mode="wait">
-            {selectedParent ? (
-              <motion.div
-                key="children-title"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                className="absolute right-0 top-0 bottom-0 flex items-center"
-              >
-                <div className="text-right">
+                <div className="text-left md:text-right">
                   <span className="text-blue-400 text-xs tracking-widest uppercase block mb-1">
                     {selectedParent.name} Variants
                   </span>
@@ -287,10 +269,10 @@ export default function SolutionsSection() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="absolute inset-0 flex flex-col items-center justify-center text-center"
+                className="flex flex-col items-center justify-center text-center min-h-[4rem]"
               >
                 <h2 className="text-3xl md:text-5xl font-black text-white mb-4 uppercase tracking-tight">
-                  Our <span className="text-blue-400">PPF</span> Solution Range
+                  Our <span className="text-blue-400">Products</span> Range
                 </h2>
                 <p className="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
                   Click any product to explore specific variants tailored to your needs
@@ -303,7 +285,7 @@ export default function SolutionsSection() {
         {/* Products Grid */}
         <div
           ref={containerRef}
-          className="relative z-10 flex flex-col md:flex-row gap-4 mx-0 md:mx-4 lg:mx-20 my-0 md:my-8 pt-6 pb-20 md:pt-0 md:pb-0 aspect-[9/16] md:aspect-video rounded-2xl overflow-hidden"
+          className="relative z-10 flex flex-col md:flex-row gap-3 mx-0 md:mx-4 lg:mx-20 my-0 md:my-8 md:pt-0 md:pb-0 h-[70vh] md:h-auto md:aspect-video rounded-2xl overflow-hidden"
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -372,8 +354,8 @@ export default function SolutionsSection() {
 
                     {/* Mobile Layout - Expanded: Content at bottom */}
                     <div
-                      className="md:hidden absolute inset-0 z-20 flex flex-col justify-end p-5 transition-opacity duration-500"
-                      style={{ opacity: isExpanded ? 1 : 0, pointerEvents: isExpanded ? 'auto' : 'none' }}
+                      className="md:hidden absolute inset-0 z-20 flex flex-col justify-end p-5 transition-opacity duration-500 pointer-events-none"
+                      style={{ opacity: isExpanded ? 1 : 0 }}
                     >
                       <motion.div
                         initial={false}
@@ -386,22 +368,9 @@ export default function SolutionsSection() {
                         <h3 className="text-lg font-black tracking-wider text-white uppercase mb-1">
                           {product.name}
                         </h3>
-                        <p className="text-white/70 text-sm mb-3 line-clamp-2">
+                        <p className="text-white/70 text-sm line-clamp-2">
                           {product.shortDesc || 'Premium Protection Solution'}
                         </p>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (hasChildren) {
-                              navigateToChildren(product);
-                            } else {
-                              setActiveProduct(product);
-                            }
-                          }}
-                          className="border border-blue-400 text-blue-400 font-bold tracking-widest uppercase text-xs px-5 py-2 hover:bg-blue-400 hover:text-white transition-colors duration-300 touch-manipulation"
-                        >
-                          {hasChildren ? 'Explore Options' : 'View Details'}
-                        </button>
                       </motion.div>
                     </div>
 

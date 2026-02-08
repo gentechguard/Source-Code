@@ -12,28 +12,28 @@ const carouselImages = [
     {
         id: "hero-1",
         url: "/assets/mobile-hero-1.png",
-        title: "GEN 4 PPF",
-        subtitle: "Reliable TPU Gloss Protection"
+        title: "PPF",
+        subtitle: "Premium Paint Protection Films with self-healing technology and high-gloss finish"
     }, {
         id: "hero-2",
         url: "/assets/mobile-hero-2.png",
-        title: "GEN 5 PPF",
-        subtitle: "Engineered for Hot Climate Performance"
+        title: "SUN FILM",
+        subtitle: "Ultra-Premium Automotive Sun Films for UV and heat protection"
     }, {
         id: "hero-3",
         url: "/assets/mobile-hero-3.png",
-        title: "GEN PRO 6",
-        subtitle: "High-clarity TPU with hydrophobic properties"
+        title: "GRAPHENE COATING",
+        subtitle: "Advanced Nano Protection Technology for enhanced gloss and surface protection"
     }, {
         id: "hero-4",
         url: "/assets/mobile-hero-4.png",
-        title: "GEN ULTRA PRO 8",
-        subtitle: "Advanced instant self-healing TPU"
+        title: "PERFUMES",
+        subtitle: "Luxurious Car Air Fresheners with premium fragrances"
     }, {
         id: "hero-5",
         url: "/assets/mobile-hero-5.png",
-        title: "GEN MATTE 5",
-        subtitle: "Stealth Matte Finish with TPU Protection"
+        title: "DETAILING PRODUCTS",
+        subtitle: "Professional Grade Detailing and Cleaning Solutions"
     }
 ];
 
