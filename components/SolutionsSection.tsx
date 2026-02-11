@@ -162,14 +162,12 @@ export default function SolutionsSection() {
     const hasChildren = products.some(p => p.parent_id === product.id);
 
     if (isClient && isMobile) {
-      if (expandedMobileIndex === index) {
-        if (hasChildren) {
-          navigateToChildren(product);
-        } else {
-          setActiveProduct(product);
-        }
+      // Single click: expand the card and navigate immediately
+      setExpandedMobileIndex(index);
+      if (hasChildren) {
+        navigateToChildren(product);
       } else {
-        setExpandedMobileIndex(index);
+        setActiveProduct(product);
       }
       return;
     }
