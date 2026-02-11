@@ -48,10 +48,10 @@ export default function ContactForm() {
                             />
                         </div>
                         <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4 shadow-xl drop-shadow-2xl">
-                            CONTACT <span className="text-primary-blue">US</span>
+                            BECOME A GENTECH GUARD™ <span className="text-primary-blue">PARTNER</span>
                         </h2>
                         <p className="text-blue-200/80 text-lg font-bold tracking-widest uppercase">
-                            24/7 Support & Assistance
+                            Grow With a Premium Automotive Protection Brand
                         </p>
                     </motion.div>
                 </div>
@@ -76,13 +76,13 @@ export default function ContactForm() {
                                     </span>
                                 </h3>
                                 <p className="text-white/70 text-lg font-medium mb-8 max-w-md">
-                                    Join the fastest growing network of premium automotive protection studios in India.
+                                    Join our expanding dealer network and offer your customers globally-inspired automotive protection solutions backed by quality, training, and support.
                                 </p>
 
                                 <div className="space-y-4 mb-10">
-                                    <DealerBenefit text="High-Margin Revenue Opportunities" />
-                                    <DealerBenefit text="Exclusive Marketing & Support Resources" />
-                                    <DealerBenefit text="Priority Access to Premium Products" />
+                                    <DealerBenefit text="Quality Products & Training Support" />
+                                    <DealerBenefit text="Marketing & Technical Assistance" />
+                                    <DealerBenefit text="Growing Nationwide Network" />
                                 </div>
 
                                 <a

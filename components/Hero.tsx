@@ -110,19 +110,24 @@ export default function Hero() {
                         </div>
 
                         {/* Main Heading - Responsive text sizing */}
-                        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black leading-tight mb-4 sm:mb-6">
-                            GENTECH GUARD <br className="hidden sm:block" />
+                        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black leading-tight mb-2 sm:mb-3">
+                            PREMIUM AUTOMOTIVE <br className="hidden sm:block" />
                             <span className="blue-text tracking-wider">
-                                ADVANCED <br className="sm:hidden" />
+                                SURFACE <br className="sm:hidden" />
                                 <span className="hidden sm:inline"> </span>
-                                PROTECTION FILMS
+                                PROTECTION
                             </span>
                         </h1>
 
+                        {/* Tagline */}
+                        <p className="text-sm sm:text-base md:text-lg text-white/70 font-bold tracking-wide mb-4 sm:mb-6 italic">
+                            Engineered to protect. Designed to impress.
+                        </p>
+
                         {/* Description - Hidden on mobile for cleaner look */}
                         <p className="hidden sm:block text-sm sm:text-base md:text-lg text-text-grey max-w-xl mb-6 sm:mb-8 font-medium leading-relaxed">
-                            Step into the future of car care. Our international-grade Aliphatic TPU
-                            Film provides invisible, self-healing armor for your vehicle.
+                            Gentech Guard™ delivers advanced automotive protection solutions that preserve
+                            your vehicle&apos;s finish against stone chips, scratches, UV damage, and harsh environmental conditions.
                         </p>
 
                         {/* CTA Buttons - Stack on mobile, row on larger screens */}
@@ -135,10 +140,10 @@ export default function Hero() {
                                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                             </Link>
                             <Link
-                                href="/#solutions"
+                                href="/#product-showcase"
                                 className="border border-white/20 hover:border-primary-blue text-white px-6 sm:px-8 py-3 rounded-full font-black text-sm sm:text-base transition-all duration-200 backdrop-blur-sm flex items-center justify-center touch-manipulation active:scale-95"
                             >
-                                EXPLORE TECH
+                                EXPLORE PRODUCTS
                             </Link>
                         </div>
                     </motion.div>
@@ -156,7 +161,7 @@ export default function Hero() {
                             </div>
                             <div>
                                 <h3 className="font-bold text-xs lg:text-sm tracking-widest">SELF-HEALING</h3>
-                                <p className="text-[10px] lg:text-xs text-text-grey uppercase font-bold tracking-tighter">Surface Tech</p>
+                                <p className="text-[10px] lg:text-xs text-text-grey uppercase font-bold tracking-tighter">Scratch Recovery</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3 lg:gap-4">
@@ -165,7 +170,7 @@ export default function Hero() {
                             </div>
                             <div>
                                 <h3 className="font-bold text-xs lg:text-sm tracking-widest">HYDROPHOBIC</h3>
-                                <p className="text-[10px] lg:text-xs text-text-grey uppercase font-bold tracking-tighter">High Clarity</p>
+                                <p className="text-[10px] lg:text-xs text-text-grey uppercase font-bold tracking-tighter">Easy Maintenance</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3 lg:gap-4">
@@ -173,8 +178,8 @@ export default function Hero() {
                                 <Zap size={20} className="lg:w-6 lg:h-6" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-xs lg:text-sm tracking-widest">ANTI-YELLOW</h3>
-                                <p className="text-[10px] lg:text-xs text-text-grey uppercase font-bold tracking-tighter">10 Year Warranty</p>
+                                <h3 className="font-bold text-xs lg:text-sm tracking-widest">NON-YELLOWING</h3>
+                                <p className="text-[10px] lg:text-xs text-text-grey uppercase font-bold tracking-tighter">High Clarity</p>
                             </div>
                         </div>
                     </motion.div>

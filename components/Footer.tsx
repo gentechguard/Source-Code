@@ -49,7 +49,7 @@ export default function Footer() {
                             </div>
                         </Link>
                         <p className="text-text-grey text-sm font-medium leading-relaxed mb-6 max-w-sm">
-                            Next-generation automotive protection solutions backed by industry expertise and advanced Aliphatic TPU technology.
+                            Premium Automotive Protection Solutions
                         </p>
 
                         {/* Social Icons */}
@@ -152,10 +152,15 @@ export default function Footer() {
                 </div>
 
                 <div className="py-4 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <p className="text-text-grey/60 text-xs font-bold uppercase tracking-widest flex items-center gap-2">
-                        <Zap size={12} className="text-primary-blue" />
-                        {config.company.copyright}
-                    </p>
+                    <div className="flex flex-col items-center md:items-start gap-1">
+                        <p className="text-text-grey/60 text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+                            <Zap size={12} className="text-primary-blue" />
+                            {config.company.copyright}
+                        </p>
+                        <p className="text-text-grey/40 text-[10px] font-medium tracking-wide">
+                            {config.company.trademarkNotice || "™ denotes an unregistered trademark. Registration pending."}
+                        </p>
+                    </div>
                     <div className="flex gap-8">
                         <span className="text-text-grey/40 text-xs font-bold uppercase tracking-widest cursor-default">Privacy Policy</span>
                         <span className="text-text-grey/40 text-xs font-bold uppercase tracking-widest cursor-default">Terms of Service</span>

@@ -3,47 +3,31 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
-import { ShieldCheck, ClipboardCheck, Brush, Scissors, Droplets, CheckCircle2, CloudLightning, Award, Zap, Ban, Paintbrush } from "lucide-react";
+import { ShieldCheck, Brush, Droplets, CheckCircle2, Award, Zap, Paintbrush } from "lucide-react";
 
 const steps = [
     {
         id: "01",
-        title: "Surgical Prep",
-        subtitle: "Inspection & Decontamination",
-        details: ["Vehicle inspection for scratches", "Foam wash & iron removal", "Clay bar surface treatment"],
+        title: "Surface Preparation",
+        subtitle: "Washing, Decontamination & Inspection",
+        details: ["Thorough vehicle washing", "Surface decontamination", "Multi-point inspection to ensure flawless product performance"],
         image: "/assets/steps/prep.png",
         icon: Brush
     },
     {
         id: "02",
-        title: "Digital Precision",
-        subtitle: "Plotter Cutting & Alignment",
-        details: ["Tailor made pattern cutting", "OEM level fit", "Precise panel alignment", "Edge matching and curves"],
-        image: "/assets/steps/cutting.png",
-        icon: Scissors
-    },
-    {
-        id: "03",
-        title: "The Application",
-        subtitle: "Active Bonding Process",
-        details: ["Slip solution positioning", "Air & water removal", "Zero-stretch fitment"],
+        title: "Precision Installation",
+        subtitle: "Expert Application & Alignment",
+        details: ["Trained professional application", "Advanced tools for perfect alignment", "Precision fit and finish"],
         image: "/assets/steps/application.png",
         icon: Droplets
     },
     {
-        id: "04",
-        title: "Master Craft",
-        subtitle: "Edge Wrapping & Heat Cure",
-        details: ["Seamless edge wrapping", "Thermal bonding (Heat Gun)", "Initial 24-48h curing process"],
+        id: "03",
+        title: "Curing & Quality Check",
+        subtitle: "Final Inspection & Delivery",
+        details: ["Final curing process", "Edge sealing", "Multi-point quality inspection before delivery"],
         image: "/assets/steps/finishing.png",
-        icon: CloudLightning
-    },
-    {
-        id: "05",
-        title: "Digital Activation",
-        subtitle: "Warranty & Guidance",
-        details: ["E-Warranty registration", "Digital certificate issuance", "After-care Do's & Don'ts"],
-        image: "/assets/steps/prep.png", // Reusing prep or can be a generic icon
         icon: ShieldCheck
     }
 ];
@@ -72,7 +56,7 @@ export default function ProcessSection() {
                     whileInView={{ opacity: 1, y: 0 }}
                     className="text-primary-blue font-black tracking-[0.3em] uppercase text-xs mb-4 inline-block"
                 >
-                    The Installation Art
+                    Our Process
                 </motion.span>
                 <motion.h2
                     initial={{ opacity: 0, y: 10 }}
@@ -80,7 +64,7 @@ export default function ProcessSection() {
                     transition={{ delay: 0.1 }}
                     className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter"
                 >
-                    STEP-BY-STEP <span className="blue-text italic text-3xl md:text-7xl">PRECISION</span>
+                    PRECISION. EXPERTISE. <span className="blue-text italic text-3xl md:text-7xl">QUALITY CONTROL</span>
                 </motion.h2>
             </div>
 
@@ -165,30 +149,30 @@ export default function ProcessSection() {
                 >
                     <span className="hidden text-primary-blue font-black tracking-[0.4em] uppercase text-[10px] mb-4 block">Certified Standards</span>
                     <h4 className="text-xl md:text-2xl font-black text-white uppercase tracking-tighter">
-                        WHY <span className="blue-text">PROFESSIONAL</span> INSTALLATION MATTERS
+                        WHY PROFESSIONALS CHOOSE <span className="blue-text">GENTECH GUARD™</span>
                     </h4>
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {[
                         {
-                            title: "Micro-Precision Finish",
-                            desc: "Edge-to-edge alignment with zero contamination or stretch marks.",
-                            icon: Paintbrush
-                        },
-                        {
-                            title: "Long-term Durability",
-                            desc: "Industrial heat-sealed edges prevent lifting or peeling over time.",
-                            icon: Zap
-                        },
-                        {
-                            title: "Authorized Warranty",
-                            desc: "Only certified installers can activate your 10-year digital warranty.",
+                            title: "Consistent Quality",
+                            desc: "Premium products with consistent quality across every application.",
                             icon: Award
                         },
                         {
-                            title: "Paint Integrity Safe",
-                            desc: "Advanced steam-removal techniques ensure 100% paint preservation.",
+                            title: "Installer Support",
+                            desc: "Dedicated installer-focused support and training programs.",
+                            icon: Paintbrush
+                        },
+                        {
+                            title: "Dealer Programs",
+                            desc: "Structured dealer programs with marketing and technical assistance.",
+                            icon: Zap
+                        },
+                        {
+                            title: "Growing Network",
+                            desc: "Be part of a growing nationwide network of premium protection studios.",
                             icon: ShieldCheck
                         }
                     ].map((benefit, i) => (

@@ -32,11 +32,14 @@ export default function WarrantySection() {
             <div className="relative z-10 w-full h-full container mx-auto p-4 text-center">
                 <div className="inline-block relative mb-4">
                     <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4 shadow-xl drop-shadow-2xl">
-                        E-<span className="text-primary-blue">WARRANTY</span>
+                        E-<span className="text-primary-blue">WARRANTY</span> SYSTEM
                     </h2>
                 </div>
-                <p className="text-blue-200/80 text-md md:text-lg font-bold tracking-widest uppercase">
-                    All of our products are backed by a warranty. <br /> Check your warranty status or register your new product installation.
+                <p className="text-blue-200/80 text-lg md:text-xl font-bold tracking-wider mb-2">
+                    Verified Protection You Can Trust
+                </p>
+                <p className="text-blue-200/60 text-sm md:text-base font-medium max-w-2xl mx-auto leading-relaxed">
+                    Every eligible Gentech Guard™ product is supported by a structured E-Warranty system, ensuring authenticity, traceability, and peace of mind for customers and dealers.
                 </p>
                 <a href="/warranty" className="group">
                     <GlassSurface
