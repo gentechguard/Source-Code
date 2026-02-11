@@ -174,31 +174,31 @@ export function IndiaMapComponent({
         )}
       </AnimatePresence>
 
-      {/* Map Legend */}
+      {/* Map Legend — below map on mobile, overlay on desktop */}
       <motion.div
-        className="absolute bottom-4 left-4 lg:bottom-6 lg:left-6 flex flex-col gap-2 lg:gap-3 p-3 lg:p-4 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 z-10"
+        className="relative mx-4 -mt-2 mb-4 flex flex-wrap gap-x-4 gap-y-1.5 p-3 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 z-10 lg:absolute lg:bottom-6 lg:left-6 lg:mx-0 lg:mb-0 lg:mt-0 lg:flex-col lg:gap-2 lg:p-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.5 }}
       >
-        <div className="text-[10px] lg:text-xs font-semibold text-white/60 uppercase tracking-wider mb-0.5 lg:mb-1">
+        <div className="w-full text-[10px] lg:text-xs font-semibold text-white/60 uppercase tracking-wider mb-0.5 lg:mb-1">
           Dealer Network
         </div>
         <div className="flex items-center gap-2">
           <div className="w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full bg-[#00A8FF] shadow-[0_0_10px_rgba(0,168,255,0.8)]" />
-          <span className="text-xs lg:text-sm text-white/80">Premium Dealer</span>
+          <span className="text-[10px] lg:text-sm text-white/80">Premium</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
-          <span className="text-xs lg:text-sm text-white/80">Standard Dealer</span>
+          <span className="text-[10px] lg:text-sm text-white/80">Standard</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-[#F59E0B] shadow-[0_0_8px_rgba(245,158,11,0.6)]" />
-          <span className="text-xs lg:text-sm text-white/80">Coming Soon</span>
+          <span className="text-[10px] lg:text-sm text-white/80">Coming Soon</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-[#1E293B] border border-white/20" />
-          <span className="text-xs lg:text-sm text-white/80">No Dealers Yet</span>
+          <span className="text-[10px] lg:text-sm text-white/80">No Dealers</span>
         </div>
       </motion.div>
 
