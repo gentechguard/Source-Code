@@ -6,43 +6,43 @@ import Link from "next/link";
 
 const coreUSPs = [
     {
-        title: "Self-Healing",
-        description: "Aliphatic TPU surface heals swirl marks and light scratches with heat.",
+        title: "Self-Healing Technology",
+        description: "Light scratches disappear with heat activation, keeping your vehicle looking flawless.",
         icon: Flame,
         color: "from-blue-600 to-cyan-500",
         size: "small"
     },
     {
-        title: "Non-Yellowing",
-        description: "Zero oxidation technology prevents film discoloration over time.",
+        title: "Non-Yellowing Materials",
+        description: "High-clarity materials that maintain crystal-clear transparency over time.",
         icon: Sun,
         color: "from-blue-700 to-indigo-600",
         size: "small"
     },
     {
-        title: "Mirror-Like Gloss",
-        description: "High-transparency film that enhances paint depth and clarity.",
-        icon: Diamond,
-        color: "from-cyan-600 to-blue-500",
-        size: "small"
-    },
-    {
-        title: "High Impact Resistance",
-        description: "Maximum energy absorption against stone chips and road debris.",
-        icon: Shield,
-        color: "from-indigo-700 to-blue-800",
-        size: "small"
-    },
-    {
-        title: "Anti-Fouling",
-        description: "Hyper-hydrophobic surface repels water, dust, and grime.",
+        title: "Hyperhydrophobic Surface",
+        description: "Advanced water-repellent surface for easy maintenance and effortless cleaning.",
         icon: Waves,
         color: "from-blue-500 to-sky-400",
         size: "small"
     },
     {
-        title: "Max Stretchability",
-        description: "High-elongation properties for a perfect edge wrap and factory finish.",
+        title: "Built for Indian Conditions",
+        description: "Designed specifically for Indian road and climate conditions — heat, dust, and harsh UV.",
+        icon: Shield,
+        color: "from-indigo-700 to-blue-800",
+        size: "small"
+    },
+    {
+        title: "Professional Installation",
+        description: "Recommended professional installation for optimal performance and warranty coverage.",
+        icon: Diamond,
+        color: "from-cyan-600 to-blue-500",
+        size: "small"
+    },
+    {
+        title: "Long-Term Durability",
+        description: "Engineered for lasting clarity, durability, and performance without compromising your vehicle's beauty.",
         icon: Maximize,
         color: "from-blue-800 to-indigo-900",
         size: "small"
@@ -50,15 +50,15 @@ const coreUSPs = [
 ];
 
 const technicalSpecs = [
-    "Crystal Clarity",
-    "Anti-Scratch Surface",
-    "Smooth Satin & Matte Options",
+    "Self-Healing Technology",
+    "Non-Yellowing High-Clarity",
+    "Hyperhydrophobic Surface",
+    "Stone-Chip Resistance",
+    "UV & Heat Protection",
+    "Chemical Resistant Topcoat",
     "Anti-Oxidation Layer",
-    "Advanced UV-Rejection",
     "Acid Rain Resistance",
     "Swirl Resistance",
-    "Alkali Resistance",
-    "Chemical Resistant Topcoat",
     "Optimized Adhesion"
 ];
 
@@ -80,7 +80,7 @@ export default function WhySection() {
                         viewport={{ once: true }}
                         className="text-primary-blue font-black tracking-[0.15em] sm:tracking-[0.2em] uppercase text-xs sm:text-sm mb-4 inline-block"
                     >
-                        Engineering Excellence
+                        Why Gentech Guard™
                     </motion.span>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
@@ -89,7 +89,7 @@ export default function WhySection() {
                         transition={{ delay: 0.1 }}
                         className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-6 uppercase tracking-tighter"
                     >
-                        WHY <span className="blue-text font-black uppercase text-2xl sm:text-3xl md:text-5xl">GENTECH GUARD</span>?
+                        PROTECTION THAT GOES <span className="blue-text font-black uppercase text-2xl sm:text-3xl md:text-5xl">BEYOND THE SURFACE</span>
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0 }}
@@ -98,7 +98,7 @@ export default function WhySection() {
                         transition={{ delay: 0.2 }}
                         className="text-text-grey text-base sm:text-lg font-medium leading-relaxed"
                     >
-                        Our films are a precisely engineered multi-layer defense systems designed for the ultimate automotive preservation.
+                        Our products are developed using advanced material science to deliver long-lasting clarity, durability, and performance—without compromising your vehicle&apos;s original beauty.
                     </motion.p>
                 </div>
 
@@ -160,7 +160,7 @@ export default function WhySection() {
                             <div className="mt-12 p-6 rounded-2xl bg-primary-blue/10 border border-primary-blue/20">
                                 <p className="text-[10px] font-black text-primary-blue uppercase tracking-widest mb-2">Verified Standard</p>
                                 <p className="text-xs text-white/50 font-medium">
-                                    All Gentech Guard® films undergo rigorous ASTM testing for clarity and durability.
+                                    All Gentech Guard™ products undergo rigorous testing for clarity and durability.
                                 </p>
                             </div>
                         </motion.div>

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, X, ShieldCheck, Zap } from 'lucide-react';
 import { useGlobalStore, Product } from '@/context/GlobalStore';
 import Image from 'next/image';
+import { useBackButton } from '@/hooks/useBackButton';
 
 const getProductImageUrl = (imagePath?: string | null) => {
   if (!imagePath) return '/assets/gentech-tall.png';
@@ -68,6 +69,9 @@ export default function SolutionsSection() {
   const [expandedMobileIndex, setExpandedMobileIndex] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
+
+  // Browser back button closes the product detail modal
+  useBackButton(!!activeProduct, () => setActiveProduct(null));
 
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -162,14 +166,12 @@ export default function SolutionsSection() {
     const hasChildren = products.some(p => p.parent_id === product.id);
 
     if (isClient && isMobile) {
-      if (expandedMobileIndex === index) {
-        if (hasChildren) {
-          navigateToChildren(product);
-        } else {
-          setActiveProduct(product);
-        }
+      // Single click: expand the card and navigate immediately
+      setExpandedMobileIndex(index);
+      if (hasChildren) {
+        navigateToChildren(product);
       } else {
-        setExpandedMobileIndex(index);
+        setActiveProduct(product);
       }
       return;
     }
@@ -272,7 +274,7 @@ export default function SolutionsSection() {
                 className="flex flex-col items-center justify-center text-center min-h-[4rem]"
               >
                 <h2 className="text-3xl md:text-5xl font-black text-white mb-4 uppercase tracking-tight">
-                  Our <span className="text-blue-400">Products</span> Range
+                  Complete Vehicle <span className="text-blue-400">Protection</span> Solutions
                 </h2>
                 <p className="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
                   Click any product to explore specific variants tailored to your needs

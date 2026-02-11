@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import dynamic from 'next/dynamic';
+import { useBackButton } from '@/hooks/useBackButton';
 
 // Dynamic import to prevent hydration issues
 const EnquiryDropdown = dynamic(() => import('@/components/enquiry/EnquiryDropdown'), { ssr: false });
@@ -22,8 +23,12 @@ export default function Header() {
     const [activeForm, setActiveForm] = useState<'customer' | 'dealer' | 'distributor' | null>(null);
     const [showModal, setShowModal] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
+    const [mobileEnquiryOpen, setMobileEnquiryOpen] = useState(false);
     const pathname = usePathname();
     const isAboutPage = pathname === "/about";
+
+    // Browser back button closes the mobile menu
+    useBackButton(isMenuOpen, () => setIsMenuOpen(false));
 
     useEffect(() => {
         setIsMounted(true);
@@ -43,12 +48,13 @@ export default function Header() {
         }
     };
 
-    // Lock body scroll when mobile menu is open
+    // Lock body scroll when mobile menu is open, reset enquiry toggle on close
     useEffect(() => {
         if (isMenuOpen) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = '';
+            setMobileEnquiryOpen(false);
         }
         return () => { document.body.style.overflow = ''; };
     }, [isMenuOpen]);
@@ -142,50 +148,75 @@ export default function Header() {
                             ))}
                         </nav>
 
-                        {/* Mobile Enquiry Options */}
+                        {/* Mobile Enquiry Toggle */}
                         <motion.div
-                            className="pt-6 mt-4"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.25, delay: 0.2 }}
+                            className="mt-4"
+                            initial={{ opacity: 0, x: -16 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.25, delay: 0.04 * navLinks.length, ease: [0.25, 0.1, 0.25, 1] }}
                         >
-                            <p className="text-white/40 text-xs uppercase tracking-widest mb-4 font-black">Enquiries</p>
-                            <div className="space-y-3">
-                                <button
-                                    onClick={() => {
-                                        setIsMenuOpen(false);
-                                        handleSelectOption('customer');
-                                    }}
-                                    className="w-full bg-violet-600/20 border border-violet-500/30 text-violet-300 py-4 rounded-xl text-center font-bold uppercase tracking-wider hover:bg-violet-600/30 transition-colors"
-                                >
-                                    PPF/Sun Film/Graphene Enquiry
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        setIsMenuOpen(false);
-                                        handleSelectOption('dealer');
-                                    }}
-                                    className="w-full bg-amber-500/20 border border-amber-500/30 text-amber-300 py-4 rounded-xl text-center font-bold uppercase tracking-wider hover:bg-amber-500/30 transition-colors"
-                                >
-                                    Become a Dealer
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        setIsMenuOpen(false);
-                                        handleSelectOption('distributor');
-                                    }}
-                                    className="w-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 py-4 rounded-xl text-center font-bold uppercase tracking-wider hover:bg-emerald-500/30 transition-colors"
-                                >
-                                    Become a Distributor
-                                </button>
-                                <Link
-                                    href="/our-network"
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="w-full bg-blue-500/20 border border-blue-500/30 text-blue-300 py-4 rounded-xl text-center font-bold uppercase tracking-wider hover:bg-blue-500/30 transition-colors block"
-                                >
-                                    Our Network
-                                </Link>
-                            </div>
+                            <button
+                                onClick={() => setMobileEnquiryOpen(!mobileEnquiryOpen)}
+                                className="w-full text-lg py-3.5 font-bold uppercase tracking-widest text-white/80 hover:text-primary-blue flex items-center justify-between group border-b border-white/5"
+                            >
+                                Enquiry
+                                <ChevronRight
+                                    size={20}
+                                    className={`text-primary-blue opacity-50 group-hover:opacity-100 transition-all duration-300 ${mobileEnquiryOpen ? 'rotate-90' : ''}`}
+                                />
+                            </button>
+
+                            <AnimatePresence>
+                                {mobileEnquiryOpen && (
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: 'auto', opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.25 }}
+                                        className="overflow-hidden"
+                                    >
+                                        <div className="space-y-3 pt-4 pb-2">
+                                            <button
+                                                onClick={() => {
+                                                    setIsMenuOpen(false);
+                                                    setMobileEnquiryOpen(false);
+                                                    handleSelectOption('customer');
+                                                }}
+                                                className="w-full bg-violet-600/20 border border-violet-500/30 text-violet-300 py-3.5 rounded-xl text-center font-bold uppercase tracking-wider text-sm hover:bg-violet-600/30 transition-colors"
+                                            >
+                                                PPF/Sun Film/Graphene Enquiry
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setIsMenuOpen(false);
+                                                    setMobileEnquiryOpen(false);
+                                                    handleSelectOption('dealer');
+                                                }}
+                                                className="w-full bg-amber-500/20 border border-amber-500/30 text-amber-300 py-3.5 rounded-xl text-center font-bold uppercase tracking-wider text-sm hover:bg-amber-500/30 transition-colors"
+                                            >
+                                                Become a Dealer
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setIsMenuOpen(false);
+                                                    setMobileEnquiryOpen(false);
+                                                    handleSelectOption('distributor');
+                                                }}
+                                                className="w-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 py-3.5 rounded-xl text-center font-bold uppercase tracking-wider text-sm hover:bg-emerald-500/30 transition-colors"
+                                            >
+                                                Become a Distributor
+                                            </button>
+                                            <Link
+                                                href="/our-network"
+                                                onClick={() => { setIsMenuOpen(false); setMobileEnquiryOpen(false); }}
+                                                className="w-full bg-blue-500/20 border border-blue-500/30 text-blue-300 py-3.5 rounded-xl text-center font-bold uppercase tracking-wider text-sm hover:bg-blue-500/30 transition-colors block"
+                                            >
+                                                Our Network
+                                            </Link>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </motion.div>
                     </motion.div>
                 )}

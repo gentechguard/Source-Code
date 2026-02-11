@@ -10,6 +10,7 @@ import jsPDF from "jspdf";
 import * as Dialog from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import GlassSurface from "./GlassSurface";
+import { useBackButton } from '@/hooks/useBackButton';
 
 // Initialize Supabase Client
 const supabase = createClient(
@@ -40,6 +41,9 @@ export default function WarrantyChecker() {
     const [productDetails, setProductDetails] = useState<any>(null);
     const [error, setError] = useState("");
     const [showCertificate, setShowCertificate] = useState(false);
+
+    // Browser back button closes the certificate modal
+    useBackButton(showCertificate, () => setShowCertificate(false));
 
     // Ref for hidden certificate to capture
     const hiddenCertRef = useRef<HTMLDivElement>(null);

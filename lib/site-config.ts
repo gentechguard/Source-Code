@@ -2,7 +2,8 @@ export const siteConfig = {
     company: {
         name: "Gentech Guard",
         legalName: "Gentech Guard Pvt Ltd",
-        copyright: "© 2025 Gentech Guard®. All Rights Reserved."
+        copyright: "© 2025 Gentech Guard™. All Rights Reserved.",
+        trademarkNotice: "™ denotes an unregistered trademark. Registration pending."
     },
     contact: {
         phone: {
@@ -44,7 +45,7 @@ export const siteConfig = {
     ],
     metadata: {
         title: "Gentech Guard | Premium Paint Protection Film",
-        description: "Next-generation automotive protection solutions backed by industry expertise and advanced Aliphatic TPU technology."
+        description: "Premium Automotive Protection Solutions"
     }
 };
 
