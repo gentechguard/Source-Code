@@ -9,13 +9,11 @@ import { useEffect, useRef } from 'react';
  * When closed via UI (X button, backdrop), pops the history state cleanly.
  */
 export function useBackButton(isOpen: boolean, onClose: () => void) {
-  const isOpenRef = useRef(isOpen);
   const onCloseRef = useRef(onClose);
   const pushedRef = useRef(false);
 
   // Keep refs current
   onCloseRef.current = onClose;
-  isOpenRef.current = isOpen;
 
   useEffect(() => {
     if (isOpen) {
@@ -25,7 +23,7 @@ export function useBackButton(isOpen: boolean, onClose: () => void) {
 
       const handlePopState = () => {
         // Browser back was pressed — close the modal instead of navigating
-        if (isOpenRef.current) {
+        if (pushedRef.current) {
           pushedRef.current = false;
           onCloseRef.current();
         }
@@ -34,10 +32,11 @@ export function useBackButton(isOpen: boolean, onClose: () => void) {
       window.addEventListener('popstate', handlePopState);
       return () => {
         window.removeEventListener('popstate', handlePopState);
-        // If modal was closed via UI (not back button), pop the extra history entry
+        // If modal was closed via UI (not back button), pop the extra history entry.
+        // Use setTimeout to avoid triggering React state updates during commit phase.
         if (pushedRef.current) {
           pushedRef.current = false;
-          window.history.back();
+          setTimeout(() => window.history.back(), 0);
         }
       };
     }
