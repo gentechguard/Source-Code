@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { GalleryImage } from '@/types/gallery';
 import { X, ChevronLeft, ChevronRight, Download } from 'lucide-react';
+import { useBackButton } from '@/hooks/useBackButton';
 
 interface ImageLightboxProps {
   image: GalleryImage | null;
@@ -24,6 +25,9 @@ export default function ImageLightbox({
   totalImages,
   currentIndex,
 }: ImageLightboxProps) {
+  // Browser back button closes the lightbox
+  useBackButton(isOpen, onClose);
+
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') onClose();
     if (e.key === 'ArrowLeft') onNavigate('prev');

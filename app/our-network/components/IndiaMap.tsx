@@ -7,6 +7,7 @@ import IndiaMap from "@react-map/india";
 import { Dealer } from "@/types/dealer";
 import { PinPopup } from "./PinPopup";
 import { latLngToMapPercent } from "@/lib/dealers/map-utils";
+import { useBackButton } from "@/hooks/useBackButton";
 
 interface IndiaMapProps {
   dealers: Dealer[];
@@ -25,6 +26,9 @@ export function IndiaMapComponent({
 }: IndiaMapProps) {
   const [hoveredState, setHoveredState] = useState<string | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
+
+  // Browser back button closes the dealer popup
+  useBackButton(!!selectedDealer, () => onSelectDealer(null));
 
   // Dealer grouped by state for map coloring
   const stateData = useMemo(() => {

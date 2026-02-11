@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import dynamic from 'next/dynamic';
+import { useBackButton } from '@/hooks/useBackButton';
 
 // Dynamic import to prevent hydration issues
 const EnquiryDropdown = dynamic(() => import('@/components/enquiry/EnquiryDropdown'), { ssr: false });
@@ -24,6 +25,9 @@ export default function Header() {
     const [isMounted, setIsMounted] = useState(false);
     const pathname = usePathname();
     const isAboutPage = pathname === "/about";
+
+    // Browser back button closes the mobile menu
+    useBackButton(isMenuOpen, () => setIsMenuOpen(false));
 
     useEffect(() => {
         setIsMounted(true);

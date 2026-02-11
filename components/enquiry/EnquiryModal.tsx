@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { useBackButton } from '@/hooks/useBackButton';
 
 const CustomerEnquiryForm = dynamic(() => import('./CustomerEnquiryForm'), { ssr: false });
 const DealerEnquiryForm = dynamic(() => import('./DealerEnquiryForm'), { ssr: false });
@@ -17,6 +18,9 @@ interface EnquiryModalProps {
 
 export default function EnquiryModal({ isOpen, onClose, type }: EnquiryModalProps) {
   const [isMobile, setIsMobile] = useState(false);
+
+  // Browser back button closes the modal
+  useBackButton(isOpen, onClose);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);

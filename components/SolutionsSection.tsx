@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, X, ShieldCheck, Zap } from 'lucide-react';
 import { useGlobalStore, Product } from '@/context/GlobalStore';
 import Image from 'next/image';
+import { useBackButton } from '@/hooks/useBackButton';
 
 const getProductImageUrl = (imagePath?: string | null) => {
   if (!imagePath) return '/assets/gentech-tall.png';
@@ -68,6 +69,9 @@ export default function SolutionsSection() {
   const [expandedMobileIndex, setExpandedMobileIndex] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
+
+  // Browser back button closes the product detail modal
+  useBackButton(!!activeProduct, () => setActiveProduct(null));
 
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
