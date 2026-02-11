@@ -29,34 +29,36 @@ export default function WarrantySection() {
             <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-dark-bg to-transparent pointer-events-none z-10" />
 
             {/* Content */}
-            <div className="relative z-10 w-full h-full container mx-auto p-4 text-center">
-                <div className="inline-block relative mb-4">
-                    <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4 shadow-xl drop-shadow-2xl">
-                        E-<span className="text-primary-blue">WARRANTY</span> SYSTEM
-                    </h2>
+            <div className="relative z-10 w-full h-full container mx-auto p-4 flex flex-col items-center text-center">
+                {/* Text Content */}
+                <div className="shrink-0">
+                    <div className="inline-block relative mb-2 md:mb-4">
+                        <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-2 md:mb-4 shadow-xl drop-shadow-2xl">
+                            E-<span className="text-primary-blue">WARRANTY</span> SYSTEM
+                        </h2>
+                    </div>
+                    <p className="text-blue-200/80 text-sm sm:text-base md:text-lg font-bold tracking-wider uppercase">
+                        Verified Protection You Can Trust
+                    </p>
                 </div>
-                <p className="text-blue-200/80 text-lg md:text-xl font-bold tracking-wider mb-2">
-                    Verified Protection You Can Trust
-                </p>
-                <p className="text-blue-200/60 text-sm md:text-base font-medium max-w-2xl mx-auto leading-relaxed">
-                    Every eligible Gentech Guard™ product is supported by a structured E-Warranty system, ensuring authenticity, traceability, and peace of mind for customers and dealers.
-                </p>
-                <a href="/warranty" className="group">
-                    <GlassSurface
-                        borderRadius={100}
-                        width={"fit-content"}
-                        className="whitespace-nowrap w-fit px-8 py-10 sm:px-16 sm:py-12 md:px-24 md:py-16 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:!shadow-[0_0_16px_0_#00aaff88]"
-                        style={{ position: "absolute", maxWidth: "90dvw" }}
-                    >
-                        <span className="text-xl font-black text-white uppercase w-fit whitespace-nowrap flex items-center justify-center gap-2">
-                            <span className="blue-text">Warranty</span>
-                            Information
-                            <ArrowRight className="w-6 h-6 ml-2" />
-                        </span>
-                    </GlassSurface>
-                </a>
 
-
+                {/* Glass Button - Centered in remaining space */}
+                <div className="flex-1 flex items-center justify-center w-full">
+                    <a href="/warranty" className="group">
+                        <GlassSurface
+                            borderRadius={100}
+                            width={"fit-content"}
+                            className="whitespace-nowrap w-fit px-8 py-10 sm:px-16 sm:py-12 md:px-24 md:py-16 group-hover:!shadow-[0_0_16px_0_#00aaff88]"
+                            style={{ maxWidth: "90dvw" }}
+                        >
+                            <span className="text-xl font-black text-white uppercase w-fit whitespace-nowrap flex items-center justify-center gap-2">
+                                <span className="blue-text">Warranty</span>
+                                Information
+                                <ArrowRight className="w-6 h-6 ml-2" />
+                            </span>
+                        </GlassSurface>
+                    </a>
+                </div>
             </div>
 
 
