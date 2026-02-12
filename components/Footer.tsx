@@ -38,7 +38,7 @@ export default function Footer() {
                 <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-x-2 gap-y-8 md:gap-8 lg:gap-8 pt-16 pb-8 border-y border-white/5">
                     {/* Brand Column */}
                     <div className="col-span-2 sm:col-span-1 md:col-span-1 lg:col-span-4">
-                        <Link href="/" className="inline-block mb-6">
+                        <Link href="/home" className="inline-block mb-6">
                             <div className="w-48 h-12 relative">
                                 <Image
                                     src="/assets/logo-final-wide.png"
@@ -105,7 +105,7 @@ export default function Footer() {
                             {productsLinks.map((item: string) => (
                                 <li key={item}>
                                     <Link
-                                        href="/#solutions"
+                                        href="/home#product-showcase"
                                         className="group flex items-center gap-2 text-text-grey hover:text-white text-sm font-bold uppercase tracking-wider transition-colors"
                                     >
                                         <span className="w-0 h-[2px] bg-primary-blue group-hover:w-3 transition-all duration-300" />
@@ -182,8 +182,9 @@ export default function Footer() {
                     params={{
                         edge: 0.0,
                         patternScale: 2,
+                        refraction: 0,
                         speed: 0.3,
-                        liquid: 0.05
+                        liquid: 0.07
                     }}
                 />
             </div>

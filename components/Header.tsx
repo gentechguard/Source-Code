@@ -36,7 +36,21 @@ export default function Header() {
             setScrolled(window.scrollY > 120);
         };
         window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
+
+        // Listen for custom enquiry open events from any component
+        const handleOpenEnquiry = (e: Event) => {
+            const detail = (e as CustomEvent).detail;
+            if (detail?.type === 'customer' || detail?.type === 'dealer' || detail?.type === 'distributor') {
+                setActiveForm(detail.type);
+                setShowModal(true);
+            }
+        };
+        window.addEventListener('open-enquiry', handleOpenEnquiry);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener('open-enquiry', handleOpenEnquiry);
+        };
     }, []);
 
     const handleSelectOption = (option: 'customer' | 'dealer' | 'distributor' | 'network') => {
@@ -73,7 +87,7 @@ export default function Header() {
             >
                 <div className="container mx-auto px-4 sm:px-6 md:px-8 flex items-center justify-between">
                     {/* Logo */}
-                    <Link href="/" className="relative z-10 shrink-0">
+                    <Link href="/home" className="relative z-10 shrink-0">
                         <motion.div
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}

@@ -54,12 +54,12 @@ const HeroSection = () => {
                     </p>
 
                     <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-                        <Link href="/#contact" className="group relative px-8 py-4 bg-white text-dark-bg font-black uppercase tracking-widest rounded-full overflow-hidden hover:scale-105 transition-transform">
+                        <button onClick={() => window.dispatchEvent(new CustomEvent('open-enquiry', { detail: { type: 'dealer' } }))} className="group relative px-8 py-4 bg-white text-dark-bg font-black uppercase tracking-widest rounded-full overflow-hidden hover:scale-105 transition-transform">
                             <span className="relative z-10">Partner With Us</span>
                             <div className="absolute inset-0 bg-primary-blue transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 z-0" />
                             <span className="absolute inset-0 z-10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">Partner With Us</span>
-                        </Link>
-                        <Link href="/#solutions" className="group flex items-center gap-3 text-white font-bold uppercase tracking-widest text-sm hover:text-primary-blue transition-colors">
+                        </button>
+                        <Link href="/home#product-showcase" className="group flex items-center gap-3 text-white font-bold uppercase tracking-widest text-sm hover:text-primary-blue transition-colors">
                             Explore Solutions <ArrowRight className="group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </div>
@@ -339,7 +339,7 @@ const QualitySection = () => {
                     </p>
 
                     <Link
-                        href="/#solutions"
+                        href="/home#product-showcase"
                         className="inline-flex items-center gap-4 px-12 py-6 rounded-full bg-white text-dark-bg font-black uppercase tracking-widest hover:bg-primary-blue hover:text-white transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_60px_rgba(0,170,255,0.4)]"
                     >
                         View Our Products <ChevronDown className="-rotate-90" />

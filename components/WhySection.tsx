@@ -74,22 +74,22 @@ export default function WhySection() {
 
             <div className="container mx-auto px-4 md:px-8 relative z-10">
                 <div className="max-w-3xl mb-16">
-                    <motion.span
+                    <motion.h3
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="text-primary-blue font-black tracking-[0.15em] sm:tracking-[0.2em] uppercase text-xs sm:text-sm mb-4 inline-block"
+                        className="text-primary-blue font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase text-lg sm:text-xl md:text-2xl mb-4 inline-block"
                     >
                         Why Gentech Guard™
-                    </motion.span>
+                    </motion.h3>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-6 uppercase tracking-tighter"
+                        className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-4 sm:mb-6 uppercase tracking-tighter"
                     >
-                        PROTECTION THAT GOES <span className="blue-text font-black uppercase text-2xl sm:text-3xl md:text-5xl">BEYOND THE SURFACE</span>
+                        PROTECTION THAT GOES <span className="blue-text font-black uppercase">BEYOND THE SURFACE</span>
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0 }}

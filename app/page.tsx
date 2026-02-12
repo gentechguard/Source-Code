@@ -5,24 +5,15 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { useShouldUseWebGL, useDeviceCapability } from "@/lib/hooks/useDeviceCapability";
+import { useDeviceCapability } from "@/lib/hooks/useDeviceCapability";
 
-// Mobile-friendly components (always loaded)
+// Lightweight CSS fallbacks (used as Suspense loading states)
 import MetallicPaintMobile from "@/components/MetallicPaintMobile";
 import BeamsMobile from "@/components/BeamsMobile";
 
-// Heavy WebGL components (lazy loaded for desktop only)
+// WebGL components (lazy loaded, always used on splash page)
 const Beams = lazy(() => import("@/components/Beams"));
 const MetallicPaint = lazy(() => import("@/components/MetallicPaint"));
-
-// Loading fallback for lazy components
-function WebGLLoadingFallback() {
-  return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-    </div>
-  );
-}
 
 export default function EntryPage() {
   const router = useRouter();
@@ -31,7 +22,6 @@ export default function EntryPage() {
 
   // Device capability detection
   const { isMobile, isClient, prefersReducedMotion } = useDeviceCapability();
-  const shouldUseWebGL = useShouldUseWebGL();
 
   useEffect(() => {
     if (!isClient) return;
@@ -130,23 +120,19 @@ export default function EntryPage() {
               animate="visible"
               className="flex flex-col items-center justify-center w-full"
             >
-              {/* Background Beams - Conditional rendering */}
+              {/* Background Beams - Always use WebGL for splash page */}
               <div className="fixed inset-0 z-[-1]">
-                {shouldUseWebGL ? (
-                  <Suspense fallback={<BeamsMobile beamCount={6} />}>
-                    <Beams
-                      beamWidth={2.0}
-                      beamHeight={25}
-                      beamNumber={50}
-                      speed={2.5}
-                      noiseIntensity={3.5}
-                      scale={0.15}
-                      rotation={25}
-                    />
-                  </Suspense>
-                ) : (
-                  <BeamsMobile beamCount={8} />
-                )}
+                <Suspense fallback={<BeamsMobile beamCount={8} />}>
+                  <Beams
+                    beamWidth={2.0}
+                    beamHeight={25}
+                    beamNumber={50}
+                    speed={2.5}
+                    noiseIntensity={3.5}
+                    scale={0.15}
+                    rotation={25}
+                  />
+                </Suspense>
               </div>
 
               {/* Hidden wide logo for SEO/accessibility */}
@@ -160,48 +146,34 @@ export default function EntryPage() {
                 priority
               />
 
-              {/* Shield Logo - Responsive sizing */}
+              {/* Shield Logo - Always use WebGL MetallicPaint */}
               <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 flex items-center justify-center">
-                {shouldUseWebGL ? (
-                  <Suspense fallback={<MetallicPaintMobile src="/assets/gentech-shield-bitmap.svg" alt="Gentech Guard Shield" />}>
-                    <MetallicPaint
-                      src="/assets/gentech-shield-bitmap.svg"
-                      params={{
-                        edge: 0.0,
-                        patternScale: 2,
-                        speed: 0.3,
-                        liquid: 0.05
-                      }}
-                    />
-                  </Suspense>
-                ) : (
-                  <MetallicPaintMobile
+                <Suspense fallback={<MetallicPaintMobile src="/assets/gentech-shield-bitmap.svg" alt="Gentech Guard Shield" />}>
+                  <MetallicPaint
                     src="/assets/gentech-shield-bitmap.svg"
-                    alt="Gentech Guard Shield"
+                    params={{
+                      edge: 0.0,
+                      patternScale: 2,
+                      speed: 0.3,
+                      liquid: 0.05
+                    }}
                   />
-                )}
+                </Suspense>
               </div>
 
-              {/* Text Logo - Responsive sizing */}
+              {/* Text Logo - Always use WebGL MetallicPaint */}
               <div className="w-64 h-16 sm:w-72 sm:h-20 md:w-80 md:h-24 flex items-center justify-center mt-2">
-                {shouldUseWebGL ? (
-                  <Suspense fallback={<MetallicPaintMobile src="/assets/gentech-text-bitmap.svg" alt="Gentech Guard" />}>
-                    <MetallicPaint
-                      src="/assets/gentech-text-bitmap.svg"
-                      params={{
-                        edge: 0.0,
-                        patternScale: 2,
-                        speed: 0.3,
-                        liquid: 0.05
-                      }}
-                    />
-                  </Suspense>
-                ) : (
-                  <MetallicPaintMobile
+                <Suspense fallback={<MetallicPaintMobile src="/assets/gentech-text-bitmap.svg" alt="Gentech Guard" />}>
+                  <MetallicPaint
                     src="/assets/gentech-text-bitmap.svg"
-                    alt="Gentech Guard"
+                    params={{
+                      edge: 0.0,
+                      patternScale: 2,
+                      speed: 0.3,
+                      liquid: 0.05
+                    }}
                   />
-                )}
+                </Suspense>
               </div>
 
               {/* Enter Button */}

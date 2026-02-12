@@ -23,12 +23,15 @@ export default function MetallicPaintMobile({
             {/* Base image with metallic gradient overlay */}
             <div className="absolute inset-0 flex items-center justify-center">
                 <div className="relative w-full h-full">
-                    {/* The actual SVG/image */}
+                    {/* The actual SVG/image - inverted and brightened to look metallic */}
                     <Image
                         src={src}
                         alt={alt}
                         fill
-                        className="object-contain filter brightness-110 contrast-110"
+                        className="object-contain"
+                        style={{
+                            filter: 'invert(1) brightness(1.8) contrast(1.2) drop-shadow(0 0 12px rgba(180, 200, 255, 0.5))',
+                        }}
                         priority
                     />
 
@@ -38,22 +41,22 @@ export default function MetallicPaintMobile({
                         style={{
                             background: `linear-gradient(
                 105deg,
-                transparent 20%,
-                rgba(255, 255, 255, 0.1) 35%,
-                rgba(255, 255, 255, 0.3) 50%,
-                rgba(255, 255, 255, 0.1) 65%,
-                transparent 80%
+                transparent 15%,
+                rgba(255, 255, 255, 0.15) 30%,
+                rgba(255, 255, 255, 0.4) 50%,
+                rgba(255, 255, 255, 0.15) 70%,
+                transparent 85%
               )`,
                             backgroundSize: '200% 100%',
                             mixBlendMode: 'overlay',
                         }}
                     />
 
-                    {/* Subtle glow effect */}
+                    {/* Warm glow effect for metallic look */}
                     <div
-                        className="absolute inset-0 pointer-events-none opacity-50"
+                        className="absolute inset-0 pointer-events-none opacity-60"
                         style={{
-                            background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.15) 0%, transparent 70%)',
+                            background: 'radial-gradient(ellipse at center, rgba(200,210,255,0.25) 0%, transparent 65%)',
                         }}
                     />
                 </div>
@@ -62,9 +65,9 @@ export default function MetallicPaintMobile({
             {/* CSS for shimmer animation */}
             <style jsx>{`
         .metallic-shimmer {
-          animation: shimmer 4s ease-in-out infinite;
+          animation: shimmer 3s ease-in-out infinite;
         }
-        
+
         @keyframes shimmer {
           0% {
             background-position: 200% 0;

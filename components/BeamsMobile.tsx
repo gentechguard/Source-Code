@@ -22,29 +22,29 @@ export default function BeamsMobile({
             left: `${(i / beamCount) * 100 + Math.random() * 10 - 5}%`,
             delay: `${Math.random() * 3}s`,
             duration: `${4 + Math.random() * 3}s`,
-            width: `${1 + Math.random() * 2}px`,
-            opacity: 0.1 + Math.random() * 0.2,
+            width: `${2 + Math.random() * 3}px`,
+            opacity: 0.2 + Math.random() * 0.35,
         }));
     }, [beamCount]);
 
     return (
         <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
-            {/* Dark background */}
-            <div className="absolute inset-0 bg-black" />
+            {/* Dark background with slight brightness */}
+            <div className="absolute inset-0 bg-[#050508]" />
 
-            {/* Gradient overlay for depth */}
+            {/* Gradient overlay for depth - brighter center */}
             <div
                 className="absolute inset-0"
                 style={{
-                    background: 'radial-gradient(ellipse at center, rgba(20,20,40,0.8) 0%, rgba(0,0,0,1) 70%)',
+                    background: 'radial-gradient(ellipse at center, rgba(30,35,60,0.9) 0%, rgba(5,5,10,1) 75%)',
                 }}
             />
 
-            {/* Animated beams */}
+            {/* Animated beams - brighter and more visible */}
             {beams.map((beam) => (
                 <div
                     key={beam.id}
-                    className="absolute top-0 h-full beam-line"
+                    className="absolute top-0 h-[200%] beam-line"
                     style={{
                         left: beam.left,
                         width: beam.width,
@@ -54,9 +54,9 @@ export default function BeamsMobile({
                         background: `linear-gradient(
               to bottom,
               transparent 0%,
-              rgba(100, 120, 255, 0.3) 30%,
-              rgba(150, 180, 255, 0.5) 50%,
-              rgba(100, 120, 255, 0.3) 70%,
+              rgba(140, 160, 255, 0.4) 25%,
+              rgba(180, 200, 255, 0.7) 50%,
+              rgba(140, 160, 255, 0.4) 75%,
               transparent 100%
             )`,
                         transform: 'rotate(-25deg) translateY(-50%)',
@@ -78,17 +78,17 @@ export default function BeamsMobile({
         .beam-line {
           animation: beam-move linear infinite;
         }
-        
+
         @keyframes beam-move {
           0% {
             transform: rotate(-25deg) translateY(-100%);
             opacity: 0;
           }
-          20% {
-            opacity: var(--beam-opacity, 0.2);
+          15% {
+            opacity: var(--beam-opacity, 0.35);
           }
-          80% {
-            opacity: var(--beam-opacity, 0.2);
+          85% {
+            opacity: var(--beam-opacity, 0.35);
           }
           100% {
             transform: rotate(-25deg) translateY(100%);
