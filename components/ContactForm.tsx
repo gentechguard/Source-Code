@@ -142,7 +142,7 @@ export default function ContactForm() {
                         title="Call Us"
                         value={config.contact.phone.display}
                         action="View PPF Solutions"
-                        href="#solutions"
+                        href="/home#product-showcase"
                         delay={0.1}
                     />
                     <ContactCard
@@ -150,7 +150,7 @@ export default function ContactForm() {
                         title="Email Us"
                         value={config.contact.email}
                         action="View Sunfilm Solutions"
-                        href="#solutions"
+                        href="/home#product-showcase"
                         delay={0.2}
                     />
                     <ContactCard

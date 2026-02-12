@@ -73,7 +73,7 @@ export default function Header() {
             >
                 <div className="container mx-auto px-4 sm:px-6 md:px-8 flex items-center justify-between">
                     {/* Logo */}
-                    <Link href="/" className="relative z-10 shrink-0">
+                    <Link href="/home" className="relative z-10 shrink-0">
                         <motion.div
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}

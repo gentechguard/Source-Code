@@ -133,14 +133,14 @@ export default function Hero() {
                         {/* CTA Buttons - Stack on mobile, row on larger screens */}
                         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-12 w-full sm:w-auto">
                             <Link
-                                href="/#contact"
+                                href="/home#contact"
                                 className="bg-primary-blue hover:bg-white hover:text-dark-bg text-white px-6 sm:px-8 py-3 rounded-full font-black text-sm sm:text-base transition-all duration-200 neon-glow flex items-center justify-center gap-2 group touch-manipulation active:scale-95"
                             >
                                 BECOME A DEALER
                                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                             </Link>
                             <Link
-                                href="/#product-showcase"
+                                href="/home#product-showcase"
                                 className="border border-white/20 hover:border-primary-blue text-white px-6 sm:px-8 py-3 rounded-full font-black text-sm sm:text-base transition-all duration-200 backdrop-blur-sm flex items-center justify-center touch-manipulation active:scale-95"
                             >
                                 EXPLORE PRODUCTS
