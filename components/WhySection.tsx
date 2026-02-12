@@ -74,14 +74,14 @@ export default function WhySection() {
 
             <div className="container mx-auto px-4 md:px-8 relative z-10">
                 <div className="max-w-3xl mb-16">
-                    <motion.span
+                    <motion.h3
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="text-primary-blue font-black tracking-[0.15em] sm:tracking-[0.2em] uppercase text-xs sm:text-sm mb-4 inline-block"
+                        className="text-primary-blue font-black tracking-[0.15em] sm:tracking-[0.2em] uppercase text-xl sm:text-2xl md:text-3xl mb-4 inline-block"
                     >
                         Why Gentech Guard™
-                    </motion.span>
+                    </motion.h3>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
