@@ -37,7 +37,7 @@ function WarrantyPageContent() {
             <Header />
 
             {/* HERO SECTION */}
-            <section className="relative pt-32 pb-20 overflow-hidden h-[100dvh] flex flex-col items-center justify-center">
+            <section className="relative pt-28 pb-20 overflow-hidden min-h-[100dvh] flex flex-col items-center justify-center">
                 <div className="absolute inset-0 bg-dark-bg z-0 h-[100dvh]">
                     <Image
                         src="/assets/Hero Image Warranty.png"
@@ -51,7 +51,7 @@ function WarrantyPageContent() {
                     <div className="absolute top-0 left-0 right-0 h-[500px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary-blue/20 via-transparent to-transparent opacity-60 mix-blend-overlay" />
                 </div>
 
-                <div className="container mx-auto px-4 text-center relative z-10 -translate-y-1/2">
+                <div className="container mx-auto px-4 text-center relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
