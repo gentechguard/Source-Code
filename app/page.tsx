@@ -169,8 +169,9 @@ export default function EntryPage() {
                       params={{
                         edge: 0.0,
                         patternScale: 2,
+                        refraction: 0,
                         speed: 0.3,
-                        liquid: 0.05
+                        liquid: 0.07
                       }}
                     />
                   </Suspense>
@@ -191,8 +192,9 @@ export default function EntryPage() {
                       params={{
                         edge: 0.0,
                         patternScale: 2,
+                        refraction: 0,
                         speed: 0.3,
-                        liquid: 0.05
+                        liquid: 0.07
                       }}
                     />
                   </Suspense>
