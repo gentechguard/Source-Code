@@ -204,6 +204,7 @@ export default function OurNetworkPage() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={() => window.dispatchEvent(new CustomEvent('open-enquiry', { detail: { type: 'dealer' } }))}
                 className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#00A8FF] hover:bg-[#00A8FF]/90 text-black font-bold text-lg transition-colors"
               >
                 <Plus className="w-5 h-5" />

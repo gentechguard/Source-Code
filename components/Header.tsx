@@ -36,7 +36,21 @@ export default function Header() {
             setScrolled(window.scrollY > 120);
         };
         window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
+
+        // Listen for custom enquiry open events from any component
+        const handleOpenEnquiry = (e: Event) => {
+            const detail = (e as CustomEvent).detail;
+            if (detail?.type === 'customer' || detail?.type === 'dealer' || detail?.type === 'distributor') {
+                setActiveForm(detail.type);
+                setShowModal(true);
+            }
+        };
+        window.addEventListener('open-enquiry', handleOpenEnquiry);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener('open-enquiry', handleOpenEnquiry);
+        };
     }, []);
 
     const handleSelectOption = (option: 'customer' | 'dealer' | 'distributor' | 'network') => {

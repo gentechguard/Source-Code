@@ -85,15 +85,13 @@ export default function ContactForm() {
                                     <DealerBenefit text="Growing Nationwide Network" />
                                 </div>
 
-                                <a
-                                    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(dealerMessage)}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                <button
+                                    onClick={() => window.dispatchEvent(new CustomEvent('open-enquiry', { detail: { type: 'dealer' } }))}
                                     className="inline-flex items-center gap-3 bg-gradient-to-r from-primary-blue to-blue-600 text-white px-6 py-4 md:px-10 md:py-5 rounded-xl md:rounded-2xl font-black uppercase tracking-widest text-sm md:text-base hover:scale-105 hover:shadow-[0_0_30px_rgba(0,170,255,0.4)] transition-all duration-300 group-hover:animate-pulse-slow"
                                 >
                                     Apply For Dealership
                                     <ArrowRight className="w-5 h-5" />
-                                </a>
+                                </button>
                             </div>
 
                             {/* Visual/Image Side */}
