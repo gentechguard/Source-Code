@@ -287,7 +287,7 @@ export default function SolutionsSection() {
         {/* Products Grid */}
         <div
           ref={containerRef}
-          className="relative z-10 flex flex-col md:flex-row gap-3 mx-0 md:mx-4 lg:mx-20 my-0 md:my-8 md:pt-0 md:pb-0 h-[70vh] md:h-auto md:aspect-video rounded-2xl overflow-hidden"
+          className="relative z-10 flex flex-col md:flex-row gap-3 mx-0 md:mx-4 lg:mx-10 xl:mx-20 my-0 md:my-8 md:pt-0 md:pb-0 h-[70vh] md:h-auto md:aspect-video rounded-2xl overflow-hidden"
         >
           <AnimatePresence mode="wait">
             <motion.div
