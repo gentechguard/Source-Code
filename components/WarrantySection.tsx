@@ -7,7 +7,7 @@ import GlassSurface from "./GlassSurface";
 
 export default function WarrantySection() {
     return (
-        <section id="warranty" className="relative w-full h-[600px] overflow-hidden mb-16 bg-black flex items-center justify-center">
+        <section id="warranty" className="relative w-full h-[450px] sm:h-[500px] md:h-[600px] overflow-hidden mb-16 bg-black flex items-center justify-center">
             {/* Background */}
             <div className="absolute inset-0 z-0 opacity-60">
                 <FloatingLines

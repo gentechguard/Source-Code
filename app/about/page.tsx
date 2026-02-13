@@ -21,7 +21,7 @@ const HeroSection = () => {
     const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
     return (
-        <section ref={ref} className="relative h-[100dvh] w-full overflow-hidden flex items-center justify-center">
+        <section ref={ref} className="relative h-[100dvh] w-full overflow-hidden flex items-center justify-center pt-20">
             {/* Background Image with Parallax */}
             <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
                 <Image

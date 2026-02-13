@@ -137,7 +137,7 @@ export default function ProcessSection() {
             </div>
 
             {/* Premium Expertise Highlight */}
-            <div className="container mx-auto px-4 mt-20 relative">
+            <div className="container mx-auto px-4 md:px-8 mt-20 relative">
                 {/* Background Decoration */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-full bg-primary-blue/5 blur-[120px] rounded-full -z-10" />
 
