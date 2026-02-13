@@ -61,7 +61,7 @@ export default function Hero() {
     return (
         <section
             ref={ref}
-            className="relative h-[100dvh] w-full overflow-hidden bg-dark-bg flex items-start md:items-center justify-center pt-16 sm:pt-20 pb-0 md:pt-0"
+            className="relative h-[100dvh] w-full overflow-hidden bg-dark-bg flex items-start md:items-center justify-center pt-16 sm:pt-20 md:pt-0 pb-0"
         >
             {/* BACKGROUND: Static for Desktop, Carousel for Mobile */}
             <motion.div
@@ -89,7 +89,7 @@ export default function Hero() {
             </motion.div>
 
             {/* CONTENT */}
-            <div className="container mx-auto px-4 sm:px-6 md:px-8 pt-4 sm:pt-8 md:pt-0 relative z-10 w-full md:translate-y-[-10%]">
+            <div className="container mx-auto px-4 sm:px-6 md:px-8 pt-4 sm:pt-8 md:pt-20 relative z-10 w-full">
                 <div className="max-w-4xl text-center md:text-left mx-auto md:mx-0">
                     <motion.div
                         initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -30 }}
@@ -97,18 +97,6 @@ export default function Hero() {
                         transition={{ duration: animationDuration, ease: [0.25, 0.1, 0.25, 1] }}
                         className="flex flex-col items-center md:items-start justify-center"
                     >
-                        {/* Logo - Hidden on small mobile, visible on tablet+ */}
-                        <div className="hidden sm:block w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 mb-4 sm:mb-6 md:mb-8 relative">
-                            <Image
-                                src="/assets/gentech-tall.png"
-                                alt="Gentech Guard Tall Logo"
-                                fill
-                                className="object-contain"
-                                priority
-                                sizes="(max-width: 640px) 80px, (max-width: 768px) 96px, 128px"
-                            />
-                        </div>
-
                         {/* Main Heading - Responsive text sizing */}
                         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black leading-tight mb-2 sm:mb-3">
                             PREMIUM AUTOMOTIVE <br className="hidden sm:block" />

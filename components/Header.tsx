@@ -105,12 +105,12 @@ export default function Header() {
                     </Link>
 
                     {/* DESKTOP NAV - Fixed layout with gap */}
-                    <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+                    <nav className="hidden lg:flex items-center gap-4 xl:gap-7">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className="text-sm font-bold uppercase tracking-widest text-text-grey hover:text-primary-blue transition-colors whitespace-nowrap"
+                                className="text-xs xl:text-sm font-bold uppercase tracking-wider xl:tracking-widest text-text-grey hover:text-primary-blue transition-colors whitespace-nowrap"
                             >
                                 {link.name}
                             </Link>
