@@ -1,59 +1,45 @@
 "use client";
 
-import { useState } from "react";
-import { User, Car, Wrench, ArrowRight, ArrowLeft, Upload, Loader2, AlertCircle, CheckCircle } from "lucide-react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { User, Car, Wrench, ArrowRight, ArrowLeft, Upload, Loader2, AlertCircle, CheckCircle, ShieldCheck, Download, Send } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@supabase/supabase-js";
+import Certificate, { WarrantyData } from "./Certificate";
+import OtpInput from "./OtpInput";
+import { generateWarrantyPdf, uploadWarrantyPdf } from "@/lib/warranty-pdf";
 
 const steps = [
     { id: 1, title: "Owner Info", icon: User },
     { id: 2, title: "Vehicle Details", icon: Car },
     { id: 3, title: "Installation", icon: Wrench },
+    { id: 4, title: "Verify", icon: ShieldCheck },
 ];
 
 import { siteConfig } from "@/lib/site-config";
 import { useGlobalStore } from "@/context/GlobalStore";
 import GlassSurface from "./GlassSurface";
 
-// const ppfCategories = siteConfig.productCategories; // We will use GlobalStore if available
-
-// Formatting helper for Indian Reg Numbers (Simple standardized styling)
+// Formatting helper for Indian Reg Numbers
 const formatRegNumber = (val: string) => {
-    // Remove non-alphanumeric chars and convert to upper
     const clean = val.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-
-    // Attempt basic pattern matching: TS09AB1234 -> TS 09 AB 1234
-    // 2 chars (State), 2 chars (RTO), 1-3 chars (Series), 4 digits (Num)
-    // This regex is a 'best effort' formatter for standard plates.
-
-    // Regex breakdown:
-    // ^([A-Z]{2})       Group 1: State (2 letters)
-    // ([0-9]{1,2})      Group 2: RTO (1-2 digits)
-    // ([A-Z]{0,3})      Group 3: Series (0-3 letters optional)
-    // ([0-9]{1,4})$     Group 4: Num (1-4 digits)
-
     const match = clean.match(/^([A-Z]{2})([0-9]{1,2})([A-Z]{0,3})([0-9]{1,4})$/);
-
     if (match) {
-        // Pad RTO to 2 chars if needed? Usually standard is input as is.
-        // Let's just space them out.
         const state = match[1];
-        const rto = match[2].padStart(2, '0'); // '4' -> '04'
+        const rto = match[2].padStart(2, '0');
         const series = match[3];
-        const num = match[4].padStart(4, '0'); // '123' -> '0123'
-
+        const num = match[4].padStart(4, '0');
         return `${state} ${rto} ${series ? series + ' ' : ''}${num}`;
     }
-
-    return clean; // Return cleaned raw if it doesn't match standard pattern fully yet
+    return clean;
 };
 
 const formatPhoneNumber = (val: string) => {
-    // Keep only numbers
     const clean = val.replace(/\D/g, '');
-    // Limit to 10 digits
     return clean.slice(0, 10);
 };
+
+type OtpStep = 'idle' | 'sending' | 'sent' | 'verifying' | 'verified';
+type SubmissionPhase = 'idle' | 'submitting' | 'generating_pdf' | 'uploading_pdf' | 'sending_whatsapp' | 'complete';
 
 export default function WarrantyForm() {
     const [step, setStep] = useState(1);
@@ -92,19 +78,56 @@ export default function WarrantyForm() {
         rcImage: null,
     });
 
+    // OTP verification state
+    const [otpStep, setOtpStep] = useState<OtpStep>('idle');
+    const [otpCode, setOtpCode] = useState('');
+    const [otpError, setOtpError] = useState('');
+    const [dealerVerified, setDealerVerified] = useState<{
+        dealerId: string;
+        dealerName: string;
+        maskedPhone: string;
+    } | null>(null);
+    const [resendCooldown, setResendCooldown] = useState(0);
+
+    // Post-submission state
+    const [submissionPhase, setSubmissionPhase] = useState<SubmissionPhase>('idle');
+    const [warrantyId, setWarrantyId] = useState('');
+    const [pdfUrl, setPdfUrl] = useState('');
+    const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
+    const [whatsappStatus, setWhatsappStatus] = useState<{
+        dealer: boolean;
+        customer: boolean;
+        admin: boolean;
+    } | null>(null);
+
+    // Certificate rendering
+    const [certificateData, setCertificateData] = useState<WarrantyData | null>(null);
+    const hiddenCertRef = useRef<HTMLDivElement>(null);
+
+    // Resend cooldown timer
+    useEffect(() => {
+        if (resendCooldown <= 0) return;
+        const timer = setTimeout(() => setResendCooldown(prev => prev - 1), 1000);
+        return () => clearTimeout(timer);
+    }, [resendCooldown]);
+
+    const getSupabase = useCallback(() => {
+        return createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        );
+    }, []);
+
     const updateField = (field: string, value: string) => {
         let finalValue = value;
         if (field === 'regNumber') {
-            // Just uppercase while typing, format on blur/submit usually, but user asked to reformat 'before submitting'.
-            // We'll keep it uppercase for display.
             finalValue = value.toUpperCase();
         }
         if (field === 'phone' || field === 'installerMobile') {
             finalValue = formatPhoneNumber(value);
         }
-
         setFormData((prev) => ({ ...prev, [field]: finalValue }));
-        setError(""); // Clear error on change
+        setError("");
     };
 
     const handleFileChange = (field: "vehicleImage" | "rcImage", file: File | null) => {
@@ -114,30 +137,24 @@ export default function WarrantyForm() {
     const validateStep = (currentStep: number) => {
         const d = formData;
         if (currentStep === 1) {
-            // Name and Phone are mandatory. Email is optional.
             if (!d.name || !d.phone) return "Please fill in Name and Phone.";
             if (d.phone.length < 10) return "Phone number must be 10 digits.";
         }
         if (currentStep === 2) {
-            // Reg and Roll and Category are mandatory. Chassis is optional.
             if (!d.regNumber) return "Registration Number is required.";
             if (!d.ppfRoll) return "PPF Roll Number is required.";
             if (!d.ppfCategory) return "PPF Category is required.";
-
-            // PPF Roll Validation
             const rollPrefix = d.ppfRoll.toUpperCase().slice(0, 2);
             if (!['GT', 'GN', 'GR'].includes(rollPrefix)) {
                 return "Invalid PPF Roll Number. Please check the code on your warranty card.";
             }
-
-            // check Reg Number format roughly (at least state code and numbers)
             if (d.regNumber.length < 6) return "Please enter a valid Registration Number";
         }
         if (currentStep === 3) {
             if (!d.dealerName || !d.installerMobile || !d.installationLocation) return "Please fill in all required dealer details.";
             if (d.installerMobile.length < 10) return "Installer mobile must be 10 digits.";
         }
-        return null; // Valid
+        return null;
     };
 
     const handleNext = () => {
@@ -152,52 +169,176 @@ export default function WarrantyForm() {
 
     const handleBack = () => {
         setError("");
-        setStep((s) => Math.max(s - 1, 1));
+        if (step === 4) {
+            // Going back from OTP step resets OTP state
+            setOtpStep('idle');
+            setOtpCode('');
+            setOtpError('');
+            setDealerVerified(null);
+            setStep(3);
+        } else {
+            setStep((s) => Math.max(s - 1, 1));
+        }
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    // ---- OTP Flow ----
 
+    const handleVerifyDealer = async () => {
         const errorMsg = validateStep(3);
         if (errorMsg) {
             setError(errorMsg);
             return;
         }
 
-        setIsSubmitting(true);
         setError("");
+        setOtpStep('sending');
+        setOtpError('');
+        setStep(4);
 
         try {
-            // Initialize Supabase
-            const supabase = createClient(
-                process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-            );
+            const supabase = getSupabase();
+            const { data, error: fnError } = await supabase.functions.invoke('verify-dealer-send-otp', {
+                body: { installerMobile: formData.installerMobile },
+            });
 
+            if (fnError) throw new Error(fnError.message || 'Failed to verify dealer');
+
+            if (!data?.success) {
+                const msg = data?.message || 'Dealer verification failed.';
+                setOtpError(msg);
+                if (data?.error === 'dealer_not_found') {
+                    // Go back to step 3 so user can fix the number
+                    setOtpStep('idle');
+                    setStep(3);
+                    setError(msg);
+                    return;
+                }
+                if (data?.error === 'rate_limited') {
+                    setOtpStep('sent');
+                    setResendCooldown(60);
+                    return;
+                }
+                setOtpStep('idle');
+                setStep(3);
+                setError(msg);
+                return;
+            }
+
+            setDealerVerified({
+                dealerId: data.dealerId,
+                dealerName: data.dealerName,
+                maskedPhone: data.maskedPhone,
+            });
+            setOtpStep('sent');
+            setResendCooldown(60);
+
+        } catch (err: any) {
+            console.error('Dealer verification error:', err);
+            setOtpStep('idle');
+            setStep(3);
+            setError(err.message || 'Unable to verify dealer. Please try again.');
+        }
+    };
+
+    const handleResendOtp = async () => {
+        if (resendCooldown > 0) return;
+
+        setOtpError('');
+        setOtpCode('');
+        setOtpStep('sending');
+
+        try {
+            const supabase = getSupabase();
+            const { data, error: fnError } = await supabase.functions.invoke('verify-dealer-send-otp', {
+                body: { installerMobile: formData.installerMobile },
+            });
+
+            if (fnError) throw new Error(fnError.message);
+
+            if (!data?.success) {
+                setOtpError(data?.message || 'Failed to resend OTP.');
+                setOtpStep('sent');
+                return;
+            }
+
+            setOtpStep('sent');
+            setResendCooldown(60);
+        } catch (err: any) {
+            console.error('Resend OTP error:', err);
+            setOtpError('Failed to resend code. Please try again.');
+            setOtpStep('sent');
+        }
+    };
+
+    const handleVerifyOtp = async () => {
+        if (otpCode.length !== 6) {
+            setOtpError('Please enter the 6-digit code.');
+            return;
+        }
+
+        setOtpStep('verifying');
+        setOtpError('');
+
+        try {
+            const supabase = getSupabase();
+            const { data, error: fnError } = await supabase.functions.invoke('verify-otp', {
+                body: {
+                    installerMobile: formData.installerMobile,
+                    otpCode,
+                },
+            });
+
+            if (fnError) throw new Error(fnError.message);
+
+            if (!data?.success) {
+                setOtpError(data?.message || 'Verification failed.');
+                setOtpStep('sent');
+                if (data?.error === 'max_attempts_exceeded' || data?.error === 'otp_expired_or_invalid') {
+                    setOtpCode('');
+                    setResendCooldown(0); // Allow immediate resend
+                }
+                return;
+            }
+
+            setOtpStep('verified');
+            // Auto-proceed to submission
+            await handleFullSubmission();
+
+        } catch (err: any) {
+            console.error('OTP verification error:', err);
+            setOtpError(err.message || 'Verification failed. Please try again.');
+            setOtpStep('sent');
+        }
+    };
+
+    // ---- Full Submission Flow (after OTP verified) ----
+
+    const handleFullSubmission = async () => {
+        setIsSubmitting(true);
+        setError("");
+        setSubmissionPhase('submitting');
+
+        try {
+            const supabase = getSupabase();
+
+            // 1. Upload images
             let vehicleImgUrl = "";
             let rcImgUrl = "";
 
-            // Helper to upload
             const uploadFile = async (file: File, path: string) => {
                 const ext = file.name.split('.').pop();
                 const fileName = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${ext}`;
                 const filePath = `${path}/${fileName}`;
-
-                const { data, error } = await supabase.storage
-                    .from('warranty-uploads') // Ensure this bucket exists or use a public one
+                const { error } = await supabase.storage
+                    .from('warranty-uploads')
                     .upload(filePath, file);
-
                 if (error) throw error;
-
-                // Get Public URL
                 const { data: { publicUrl } } = supabase.storage
                     .from('warranty-uploads')
                     .getPublicUrl(filePath);
-
                 return publicUrl;
             };
 
-            // Upload Images if present
             if (files.vehicleImage) {
                 vehicleImgUrl = await uploadFile(files.vehicleImage, 'vehicle_images');
             }
@@ -208,8 +349,8 @@ export default function WarrantyForm() {
             const cleanPPFRoll = formData.ppfRoll.replace(/[^a-zA-Z0-9]/g, '');
             const cleanChassis = formData.chassisNumber ? formData.chassisNumber.replace(/[^a-zA-Z0-9]/g, '') : "";
 
-            // Insert Record
-            const { error: insertError } = await supabase
+            // 2. Insert warranty registration
+            const { data: insertedData, error: insertError } = await supabase
                 .from('warranty_registrations')
                 .insert({
                     name: formData.name,
@@ -225,36 +366,223 @@ export default function WarrantyForm() {
                     message: formData.message,
                     vehicle_image_url: vehicleImgUrl,
                     rc_image_url: rcImgUrl,
-                    status: 'pending' // Default status
-                });
+                    status: 'pending',
+                })
+                .select('id, created_at')
+                .single();
 
             if (insertError) throw insertError;
 
+            const wId = `GW-${insertedData.id?.toString().padStart(6, '0')}`;
+            setWarrantyId(wId);
+
+            // 3. Fetch product details for warranty duration
+            let duration = "5 Years";
+            const matchedProduct = products.find(p => p.name === formData.ppfCategory);
+            if (matchedProduct?.specs) {
+                let specs = matchedProduct.specs;
+                if (typeof specs === 'string') {
+                    try { specs = JSON.parse(specs); } catch { specs = []; }
+                }
+                if (Array.isArray(specs)) {
+                    const warrantySpec = specs.find((s: any) => s.label === "Warranty");
+                    if (warrantySpec?.value) duration = warrantySpec.value;
+                }
+            }
+
+            // 4. Build certificate data
+            const certData: WarrantyData = {
+                warrantyId: wId,
+                productName: formData.ppfCategory,
+                duration,
+                serialNumber: cleanPPFRoll,
+                materialConsumed: "Standard Kit",
+                customer: {
+                    name: formData.name,
+                    vehicleModel: "Vehicle",
+                    vin: cleanChassis || "N/A",
+                    phone: `+91${formData.phone}`,
+                },
+                installer: {
+                    studioName: formData.dealerName,
+                    location: formData.installationLocation,
+                    technician: "Authorized Technician",
+                    date: new Date(insertedData.created_at).toLocaleDateString(),
+                },
+            };
+            setCertificateData(certData);
+
+            // 5. Generate PDF (wait for Certificate to render)
+            setSubmissionPhase('generating_pdf');
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            if (hiddenCertRef.current) {
+                try {
+                    const blob = await generateWarrantyPdf(hiddenCertRef.current);
+                    setPdfBlob(blob);
+
+                    // 6. Upload PDF
+                    setSubmissionPhase('uploading_pdf');
+                    const publicUrl = await uploadWarrantyPdf(supabase, wId, blob);
+                    setPdfUrl(publicUrl);
+
+                    // Insert certificate tracking record
+                    await supabase.from('warranty_certificates').insert({
+                        warranty_id: wId,
+                        registration_id: insertedData.id,
+                        pdf_storage_path: `${wId}.pdf`,
+                        pdf_public_url: publicUrl,
+                    });
+
+                    // 7. Send via WhatsApp
+                    setSubmissionPhase('sending_whatsapp');
+                    try {
+                        const { data: waData } = await supabase.functions.invoke('send-warranty-whatsapp', {
+                            body: {
+                                pdfUrl: publicUrl,
+                                warrantyId: wId,
+                                customerName: formData.name,
+                                customerPhone: formData.phone,
+                                dealerPhone: formData.installerMobile,
+                                vehicleRegNumber: formatRegNumber(formData.regNumber),
+                                productName: formData.ppfCategory,
+                            },
+                        });
+
+                        if (waData?.deliveryResults) {
+                            setWhatsappStatus({
+                                dealer: waData.deliveryResults.dealer?.success || false,
+                                customer: waData.deliveryResults.customer?.success || false,
+                                admin: waData.deliveryResults.admin?.success || false,
+                            });
+                        }
+                    } catch (waErr) {
+                        console.error('WhatsApp delivery error:', waErr);
+                        // Non-blocking — warranty is already saved
+                    }
+
+                } catch (pdfErr) {
+                    console.error('PDF generation error:', pdfErr);
+                    // Non-blocking — warranty is already saved
+                }
+            }
+
+            setSubmissionPhase('complete');
             setIsSubmitted(true);
+
         } catch (err: any) {
-            console.error(err);
+            console.error('Submission error:', err);
             setError(err.message || "An error occurred. Please try again.");
+            setSubmissionPhase('idle');
         } finally {
             setIsSubmitting(false);
         }
     };
 
+    const downloadPdf = () => {
+        if (!pdfBlob) return;
+        const url = URL.createObjectURL(pdfBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Gentech-Warranty-${warrantyId}.pdf`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
+    // ---- Render ----
+
+    // Success screen
     if (isSubmitted) {
         return (
-            <div className="text-center py-20 px-8 bg-dark-bg/50 backdrop-blur-md rounded-2xl border border-white/10">
+            <div className="text-center py-12 sm:py-20 px-6 sm:px-8 bg-dark-bg/50 backdrop-blur-md rounded-2xl border border-white/10">
                 <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/20">
                     <CheckCircle className="text-green-500" size={40} />
                 </div>
-                <h3 className="text-3xl font-black text-white mb-4">Registration Successful!</h3>
-                <p className="text-white/60 mb-8 max-w-md mx-auto">
-                    Your warranty has been officially registered with Gentech Guard. A confirmation email has been sent to you.
+                <h3 className="text-2xl sm:text-3xl font-black text-white mb-4">Registration Successful!</h3>
+                <p className="text-white/60 mb-2 max-w-md mx-auto text-sm">
+                    Your warranty <span className="text-primary-blue font-bold">{warrantyId}</span> has been officially registered with Gentech Guard.
                 </p>
-                <button
-                    onClick={() => window.location.reload()}
-                    className="bg-primary-blue text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest hover:bg-blue-600 transition-colors"
-                >
-                    Register Another
-                </button>
+
+                {whatsappStatus && (
+                    <div className="mt-6 mb-6 max-w-sm mx-auto space-y-2">
+                        <p className="text-xs uppercase tracking-wider text-white/40 font-bold mb-3">WhatsApp Delivery</p>
+                        <div className="flex items-center justify-between text-sm px-4 py-2 rounded-lg bg-white/5">
+                            <span className="text-white/60">Dealer</span>
+                            <span className={whatsappStatus.dealer ? "text-green-400" : "text-yellow-400"}>
+                                {whatsappStatus.dealer ? "Sent" : "Pending"}
+                            </span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm px-4 py-2 rounded-lg bg-white/5">
+                            <span className="text-white/60">Customer</span>
+                            <span className={whatsappStatus.customer ? "text-green-400" : "text-yellow-400"}>
+                                {whatsappStatus.customer ? "Sent" : "Pending"}
+                            </span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm px-4 py-2 rounded-lg bg-white/5">
+                            <span className="text-white/60">Admin</span>
+                            <span className={whatsappStatus.admin ? "text-green-400" : "text-yellow-400"}>
+                                {whatsappStatus.admin ? "Sent" : "Pending"}
+                            </span>
+                        </div>
+                    </div>
+                )}
+
+                {!whatsappStatus && pdfUrl && (
+                    <p className="text-white/40 text-xs mt-4 mb-6">
+                        WhatsApp delivery was not available. You can download the certificate below.
+                    </p>
+                )}
+
+                <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+                    {pdfBlob && (
+                        <button
+                            onClick={downloadPdf}
+                            className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 text-white px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-white/10 transition-colors"
+                        >
+                            <Download size={16} /> Download PDF
+                        </button>
+                    )}
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="bg-primary-blue text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-blue-600 transition-colors"
+                    >
+                        Register Another
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    // Submission progress overlay (shown during post-OTP submission)
+    if (isSubmitting && submissionPhase !== 'idle') {
+        const phaseMessages: Record<SubmissionPhase, string> = {
+            idle: '',
+            submitting: 'Registering your warranty...',
+            generating_pdf: 'Generating warranty certificate...',
+            uploading_pdf: 'Uploading certificate...',
+            sending_whatsapp: 'Sending via WhatsApp...',
+            complete: 'Complete!',
+        };
+
+        return (
+            <div className="text-center py-20 px-8 bg-dark-bg/50 backdrop-blur-md rounded-2xl border border-white/10">
+                <Loader2 className="animate-spin text-primary-blue mx-auto mb-6" size={48} />
+                <h3 className="text-xl font-black text-white mb-2">Processing</h3>
+                <p className="text-white/60 text-sm">{phaseMessages[submissionPhase]}</p>
+
+                {/* Progress dots */}
+                <div className="flex justify-center gap-2 mt-8">
+                    {(['submitting', 'generating_pdf', 'uploading_pdf', 'sending_whatsapp'] as SubmissionPhase[]).map((phase, i) => {
+                        const phases: SubmissionPhase[] = ['submitting', 'generating_pdf', 'uploading_pdf', 'sending_whatsapp'];
+                        const currentIndex = phases.indexOf(submissionPhase);
+                        return (
+                            <div
+                                key={phase}
+                                className={`w-2 h-2 rounded-full transition-colors ${i <= currentIndex ? 'bg-primary-blue' : 'bg-white/10'}`}
+                            />
+                        );
+                    })}
+                </div>
             </div>
         );
     }
@@ -274,10 +602,9 @@ export default function WarrantyForm() {
                 {/* Header / Steps */}
                 <div className="bg-black/10 border-b border-white/5 p-4 md:p-8">
                     <div className="flex justify-between items-center relative">
-                        {steps.map((s, i) => {
+                        {steps.map((s) => {
                             const Icon = s.icon;
                             const isActive = step >= s.id;
-                            const isCurrent = step === s.id;
                             return (
                                 <div key={s.id} className="relative z-10 flex flex-col items-center gap-2 flex-1">
                                     <div
@@ -310,13 +637,12 @@ export default function WarrantyForm() {
                 {/* Form Content */}
                 <div className="p-6 md:p-10 relative">
                     <AnimatePresence mode="wait">
-                        <motion.form
+                        <motion.div
                             key={step}
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -20 }}
                             transition={{ duration: 0.2 }}
-                            onSubmit={handleSubmit}
                             className="space-y-6"
                         >
                             {step === 1 && (
@@ -441,7 +767,6 @@ export default function WarrantyForm() {
                                                     )}
                                                 </AnimatePresence>
                                             </div>
-                                            {/* Overlay to close dropdown when clicking outside */}
                                             {dropdownOpen && (
                                                 <div className="fixed inset-0 z-40" onClick={() => setDropdownOpen(false)} />
                                             )}
@@ -466,7 +791,7 @@ export default function WarrantyForm() {
                                             </div>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-xs uppercase font-bold text-white/50 tracking-wider">Vehicle Image <span className="text-white/20">(Optional)</span></label>
+                                            <label className="text-xs uppercase font-bold text-white/50 tracking-wider">RC Image <span className="text-white/20">(Optional)</span></label>
                                             <div className="border border-dashed border-white/20 rounded-xl p-6 text-center hover:bg-white/5 transition-colors cursor-pointer relative">
                                                 <input
                                                     type="file"
@@ -538,7 +863,78 @@ export default function WarrantyForm() {
                                     </div>
                                 </div>
                             )}
-                        </motion.form>
+
+                            {step === 4 && (
+                                <div className="space-y-6">
+                                    {/* Dealer info badge */}
+                                    {dealerVerified && (
+                                        <div className="bg-green-500/5 border border-green-500/20 rounded-xl p-4 flex items-center gap-3">
+                                            <ShieldCheck className="text-green-500 shrink-0" size={20} />
+                                            <div>
+                                                <p className="text-green-400 text-sm font-bold">{dealerVerified.dealerName}</p>
+                                                <p className="text-white/40 text-xs">Verified Dealer</p>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {otpStep === 'sending' && (
+                                        <div className="text-center py-8">
+                                            <Loader2 className="animate-spin text-primary-blue mx-auto mb-4" size={32} />
+                                            <p className="text-white/60 text-sm">Verifying dealer & sending OTP...</p>
+                                        </div>
+                                    )}
+
+                                    {(otpStep === 'sent' || otpStep === 'verifying') && (
+                                        <div className="space-y-6">
+                                            <div className="text-center">
+                                                <Send className="text-primary-blue mx-auto mb-3" size={28} />
+                                                <h4 className="text-lg font-bold text-white mb-1">Enter Verification Code</h4>
+                                                <p className="text-white/40 text-sm">
+                                                    OTP sent to dealer&apos;s phone <span className="text-primary-blue font-mono">{dealerVerified?.maskedPhone}</span>
+                                                </p>
+                                            </div>
+
+                                            <OtpInput
+                                                value={otpCode}
+                                                onChange={(val) => { setOtpCode(val); setOtpError(''); }}
+                                                disabled={otpStep === 'verifying'}
+                                            />
+
+                                            {otpError && (
+                                                <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-3 text-red-400 text-sm">
+                                                    <AlertCircle size={16} />
+                                                    {otpError}
+                                                </div>
+                                            )}
+
+                                            <div className="flex flex-col items-center gap-3">
+                                                <button
+                                                    onClick={handleVerifyOtp}
+                                                    disabled={otpCode.length !== 6 || otpStep === 'verifying'}
+                                                    className="w-full flex items-center justify-center gap-3 bg-primary-blue text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-blue-600 transition-colors shadow-[0_0_20px_rgba(0,170,255,0.3)] hover:shadow-[0_0_30px_rgba(0,170,255,0.5)] disabled:opacity-50 disabled:cursor-not-allowed"
+                                                >
+                                                    {otpStep === 'verifying' ? (
+                                                        <><Loader2 className="animate-spin" size={16} /> Verifying...</>
+                                                    ) : (
+                                                        <><ShieldCheck size={16} /> Verify OTP</>
+                                                    )}
+                                                </button>
+
+                                                <button
+                                                    onClick={handleResendOtp}
+                                                    disabled={resendCooldown > 0 || otpStep === 'verifying'}
+                                                    className="text-xs text-white/40 hover:text-primary-blue transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                                                >
+                                                    {resendCooldown > 0
+                                                        ? `Resend code in ${resendCooldown}s`
+                                                        : 'Resend Code'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </motion.div>
                     </AnimatePresence>
 
                     {error && (
@@ -553,7 +949,7 @@ export default function WarrantyForm() {
                 <div className="p-6 md:p-8 border-t border-white/5 flex justify-between bg-black/10">
                     <button
                         onClick={handleBack}
-                        disabled={step === 1 || isSubmitting}
+                        disabled={step === 1 || isSubmitting || otpStep === 'sending' || otpStep === 'verifying'}
                         className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-sm text-white/50 hover:text-white hover:bg-white/5 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
                     >
                         <ArrowLeft size={16} /> Back
@@ -566,21 +962,29 @@ export default function WarrantyForm() {
                         >
                             Next <ArrowRight size={16} />
                         </button>
-                    ) : (
+                    ) : step === 3 ? (
                         <button
-                            onClick={handleSubmit}
-                            disabled={isSubmitting}
+                            onClick={handleVerifyDealer}
+                            disabled={isSubmitting || otpStep === 'sending'}
                             className="flex items-center gap-3 bg-primary-blue text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-blue-600 transition-colors shadow-[0_0_20px_rgba(0,170,255,0.3)] hover:shadow-[0_0_30px_rgba(0,170,255,0.5)] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {isSubmitting ? (
-                                <>
-                                    <Loader2 className="animate-spin" size={16} /> Submitting...
-                                </>
+                            {otpStep === 'sending' ? (
+                                <><Loader2 className="animate-spin" size={16} /> Verifying...</>
                             ) : (
-                                <>Submit Warranty</>
+                                <>Verify & Submit <ShieldCheck size={16} /></>
                             )}
                         </button>
+                    ) : (
+                        // Step 4: OTP buttons are in the step content itself
+                        <div />
                     )}
+                </div>
+            </div>
+
+            {/* Off-screen Certificate for PDF Capture */}
+            <div className="fixed top-0 left-0 -z-50 opacity-0 pointer-events-none w-[794px] h-[1123px] overflow-hidden">
+                <div ref={hiddenCertRef} className="opacity-100">
+                    {certificateData && <Certificate data={certificateData} />}
                 </div>
             </div>
         </GlassSurface>
