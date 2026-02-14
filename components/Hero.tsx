@@ -61,7 +61,7 @@ export default function Hero() {
     return (
         <section
             ref={ref}
-            className="relative h-[100dvh] w-full overflow-hidden bg-dark-bg flex items-start md:items-center justify-center pt-16 sm:pt-20 md:pt-0 pb-0"
+            className="relative h-[100dvh] w-full overflow-hidden bg-dark-bg flex items-start md:items-center justify-center pt-16 sm:pt-20 md:pt-20 pb-0"
         >
             {/* BACKGROUND: Static for Desktop, Carousel for Mobile */}
             <motion.div
@@ -89,7 +89,7 @@ export default function Hero() {
             </motion.div>
 
             {/* CONTENT */}
-            <div className="container mx-auto px-4 sm:px-6 md:px-8 pt-4 sm:pt-8 md:pt-20 relative z-10 w-full">
+            <div className="container mx-auto px-4 sm:px-6 md:px-8 pt-4 sm:pt-8 md:pt-0 relative z-10 w-full">
                 <div className="max-w-4xl text-center md:text-left mx-auto md:mx-0">
                     <motion.div
                         initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -30 }}

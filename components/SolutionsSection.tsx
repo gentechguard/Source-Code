@@ -235,7 +235,7 @@ export default function SolutionsSection() {
 
   return (
     <section id="product-showcase" className="bg-black py-20 overflow-hidden">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 md:px-8">
         {/* Header */}
         <div className="mb-8 min-h-[4rem] relative">
           <AnimatePresence mode="wait">

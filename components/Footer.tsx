@@ -35,7 +35,7 @@ export default function Footer() {
 
             {/* Main Grid */}
             <div className="container mx-auto px-4 md:px-8 relative z-10">
-                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-x-4 gap-y-8 md:gap-8 lg:gap-8 pt-16 pb-8 border-y border-white/5">
+                <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-4 gap-y-8 md:gap-8 lg:gap-8 pt-16 pb-8 border-y border-white/5">
                     {/* Brand Column */}
                     <div className="col-span-2 sm:col-span-1 md:col-span-1 lg:col-span-4">
                         <Link href="/home" className="inline-block mb-6">
