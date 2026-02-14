@@ -880,7 +880,7 @@ export default function WarrantyForm() {
                                     {otpStep === 'sending' && (
                                         <div className="text-center py-8">
                                             <Loader2 className="animate-spin text-primary-blue mx-auto mb-4" size={32} />
-                                            <p className="text-white/60 text-sm">Verifying dealer & sending OTP...</p>
+                                            <p className="text-white/60 text-sm">Verifying dealer & sending OTP via WhatsApp...</p>
                                         </div>
                                     )}
 
@@ -890,7 +890,7 @@ export default function WarrantyForm() {
                                                 <Send className="text-primary-blue mx-auto mb-3" size={28} />
                                                 <h4 className="text-lg font-bold text-white mb-1">Enter Verification Code</h4>
                                                 <p className="text-white/40 text-sm">
-                                                    OTP sent to dealer&apos;s phone <span className="text-primary-blue font-mono">{dealerVerified?.maskedPhone}</span>
+                                                    OTP sent to dealer&apos;s WhatsApp <span className="text-primary-blue font-mono">{dealerVerified?.maskedPhone}</span>
                                                 </p>
                                             </div>
 

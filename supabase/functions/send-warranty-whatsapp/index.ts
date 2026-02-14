@@ -2,7 +2,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { corsHeaders } from '../_shared/cors.ts';
 import { normalizePhone } from '../_shared/phone-utils.ts';
-import { sendWhatsApp } from '../_shared/twilio.ts';
+import { sendDocumentWhatsApp } from '../_shared/whatsapp.ts';
 
 serve(async (req) => {
   // Handle CORS preflight
@@ -39,25 +39,16 @@ serve(async (req) => {
     const normalizedCustomer = normalizePhone(customerPhone);
     const normalizedAdmin = normalizePhone(adminPhone);
 
-    const message = [
-      `*Gentech Guard - Warranty Certificate*`,
-      ``,
-      `Warranty ID: ${warrantyId}`,
-      `Customer: ${customerName}`,
-      `Vehicle: ${vehicleRegNumber}`,
-      `Product: ${productName}`,
-      ``,
-      `Your warranty certificate is attached as a PDF.`,
-      `Verify anytime at gentechguard.com/warranty`,
-      ``,
-      `Thank you for choosing Gentech Guard!`,
-    ].join('\n');
+    const filename = `Gentech-Warranty-${warrantyId}.pdf`;
 
-    // Send to all 3 recipients
+    // Body parameters for the template: {{1}}=customerName, {{2}}=warrantyId, {{3}}=vehicleRegNumber
+    const bodyParams = [customerName, warrantyId, vehicleRegNumber];
+
+    // Send to all 3 recipients via Meta WhatsApp Cloud API
     const results = await Promise.allSettled([
-      sendWhatsApp(normalizedDealer, message, pdfUrl),
-      sendWhatsApp(normalizedCustomer, message, pdfUrl),
-      sendWhatsApp(normalizedAdmin, message, pdfUrl),
+      sendDocumentWhatsApp(normalizedDealer, pdfUrl, filename, bodyParams),
+      sendDocumentWhatsApp(normalizedCustomer, pdfUrl, filename, bodyParams),
+      sendDocumentWhatsApp(normalizedAdmin, pdfUrl, filename, bodyParams),
     ]);
 
     const deliveryResults = {

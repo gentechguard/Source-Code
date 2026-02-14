@@ -9,6 +9,15 @@ export function normalizePhone(input: string): string {
 }
 
 /**
+ * Format phone for Meta WhatsApp API: digits only with country code, no + sign.
+ * Meta expects: "919989820222"
+ */
+export function metaPhone(input: string): string {
+  const digits = input.replace(/\D/g, '');
+  return digits.startsWith('91') ? digits : `91${digits.slice(-10)}`;
+}
+
+/**
  * Mask a phone number for display: +919989820222 → ****820222
  */
 export function maskPhone(phone: string): string {

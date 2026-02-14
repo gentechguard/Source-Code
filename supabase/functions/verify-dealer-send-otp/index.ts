@@ -2,7 +2,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { corsHeaders } from '../_shared/cors.ts';
 import { normalizePhone, maskPhone } from '../_shared/phone-utils.ts';
-import { sendSms } from '../_shared/twilio.ts';
+import { sendOtpWhatsApp } from '../_shared/whatsapp.ts';
 
 serve(async (req) => {
   // Handle CORS preflight
@@ -104,18 +104,15 @@ serve(async (req) => {
       );
     }
 
-    // 7. Send OTP via SMS
-    const smsResult = await sendSms(
-      normalizedInput,
-      `Your Gentech Guard warranty verification code is: ${otp}. Valid for 5 minutes. Do not share this code.`
-    );
+    // 7. Send OTP via WhatsApp (Meta Cloud API)
+    const waResult = await sendOtpWhatsApp(normalizedInput, otp);
 
-    if (!smsResult.success) {
+    if (!waResult.success) {
       return new Response(
         JSON.stringify({
           success: false,
-          error: 'sms_failed',
-          message: 'Unable to send verification code. Please try again in a moment.'
+          error: 'whatsapp_failed',
+          message: 'Unable to send verification code via WhatsApp. Please try again in a moment.'
         }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
