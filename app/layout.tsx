@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { GlobalProvider } from "@/context/GlobalStore";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
         style={{ background: '#0A0A0A', color: '#fff' }}
       >
         <GlobalProvider>
+          <ScrollToTop />
           {children}
           <WhatsAppButton />
         </GlobalProvider>
