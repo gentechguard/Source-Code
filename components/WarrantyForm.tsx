@@ -59,11 +59,14 @@ export default function WarrantyForm() {
         message: "",
     });
 
-    // Dynamic Categories — show only sub-products (variants with a parent_id)
+    // Dynamic Categories — show only sub-products under the PPF parent
     const { products } = useGlobalStore();
-    const subProducts = products.filter(p => p.parent_id);
-    const ppfCategories = subProducts.length > 0
-        ? subProducts.map(p => p.name)
+    const ppfParent = products.find(p => !p.parent_id && p.name.toLowerCase().includes('paint protection'));
+    const ppfSubProducts = ppfParent
+        ? products.filter(p => p.parent_id === ppfParent.id)
+        : [];
+    const ppfCategories = ppfSubProducts.length > 0
+        ? ppfSubProducts.map(p => p.name)
         : siteConfig.productCategories;
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
