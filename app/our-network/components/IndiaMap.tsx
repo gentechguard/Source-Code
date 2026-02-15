@@ -6,7 +6,7 @@ import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import IndiaMap from "@react-map/india";
 import { Dealer } from "@/types/dealer";
 import { PinPopup } from "./PinPopup";
-import { latLngToMapPercent, spreadOverlappingPins } from "@/lib/dealers/map-utils";
+import { latLngToMapPercent } from "@/lib/dealers/map-utils";
 import { useBackButton } from "@/hooks/useBackButton";
 
 interface IndiaMapProps {
@@ -79,15 +79,6 @@ export function IndiaMapComponent({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedDealer, onSelectDealer]);
 
-  // Pre-compute spread positions so overlapping pins fan out
-  const spreadPositions = useMemo(() => {
-    const rawPins = dealers.map((d) => ({
-      id: d.id,
-      ...latLngToMapPercent(d.latitude, d.longitude),
-    }));
-    return spreadOverlappingPins(rawPins);
-  }, [dealers]);
-
   const selectedDealerData = dealers.find((d) => d.id === selectedDealer);
 
   return (
@@ -154,7 +145,7 @@ export function IndiaMapComponent({
           {/* Dealer Pins Overlay — same bounding box as the SVG */}
           <div className="absolute inset-0 pointer-events-none z-10">
             {dealers.map((dealer, index) => {
-              const pos = spreadPositions[dealer.id] ?? latLngToMapPercent(dealer.latitude, dealer.longitude);
+              const pos = latLngToMapPercent(dealer.latitude, dealer.longitude);
               return (
                 <DealerPinOverlay
                   key={dealer.id}
