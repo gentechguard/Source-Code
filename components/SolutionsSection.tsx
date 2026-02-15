@@ -279,26 +279,28 @@ export default function SolutionsSection() {
                 <p className="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
                   Click any product to explore specific variants tailored to your needs
                 </p>
-                <div className="flex items-center justify-center gap-4 mt-3">
-                  <a
-                    href="/assets/GENTECH GAURD WEBSITE.pdf"
-                    download
+                <div className="flex items-center justify-center mt-3">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const files = [
+                        '/assets/gentech_guard_brochure_borderless.pdf',
+                        '/assets/gentech_guard_sunfilm_brochure_borderless.pdf',
+                      ];
+                      files.forEach((file) => {
+                        const a = document.createElement('a');
+                        a.href = file;
+                        a.download = file.split('/').pop() || '';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                      });
+                    }}
                     className="inline-flex items-center gap-1.5 text-white/30 hover:text-blue-400/70 text-xs tracking-wide transition-colors duration-300"
-                    onClick={(e) => e.stopPropagation()}
                   >
                     <Download size={12} />
-                    Product Brochure
-                  </a>
-                  <span className="text-white/10">|</span>
-                  <a
-                    href="/assets/🔧 GENTECH GUARD®️ PPF PROCESS .pdf"
-                    download
-                    className="inline-flex items-center gap-1.5 text-white/30 hover:text-blue-400/70 text-xs tracking-wide transition-colors duration-300"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Download size={12} />
-                    PPF Process Guide
-                  </a>
+                    Download Brochures
+                  </button>
                 </div>
               </motion.div>
             )}
