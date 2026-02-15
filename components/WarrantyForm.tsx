@@ -1,18 +1,16 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { User, Car, Wrench, ArrowRight, ArrowLeft, Upload, Loader2, AlertCircle, CheckCircle, ShieldCheck, Download, Send } from "lucide-react";
+import { User, Car, Wrench, ArrowRight, ArrowLeft, Upload, Loader2, AlertCircle, CheckCircle, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@supabase/supabase-js";
 import Certificate, { WarrantyData } from "./Certificate";
-import OtpInput from "./OtpInput";
 import { generateWarrantyPdf, uploadWarrantyPdf } from "@/lib/warranty-pdf";
 
 const steps = [
     { id: 1, title: "Owner Info", icon: User },
     { id: 2, title: "Vehicle Details", icon: Car },
     { id: 3, title: "Installation", icon: Wrench },
-    { id: 4, title: "Verify", icon: ShieldCheck },
 ];
 
 import { siteConfig } from "@/lib/site-config";
@@ -38,7 +36,6 @@ const formatPhoneNumber = (val: string) => {
     return clean.slice(0, 10);
 };
 
-type OtpStep = 'idle' | 'sending' | 'sent' | 'verifying' | 'verified';
 type SubmissionPhase = 'idle' | 'submitting' | 'generating_pdf' | 'uploading_pdf' | 'sending_whatsapp' | 'complete';
 
 export default function WarrantyForm() {
@@ -78,17 +75,6 @@ export default function WarrantyForm() {
         rcImage: null,
     });
 
-    // OTP verification state
-    const [otpStep, setOtpStep] = useState<OtpStep>('idle');
-    const [otpCode, setOtpCode] = useState('');
-    const [otpError, setOtpError] = useState('');
-    const [dealerVerified, setDealerVerified] = useState<{
-        dealerId: string;
-        dealerName: string;
-        maskedPhone: string;
-    } | null>(null);
-    const [resendCooldown, setResendCooldown] = useState(0);
-
     // Post-submission state
     const [submissionPhase, setSubmissionPhase] = useState<SubmissionPhase>('idle');
     const [warrantyId, setWarrantyId] = useState('');
@@ -103,13 +89,6 @@ export default function WarrantyForm() {
     // Certificate rendering
     const [certificateData, setCertificateData] = useState<WarrantyData | null>(null);
     const hiddenCertRef = useRef<HTMLDivElement>(null);
-
-    // Resend cooldown timer
-    useEffect(() => {
-        if (resendCooldown <= 0) return;
-        const timer = setTimeout(() => setResendCooldown(prev => prev - 1), 1000);
-        return () => clearTimeout(timer);
-    }, [resendCooldown]);
 
     const getSupabase = useCallback(() => {
         return createClient(
@@ -169,149 +148,22 @@ export default function WarrantyForm() {
 
     const handleBack = () => {
         setError("");
-        if (step === 4) {
-            // Going back from OTP step resets OTP state
-            setOtpStep('idle');
-            setOtpCode('');
-            setOtpError('');
-            setDealerVerified(null);
-            setStep(3);
-        } else {
-            setStep((s) => Math.max(s - 1, 1));
-        }
+        setStep((s) => Math.max(s - 1, 1));
     };
 
-    // ---- OTP Flow ----
+    // ---- Submission Flow ----
 
-    const handleVerifyDealer = async () => {
+    const handleSubmit = async () => {
         const errorMsg = validateStep(3);
         if (errorMsg) {
             setError(errorMsg);
             return;
         }
-
         setError("");
-        setOtpStep('sending');
-        setOtpError('');
-        setStep(4);
-
-        try {
-            const supabase = getSupabase();
-            const { data, error: fnError } = await supabase.functions.invoke('verify-dealer-send-otp', {
-                body: { installerMobile: formData.installerMobile },
-            });
-
-            if (fnError) throw new Error(fnError.message || 'Failed to verify dealer');
-
-            if (!data?.success) {
-                const msg = data?.message || 'Dealer verification failed.';
-                setOtpError(msg);
-                if (data?.error === 'dealer_not_found') {
-                    // Go back to step 3 so user can fix the number
-                    setOtpStep('idle');
-                    setStep(3);
-                    setError(msg);
-                    return;
-                }
-                if (data?.error === 'rate_limited') {
-                    setOtpStep('sent');
-                    setResendCooldown(60);
-                    return;
-                }
-                setOtpStep('idle');
-                setStep(3);
-                setError(msg);
-                return;
-            }
-
-            setDealerVerified({
-                dealerId: data.dealerId,
-                dealerName: data.dealerName,
-                maskedPhone: data.maskedPhone,
-            });
-            setOtpStep('sent');
-            setResendCooldown(60);
-
-        } catch (err: any) {
-            console.error('Dealer verification error:', err);
-            setOtpStep('idle');
-            setStep(3);
-            setError(err.message || 'Unable to verify dealer. Please try again.');
-        }
+        await handleFullSubmission();
     };
 
-    const handleResendOtp = async () => {
-        if (resendCooldown > 0) return;
-
-        setOtpError('');
-        setOtpCode('');
-        setOtpStep('sending');
-
-        try {
-            const supabase = getSupabase();
-            const { data, error: fnError } = await supabase.functions.invoke('verify-dealer-send-otp', {
-                body: { installerMobile: formData.installerMobile },
-            });
-
-            if (fnError) throw new Error(fnError.message);
-
-            if (!data?.success) {
-                setOtpError(data?.message || 'Failed to resend OTP.');
-                setOtpStep('sent');
-                return;
-            }
-
-            setOtpStep('sent');
-            setResendCooldown(60);
-        } catch (err: any) {
-            console.error('Resend OTP error:', err);
-            setOtpError('Failed to resend code. Please try again.');
-            setOtpStep('sent');
-        }
-    };
-
-    const handleVerifyOtp = async () => {
-        if (otpCode.length !== 6) {
-            setOtpError('Please enter the 6-digit code.');
-            return;
-        }
-
-        setOtpStep('verifying');
-        setOtpError('');
-
-        try {
-            const supabase = getSupabase();
-            const { data, error: fnError } = await supabase.functions.invoke('verify-otp', {
-                body: {
-                    installerMobile: formData.installerMobile,
-                    otpCode,
-                },
-            });
-
-            if (fnError) throw new Error(fnError.message);
-
-            if (!data?.success) {
-                setOtpError(data?.message || 'Verification failed.');
-                setOtpStep('sent');
-                if (data?.error === 'max_attempts_exceeded' || data?.error === 'otp_expired_or_invalid') {
-                    setOtpCode('');
-                    setResendCooldown(0); // Allow immediate resend
-                }
-                return;
-            }
-
-            setOtpStep('verified');
-            // Auto-proceed to submission
-            await handleFullSubmission();
-
-        } catch (err: any) {
-            console.error('OTP verification error:', err);
-            setOtpError(err.message || 'Verification failed. Please try again.');
-            setOtpStep('sent');
-        }
-    };
-
-    // ---- Full Submission Flow (after OTP verified) ----
+    // ---- Full Submission Flow ----
 
     const handleFullSubmission = async () => {
         setIsSubmitting(true);
@@ -864,76 +716,6 @@ export default function WarrantyForm() {
                                 </div>
                             )}
 
-                            {step === 4 && (
-                                <div className="space-y-6">
-                                    {/* Dealer info badge */}
-                                    {dealerVerified && (
-                                        <div className="bg-green-500/5 border border-green-500/20 rounded-xl p-4 flex items-center gap-3">
-                                            <ShieldCheck className="text-green-500 shrink-0" size={20} />
-                                            <div>
-                                                <p className="text-green-400 text-sm font-bold">{dealerVerified.dealerName}</p>
-                                                <p className="text-white/40 text-xs">Verified Dealer</p>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {otpStep === 'sending' && (
-                                        <div className="text-center py-8">
-                                            <Loader2 className="animate-spin text-primary-blue mx-auto mb-4" size={32} />
-                                            <p className="text-white/60 text-sm">Verifying dealer & sending OTP via WhatsApp...</p>
-                                        </div>
-                                    )}
-
-                                    {(otpStep === 'sent' || otpStep === 'verifying') && (
-                                        <div className="space-y-6">
-                                            <div className="text-center">
-                                                <Send className="text-primary-blue mx-auto mb-3" size={28} />
-                                                <h4 className="text-lg font-bold text-white mb-1">Enter Verification Code</h4>
-                                                <p className="text-white/40 text-sm">
-                                                    OTP sent to dealer&apos;s WhatsApp <span className="text-primary-blue font-mono">{dealerVerified?.maskedPhone}</span>
-                                                </p>
-                                            </div>
-
-                                            <OtpInput
-                                                value={otpCode}
-                                                onChange={(val) => { setOtpCode(val); setOtpError(''); }}
-                                                disabled={otpStep === 'verifying'}
-                                            />
-
-                                            {otpError && (
-                                                <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-3 text-red-400 text-sm">
-                                                    <AlertCircle size={16} />
-                                                    {otpError}
-                                                </div>
-                                            )}
-
-                                            <div className="flex flex-col items-center gap-3">
-                                                <button
-                                                    onClick={handleVerifyOtp}
-                                                    disabled={otpCode.length !== 6 || otpStep === 'verifying'}
-                                                    className="w-full flex items-center justify-center gap-3 bg-primary-blue text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-blue-600 transition-colors shadow-[0_0_20px_rgba(0,170,255,0.3)] hover:shadow-[0_0_30px_rgba(0,170,255,0.5)] disabled:opacity-50 disabled:cursor-not-allowed"
-                                                >
-                                                    {otpStep === 'verifying' ? (
-                                                        <><Loader2 className="animate-spin" size={16} /> Verifying...</>
-                                                    ) : (
-                                                        <><ShieldCheck size={16} /> Verify OTP</>
-                                                    )}
-                                                </button>
-
-                                                <button
-                                                    onClick={handleResendOtp}
-                                                    disabled={resendCooldown > 0 || otpStep === 'verifying'}
-                                                    className="text-xs text-white/40 hover:text-primary-blue transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                                                >
-                                                    {resendCooldown > 0
-                                                        ? `Resend code in ${resendCooldown}s`
-                                                        : 'Resend Code'}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
                         </motion.div>
                     </AnimatePresence>
 
@@ -949,7 +731,7 @@ export default function WarrantyForm() {
                 <div className="p-6 md:p-8 border-t border-white/5 flex justify-between bg-black/10">
                     <button
                         onClick={handleBack}
-                        disabled={step === 1 || isSubmitting || otpStep === 'sending' || otpStep === 'verifying'}
+                        disabled={step === 1 || isSubmitting}
                         className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-sm text-white/50 hover:text-white hover:bg-white/5 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
                     >
                         <ArrowLeft size={16} /> Back
@@ -962,21 +744,18 @@ export default function WarrantyForm() {
                         >
                             Next <ArrowRight size={16} />
                         </button>
-                    ) : step === 3 ? (
+                    ) : (
                         <button
-                            onClick={handleVerifyDealer}
-                            disabled={isSubmitting || otpStep === 'sending'}
+                            onClick={handleSubmit}
+                            disabled={isSubmitting}
                             className="flex items-center gap-3 bg-primary-blue text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-blue-600 transition-colors shadow-[0_0_20px_rgba(0,170,255,0.3)] hover:shadow-[0_0_30px_rgba(0,170,255,0.5)] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {otpStep === 'sending' ? (
-                                <><Loader2 className="animate-spin" size={16} /> Verifying...</>
+                            {isSubmitting ? (
+                                <><Loader2 className="animate-spin" size={16} /> Submitting...</>
                             ) : (
-                                <>Verify & Submit <ShieldCheck size={16} /></>
+                                <>Submit <ArrowRight size={16} /></>
                             )}
                         </button>
-                    ) : (
-                        // Step 4: OTP buttons are in the step content itself
-                        <div />
                     )}
                 </div>
             </div>
