@@ -69,7 +69,7 @@ export const EtherealFade: React.FC<EtherealFadeProps> = ({
                             )}
 
                             {/* Subtitle / Description / Counter */}
-                            <p className={`mt-2 md:mt-4 text-rose-400 font-mono text-[10px] md:text-sm tracking-widest uppercase transition-opacity duration-500 delay-300 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
+                            <p className={`mt-2 md:mt-4 text-white font-mono text-[10px] md:text-sm tracking-widest uppercase transition-opacity duration-500 delay-300 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
                                 {img.subtitle ? img.subtitle : `Collection / ${index + 1}`}
                             </p>
                         </div>

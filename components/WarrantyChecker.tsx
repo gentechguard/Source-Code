@@ -284,18 +284,28 @@ export default function WarrantyChecker() {
                                     searchType === 'vin' ? "Enter Chassis Number" :
                                         "e.g. TS 09 AB 1234"
                             }
-                            className={`w-full bg-white/5 border border-white/10 rounded-2xl py-5 pr-6 outline-none focus:border-primary-blue focus:bg-white/10 transition-all font-black tracking-widest uppercase placeholder:text-text-grey/30 placeholder:normal-case ${searchType === 'mobile' ? 'pl-16' : 'pl-6'
+                            className={`w-full bg-white/5 border border-white/10 rounded-2xl py-5 md:pr-40 pr-6 outline-none focus:border-primary-blue focus:bg-white/10 transition-all font-black tracking-widest uppercase placeholder:text-text-grey/30 placeholder:normal-case ${searchType === 'mobile' ? 'pl-16' : 'pl-6'
                                 }`}
                         />
+                        {/* Desktop: button inside input */}
                         <button
                             type="submit"
                             disabled={loading}
-                            className="absolute right-2 top-2 bottom-2 bg-primary-blue hover:bg-white hover:text-dark-bg text-white px-6 rounded-xl font-black text-xs transition-all flex items-center gap-2 neon-glow disabled:opacity-50 uppercase tracking-wider"
+                            className="hidden md:flex absolute right-2 top-2 bottom-2 bg-primary-blue hover:bg-white hover:text-dark-bg text-white px-6 rounded-xl font-black text-xs transition-all items-center gap-2 neon-glow disabled:opacity-50 uppercase tracking-wider"
                         >
                             {loading ? <Loader2 className="animate-spin" size={16} /> : <Search size={16} />}
                             {loading ? "Checking" : "Verify"}
                         </button>
                     </div>
+                    {/* Mobile: button below input */}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="md:hidden w-full mt-4 bg-primary-blue hover:bg-white hover:text-dark-bg text-white py-4 rounded-xl font-black text-xs transition-all flex items-center justify-center gap-2 neon-glow disabled:opacity-50 uppercase tracking-wider"
+                    >
+                        {loading ? <Loader2 className="animate-spin" size={16} /> : <Search size={16} />}
+                        {loading ? "Checking" : "Verify"}
+                    </button>
                 </form>
 
                 <AnimatePresence>

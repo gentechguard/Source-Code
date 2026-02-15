@@ -511,17 +511,21 @@ export default function MetallicPaint({
     }, [imageData]);
 
     useEffect(() => {
-        if (!gl || !uniforms) return;
-        gl.useProgram(gl.getParameter(gl.CURRENT_PROGRAM));
-        gl.uniform1f(uniforms.u_edge, params.edge);
-        gl.uniform1f(uniforms.u_patternBlur, params.patternBlur);
-        gl.uniform1f(uniforms.u_patternScale, params.patternScale);
-        gl.uniform1f(uniforms.u_refraction, params.refraction);
-        gl.uniform1f(uniforms.u_liquid, params.liquid);
+        if (!gl || !uniforms || Object.keys(uniforms).length === 0) return;
+        try {
+            gl.useProgram(gl.getParameter(gl.CURRENT_PROGRAM));
+            if (uniforms.u_edge) gl.uniform1f(uniforms.u_edge, params.edge);
+            if (uniforms.u_patternBlur) gl.uniform1f(uniforms.u_patternBlur, params.patternBlur);
+            if (uniforms.u_patternScale) gl.uniform1f(uniforms.u_patternScale, params.patternScale);
+            if (uniforms.u_refraction) gl.uniform1f(uniforms.u_refraction, params.refraction);
+            if (uniforms.u_liquid) gl.uniform1f(uniforms.u_liquid, params.liquid);
+        } catch (e) {
+            console.warn("MetallicPaint uniform update error:", e);
+        }
     }, [gl, params, uniforms]);
 
     useEffect(() => {
-        if (!gl || !uniforms) return;
+        if (!gl || !uniforms || Object.keys(uniforms).length === 0) return;
         let renderId: number;
         let isMounted = true;
 
@@ -532,23 +536,27 @@ export default function MetallicPaint({
         function render(timestamp: number) {
             if (!isMounted) return;
 
-            // Initialize on first frame
-            if (lastRenderTime.current === -1) {
+            try {
+                // Initialize on first frame
+                if (lastRenderTime.current === -1) {
+                    lastRenderTime.current = timestamp;
+                }
+
+                const deltaTime = timestamp - lastRenderTime.current;
                 lastRenderTime.current = timestamp;
+
+                // Cap delta time to prevent massive jumps (e.g. background tab)
+                // 100ms max allowed delta
+                const safeDelta = Math.min(deltaTime, 100);
+
+                if (uniforms.u_time) {
+                    totalAnimationTime.current += safeDelta * params.speed;
+                    gl!.uniform1f(uniforms.u_time, totalAnimationTime.current);
+                }
+                gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4);
+            } catch (e) {
+                console.warn("MetallicPaint render error:", e);
             }
-
-            const deltaTime = timestamp - lastRenderTime.current;
-            lastRenderTime.current = timestamp;
-
-            // Cap delta time to prevent massive jumps (e.g. background tab)
-            // 100ms max allowed delta
-            const safeDelta = Math.min(deltaTime, 100);
-
-            if (uniforms.u_time) {
-                totalAnimationTime.current += safeDelta * params.speed;
-                gl!.uniform1f(uniforms.u_time, totalAnimationTime.current);
-            }
-            gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4);
             renderId = requestAnimationFrame(render);
         }
 
@@ -557,10 +565,15 @@ export default function MetallicPaint({
     }, [gl, params.speed, uniforms]);
 
     useEffect(() => {
+        if (typeof window === 'undefined') return;
         const handleResize = () => {
-            if (!gl || !uniforms || !imageData) return;
-            const imgRatio = imageData.width / imageData.height;
-            gl.uniform1f(uniforms.u_img_ratio, imgRatio);
+            if (!gl || !uniforms?.u_img_ratio || !imageData) return;
+            try {
+                const imgRatio = imageData.width / imageData.height;
+                gl.uniform1f(uniforms.u_img_ratio, imgRatio);
+            } catch (e) {
+                console.warn("MetallicPaint resize error:", e);
+            }
         };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);

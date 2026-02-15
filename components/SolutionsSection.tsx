@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, X, ShieldCheck, Zap } from 'lucide-react';
+import { ChevronLeft, X, ShieldCheck, Zap, Download } from 'lucide-react';
 import { useGlobalStore, Product } from '@/context/GlobalStore';
 import Image from 'next/image';
 import { useBackButton } from '@/hooks/useBackButton';
@@ -279,6 +279,29 @@ export default function SolutionsSection() {
                 <p className="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
                   Click any product to explore specific variants tailored to your needs
                 </p>
+                <div className="flex items-center justify-center mt-3">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const files = [
+                        '/assets/gentech_guard_brochure_borderless.pdf',
+                        '/assets/gentech_guard_sunfilm_brochure_borderless.pdf',
+                      ];
+                      files.forEach((file) => {
+                        const a = document.createElement('a');
+                        a.href = file;
+                        a.download = file.split('/').pop() || '';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                      });
+                    }}
+                    className="inline-flex items-center gap-1.5 text-white/30 hover:text-blue-400/70 text-xs tracking-wide transition-colors duration-300"
+                  >
+                    <Download size={12} />
+                    Download Brochures For PPF & Sun Film
+                  </button>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>

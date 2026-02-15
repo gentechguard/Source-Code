@@ -14,8 +14,8 @@ export default function ContactForm() {
     const { settings } = useGlobalStore();
     const config = settings || siteConfig;
 
-    const whatsappNumber = config.contact.whatsapp.number;
-    const dealerMessage = config.contact.whatsapp.defaultMessage;
+    const whatsappNumber = config?.contact?.whatsapp?.number || siteConfig.contact.whatsapp.number;
+    const dealerMessage = config?.contact?.whatsapp?.defaultMessage || siteConfig.contact.whatsapp.defaultMessage;
 
     return (
         <section id="contact" className="relative pb-32 overflow-hidden bg-dark-bg">

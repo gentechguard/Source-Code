@@ -54,7 +54,7 @@ export default function Footer() {
 
                         {/* Social Icons */}
                         <div className="flex gap-3">
-                            {Object.entries(config.socials).map(([key, href]) => {
+                            {Object.entries(config.socials || {}).map(([key, href]) => {
                                 // Dynamic Icon Mapping
                                 const iconMap: Record<string, any> = {
                                     instagram: Instagram,
