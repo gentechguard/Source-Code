@@ -59,10 +59,11 @@ export default function WarrantyForm() {
         message: "",
     });
 
-    // Dynamic Categories
+    // Dynamic Categories — show only sub-products (variants with a parent_id)
     const { products } = useGlobalStore();
-    const ppfCategories = products.length > 0
-        ? products.map(p => p.name)
+    const subProducts = products.filter(p => p.parent_id);
+    const ppfCategories = subProducts.length > 0
+        ? subProducts.map(p => p.name)
         : siteConfig.productCategories;
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
