@@ -329,6 +329,7 @@ const MergedPlanes = forwardRef<
         [count, width, height]
     );
     useFrame((_, delta) => {
+        if (!mesh.current?.material?.uniforms?.time) return;
         mesh.current.material.uniforms.time.value += 0.1 * delta;
     });
     return <mesh ref={mesh} geometry={geometry} material={material} />;
