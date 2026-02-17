@@ -296,9 +296,9 @@ export default function SolutionsSection() {
                         document.body.removeChild(a);
                       });
                     }}
-                    className="inline-flex items-center gap-1.5 text-white/30 hover:text-blue-400/70 text-xs tracking-wide transition-colors duration-300"
+                    className="inline-flex items-center gap-2 text-blue-400/80 hover:text-blue-400 text-sm tracking-wide transition-colors duration-300"
                   >
-                    <Download size={12} />
+                    <Download size={15} />
                     Download Brochures For PPF & Sun Film
                   </button>
                 </div>
@@ -508,7 +508,7 @@ export default function SolutionsSection() {
                   <div className="mb-6">
                     <h3 className="text-sm md:text-lg font-bold text-blue-400 mb-3 md:mb-4 uppercase tracking-widest flex items-center gap-2">
                       <ShieldCheck size={18} />
-                      Product Highlights
+                      Flavors
                     </h3>
                     <div className="space-y-2.5">
                       {parseFeatures(activeProduct.features).map((feature, i) => (
