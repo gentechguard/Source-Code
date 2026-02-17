@@ -466,13 +466,27 @@ export default function SolutionsSection() {
               {/* Image Section */}
               <div className="w-full md:w-2/5 relative overflow-hidden bg-gradient-to-br from-gray-900 to-black min-h-[200px] md:min-h-[500px]">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent" />
+                {/* SVG filter to make white/near-white pixels transparent */}
+                <svg className="absolute w-0 h-0" aria-hidden="true">
+                  <defs>
+                    <filter id="remove-white-bg" colorInterpolationFilters="sRGB">
+                      <feColorMatrix type="matrix" values="
+                        1 0 0 0 0
+                        0 1 0 0 0
+                        0 0 1 0 0
+                        -1 -1 -1 1 2
+                      "/>
+                    </filter>
+                  </defs>
+                </svg>
                 {activeProduct.image_url ? (
                   <div className="relative w-full h-full min-h-[200px] md:min-h-[400px]">
                     <Image
                       src={getProductImageUrl(activeProduct.image_url)}
                       alt={activeProduct.name}
                       fill
-                      className="object-contain p-4 md:p-8 drop-shadow-2xl mix-blend-lighten"
+                      className="object-contain p-4 md:p-8"
+                      style={{ filter: 'url(#remove-white-bg) drop-shadow(0 25px 25px rgba(0,0,0,0.15))' }}
                       sizes="(max-width: 768px) 100vw, 40vw"
                       priority
                     />
