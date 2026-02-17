@@ -1,14 +1,12 @@
 // app/our-network/page.tsx
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { NetworkHero } from "./components/NetworkHero";
 import { IndiaMapComponent } from "./components/IndiaMap";
 import { DealerFilterSidebar } from "./components/DealerFilter";
-import { DealerList } from "./components/DealerList";
 import { useDealerData } from "@/hooks/useDealerData";
-import { Map, List, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import Header from "@/components/Header";
 
 export default function OurNetworkPage() {
@@ -25,8 +23,6 @@ export default function OurNetworkPage() {
     selectDealer,
     hoverDealer
   } = useDealerData();
-
-  const [viewMode, setViewMode] = useState<"map" | "list">("map");
 
   return (
     <main className="min-h-screen bg-[#0A0A0A]" style={{ background: '#0A0A0A', color: '#fff' }}>
@@ -57,40 +53,6 @@ export default function OurNetworkPage() {
             </p>
           </motion.div>
 
-          {/* View Toggle */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex justify-center mb-8"
-          >
-            <div className="inline-flex p-1 rounded-xl bg-white/5 border border-white/10">
-              <button
-                onClick={() => setViewMode("map")}
-                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
-                  viewMode === "map"
-                    ? "bg-[#00A8FF] text-black"
-                    : "text-white/60 hover:text-white"
-                }`}
-              >
-                <Map className="w-5 h-5" />
-                Map View
-              </button>
-              <button
-                onClick={() => setViewMode("list")}
-                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
-                  viewMode === "list"
-                    ? "bg-[#00A8FF] text-black"
-                    : "text-white/60 hover:text-white"
-                }`}
-              >
-                <List className="w-5 h-5" />
-                List View
-              </button>
-            </div>
-          </motion.div>
-
           {/* Main Content */}
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Sidebar */}
@@ -104,7 +66,7 @@ export default function OurNetworkPage() {
               stats={stats}
             />
 
-            {/* Map or List */}
+            {/* Map */}
             <motion.div
               className="flex-1 min-h-[500px] lg:min-h-[600px]"
               initial={{ opacity: 0, x: 20 }}
@@ -112,40 +74,13 @@ export default function OurNetworkPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <AnimatePresence mode="wait">
-                {viewMode === "map" ? (
-                  <motion.div
-                    key="map"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-full"
-                  >
-                    <IndiaMapComponent
-                      dealers={dealers}
-                      selectedDealer={selectedDealer}
-                      hoveredDealer={hoveredDealer}
-                      onSelectDealer={selectDealer}
-                      onHoverDealer={hoverDealer}
-                    />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="list"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-full max-h-[600px] overflow-hidden rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 p-6"
-                  >
-                    <DealerList
-                      dealers={dealers}
-                      onSelectDealer={selectDealer}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <IndiaMapComponent
+                dealers={dealers}
+                selectedDealer={selectedDealer}
+                hoveredDealer={hoveredDealer}
+                onSelectDealer={selectDealer}
+                onHoverDealer={hoverDealer}
+              />
             </motion.div>
           </div>
         </div>

@@ -296,9 +296,9 @@ export default function SolutionsSection() {
                         document.body.removeChild(a);
                       });
                     }}
-                    className="inline-flex items-center gap-1.5 text-white/30 hover:text-blue-400/70 text-xs tracking-wide transition-colors duration-300"
+                    className="inline-flex items-center gap-2 text-blue-400/80 hover:text-blue-400 text-sm tracking-wide transition-colors duration-300"
                   >
-                    <Download size={12} />
+                    <Download size={15} />
                     Download Brochures For PPF & Sun Film
                   </button>
                 </div>
@@ -466,13 +466,27 @@ export default function SolutionsSection() {
               {/* Image Section */}
               <div className="w-full md:w-2/5 relative overflow-hidden bg-gradient-to-br from-gray-900 to-black min-h-[200px] md:min-h-[500px]">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent" />
+                {/* SVG filter to make white/near-white pixels transparent */}
+                <svg className="absolute w-0 h-0" aria-hidden="true">
+                  <defs>
+                    <filter id="remove-white-bg" colorInterpolationFilters="sRGB">
+                      <feColorMatrix type="matrix" values="
+                        1 0 0 0 0
+                        0 1 0 0 0
+                        0 0 1 0 0
+                        -1 -1 -1 1 2
+                      "/>
+                    </filter>
+                  </defs>
+                </svg>
                 {activeProduct.image_url ? (
                   <div className="relative w-full h-full min-h-[200px] md:min-h-[400px]">
                     <Image
                       src={getProductImageUrl(activeProduct.image_url)}
                       alt={activeProduct.name}
                       fill
-                      className="object-contain p-4 md:p-8 drop-shadow-2xl"
+                      className="object-contain p-4 md:p-8"
+                      style={{ filter: 'url(#remove-white-bg) drop-shadow(0 25px 25px rgba(0,0,0,0.15))' }}
                       sizes="(max-width: 768px) 100vw, 40vw"
                       priority
                     />
@@ -508,7 +522,7 @@ export default function SolutionsSection() {
                   <div className="mb-6">
                     <h3 className="text-sm md:text-lg font-bold text-blue-400 mb-3 md:mb-4 uppercase tracking-widest flex items-center gap-2">
                       <ShieldCheck size={18} />
-                      Product Highlights
+                      Flavors
                     </h3>
                     <div className="space-y-2.5">
                       {parseFeatures(activeProduct.features).map((feature, i) => (
