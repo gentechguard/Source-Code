@@ -95,8 +95,8 @@ export default function ContactForm() {
                             </div>
 
                             {/* Visual/Image Side */}
-                            <div className="relative h-full min-h-[200px] md:min-h-[300px] flex flex-col items-center justify-center">
-                                <div className="absolute inset-0 bg-primary-blue/20 blur-[100px] rounded-full" />
+                            <div className="relative h-full min-h-[250px] md:min-h-[400px] flex flex-col items-center justify-center">
+                                <div className="absolute inset-0 bg-primary-blue/20 blur-[60px] rounded-full" />
                                 <Image
                                     src="/assets/gentech-tall.png"
                                     alt="Gentech Badge"
@@ -134,7 +134,7 @@ export default function ContactForm() {
                 </motion.div>
 
                 {/* Contact Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mt-24">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mt-32">
                     <ContactCard
                         icon={Phone}
                         title="Call Us"
