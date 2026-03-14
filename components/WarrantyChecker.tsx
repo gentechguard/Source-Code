@@ -170,6 +170,12 @@ export default function WarrantyChecker() {
         if (!foundInSpecs) {
             if (result.ppf_category?.includes("TPH")) duration = "3 Years";
             if (result.ppf_category?.includes("Lite")) duration = "3 Years";
+            // Extract warranty years from product name (e.g. "GenTech Ultra Pro 8" → "8 Years")
+            const categoryName = result.ppf_category || "";
+            const nameMatch = categoryName.match(/(\d+)\s*$/);
+            if (nameMatch) {
+                duration = `${nameMatch[1]} Years`;
+            }
         }
         // Override if product details has warranty info? 
         // Assuming database has 'warranty_period' col? I don't know schema. Sticking to logic.

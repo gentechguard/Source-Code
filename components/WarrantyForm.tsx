@@ -245,6 +245,13 @@ export default function WarrantyForm() {
                     if (warrantySpec?.value) duration = warrantySpec.value;
                 }
             }
+            // Fallback: extract warranty years from product name (e.g. "GenTech Ultra Pro 8" → "8 Years")
+            if (duration === "5 Years" && formData.ppfCategory) {
+                const nameMatch = formData.ppfCategory.match(/(\d+)\s*$/);
+                if (nameMatch) {
+                    duration = `${nameMatch[1]} Years`;
+                }
+            }
 
             // 4. Build certificate data
             const certData: WarrantyData = {
