@@ -132,6 +132,7 @@ export default function WarrantyForm() {
                 return "Invalid PPF Roll Number. Please check the code on your warranty card.";
             }
             if (d.regNumber.length < 6) return "Please enter a valid Registration Number";
+            if (!files.vehicleImage) return "Vehicle Image is required.";
         }
         if (currentStep === 3) {
             if (!d.dealerName || !d.installerMobile || !d.installationLocation) return "Please fill in all required dealer details.";
@@ -637,7 +638,7 @@ export default function WarrantyForm() {
                                     </div>
                                     <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5">
                                         <div className="space-y-2">
-                                            <label className="text-xs uppercase font-bold text-white/50 tracking-wider">Vehicle Image <span className="text-white/20">(Optional)</span></label>
+                                            <label className="text-xs uppercase font-bold text-white/50 tracking-wider">Vehicle Image <span className="text-red-500">*</span></label>
                                             <div className="border border-dashed border-white/20 rounded-xl p-6 text-center hover:bg-white/5 transition-colors cursor-pointer relative">
                                                 <input
                                                     type="file"
