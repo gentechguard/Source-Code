@@ -1,6 +1,6 @@
-export type WarrantyCertificateVariant = "default" | "ppf10";
+export type WarrantyCertificateVariant = "default" | "gentech10";
 
-export function isPpf10WarrantyProduct(productName: string | null | undefined): boolean {
+export function isGentech10WarrantyProduct(productName: string | null | undefined): boolean {
   if (!productName) return false;
 
   const normalized = productName
@@ -9,11 +9,11 @@ export function isPpf10WarrantyProduct(productName: string | null | undefined): 
     .replace(/([0-9])([A-Z])/g, "$1 $2")
     .replace(/[^A-Z0-9]+/g, " ");
 
-  return /\bPPF\b/.test(normalized) && /\b10\b/.test(normalized);
+  return /\b(?:GENTECH|GEN TECH) 10\b/.test(normalized);
 }
 
 export function getWarrantyCertificateVariant(
   productName: string | null | undefined
 ): WarrantyCertificateVariant {
-  return isPpf10WarrantyProduct(productName) ? "ppf10" : "default";
+  return isGentech10WarrantyProduct(productName) ? "gentech10" : "default";
 }

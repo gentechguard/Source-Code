@@ -330,7 +330,7 @@ const DefaultCertificate: React.FC<CertificateProps> = ({ data }) => {
     );
 };
 
-const Ppf10Certificate: React.FC<CertificateProps> = ({ data }) => {
+const Gentech10Certificate: React.FC<CertificateProps> = ({ data }) => {
     const displayDuration = "10 Years";
 
     return (
@@ -370,7 +370,7 @@ const Ppf10Certificate: React.FC<CertificateProps> = ({ data }) => {
                 <section className="grid grid-cols-[1fr_220px] items-center gap-8 py-7">
                     <div className="space-y-5">
                         <p className="max-w-[485px] text-[18px] leading-8 text-white">
-                            This is to certify that the Paint Protection Film (PPF 10) installed on the vehicle is covered under Gentech Guard Warranty against manufacturing defects.
+                            This is to certify that the GenTech 10 Paint Protection Film installed on the vehicle is covered under Gentech Guard Warranty against manufacturing defects.
                         </p>
                         <div className="rounded-[18px] border border-[#d6a542] bg-black/55 p-7">
                             <p className="mb-3 text-[15px] font-bold uppercase tracking-[0.18em] text-[#d6a542]">Product Installed</p>
@@ -481,8 +481,8 @@ const Ppf10Certificate: React.FC<CertificateProps> = ({ data }) => {
 };
 
 const Certificate: React.FC<CertificateProps> = ({ data }) => {
-    if (getWarrantyCertificateVariant(data.productName) === "ppf10") {
-        return <Ppf10Certificate data={data} />;
+    if (getWarrantyCertificateVariant(data.productName) === "gentech10") {
+        return <Gentech10Certificate data={data} />;
     }
 
     return <DefaultCertificate data={data} />;

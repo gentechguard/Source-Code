@@ -5,34 +5,38 @@ import { renderToStaticMarkup } from "react-dom/server";
 import Certificate, { type WarrantyData } from "../components/Certificate";
 import {
   getWarrantyCertificateVariant,
-  isPpf10WarrantyProduct,
+  isGentech10WarrantyProduct,
 } from "./warranty-certificate";
 
-test("matches only warranty products identified as PPF 10", () => {
-  assert.equal(isPpf10WarrantyProduct("Gentech Guard PPF 10"), true);
-  assert.equal(isPpf10WarrantyProduct("GEN PPF 10"), true);
-  assert.equal(isPpf10WarrantyProduct("gen-tech ppf-10 gloss"), true);
-  assert.equal(isPpf10WarrantyProduct("Gentech PPF10+"), true);
+test("matches only warranty products identified as GenTech 10", () => {
+  assert.equal(isGentech10WarrantyProduct("GenTech 10"), true);
+  assert.equal(isGentech10WarrantyProduct("Gentech Guard GenTech 10"), true);
+  assert.equal(isGentech10WarrantyProduct("gen-tech 10 gloss"), true);
+  assert.equal(isGentech10WarrantyProduct("Gentech10+"), true);
 
-  assert.equal(isPpf10WarrantyProduct("GEN 10 Ceramic Coating"), false);
-  assert.equal(isPpf10WarrantyProduct("GEN 5 PPF"), false);
-  assert.equal(isPpf10WarrantyProduct("PPF"), false);
-  assert.equal(isPpf10WarrantyProduct(""), false);
-  assert.equal(isPpf10WarrantyProduct(null), false);
-  assert.equal(isPpf10WarrantyProduct(undefined), false);
+  assert.equal(isGentech10WarrantyProduct("Gentech Guard PPF 10"), false);
+  assert.equal(isGentech10WarrantyProduct("Gentech PPF10+"), false);
+  assert.equal(isGentech10WarrantyProduct("GEN 10 Ceramic Coating"), false);
+  assert.equal(isGentech10WarrantyProduct("GEN 5 PPF"), false);
+  assert.equal(isGentech10WarrantyProduct("PPF"), false);
+  assert.equal(isGentech10WarrantyProduct(""), false);
+  assert.equal(isGentech10WarrantyProduct(null), false);
+  assert.equal(isGentech10WarrantyProduct(undefined), false);
 });
 
-test("selects the PPF 10 certificate only for PPF 10 products", () => {
-  assert.equal(getWarrantyCertificateVariant("Gentech Guard PPF 10"), "ppf10");
-  assert.equal(getWarrantyCertificateVariant("Gentech PPF10+"), "ppf10");
+test("selects the gold certificate only for GenTech 10 products", () => {
+  assert.equal(getWarrantyCertificateVariant("GenTech 10"), "gentech10");
+  assert.equal(getWarrantyCertificateVariant("Gentech10+"), "gentech10");
+  assert.equal(getWarrantyCertificateVariant("Gentech Guard PPF 10"), "default");
+  assert.equal(getWarrantyCertificateVariant("Gentech PPF10+"), "default");
   assert.equal(getWarrantyCertificateVariant("GEN 10 Ceramic Coating"), "default");
   assert.equal(getWarrantyCertificateVariant("GEN 5 PPF"), "default");
 });
 
-test("renders roll serial details on the PPF 10 certificate", () => {
+test("renders roll serial details on the GenTech 10 certificate", () => {
   const data: WarrantyData = {
     warrantyId: "GW-000123",
-    productName: "Gentech Guard PPF 10",
+    productName: "GenTech 10",
     duration: "10 Years",
     serialNumber: "G126010002",
     materialConsumed: "Standard Kit",
@@ -54,4 +58,7 @@ test("renders roll serial details on the PPF 10 certificate", () => {
 
   assert.match(html, /Roll Serial No\./);
   assert.match(html, /G126010002/);
+  assert.match(html, /Official Protection Document/);
+  assert.match(html, /GenTech 10 Paint Protection Film/);
+  assert.doesNotMatch(html, /PPF 10/);
 });
