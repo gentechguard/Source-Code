@@ -13,6 +13,7 @@ export interface WarrantyData {
     customer: {
         name: string;
         vehicleModel: string;
+        registrationNumber: string;
         vin: string;
         phone: string;
     };
@@ -241,6 +242,10 @@ const DefaultCertificate: React.FC<CertificateProps> = ({ data }) => {
                                 <span className="text-sm font-semibold">{data.customer.vehicleModel}</span>
                             </div>
                             <div className="border-b border-[#1e2939] pb-2">
+                                <span className="block text-[10px] text-[#6a7282] uppercase tracking-wider mb-1">Vehicle Registration No.</span>
+                                <span className="font-mono text-sm font-semibold text-[#d1d5dc]">{data.customer.registrationNumber}</span>
+                            </div>
+                            <div className="border-b border-[#1e2939] pb-2">
                                 <span className="block text-[10px] text-[#6a7282] uppercase tracking-wider mb-1">VIN / Chassis No.</span>
                                 <span className="font-mono text-sm text-[#d1d5dc]">{data.customer.vin}</span>
                             </div>
@@ -406,6 +411,7 @@ const Gentech10Certificate: React.FC<CertificateProps> = ({ data }) => {
                         <div className="space-y-4">
                             <GoldInfoField label="Owner Name" value={data.customer.name} />
                             <GoldInfoField label="Vehicle Model" value={data.customer.vehicleModel} />
+                            <GoldInfoField label="Vehicle Registration No." value={data.customer.registrationNumber} />
                             <GoldInfoField label="VIN / Chassis No." value={data.customer.vin} />
                             <GoldInfoField label="Contact" value={data.customer.phone} />
                         </div>

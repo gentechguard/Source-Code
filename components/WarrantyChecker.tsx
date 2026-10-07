@@ -189,6 +189,7 @@ export default function WarrantyChecker() {
             customer: {
                 name: result.name,
                 vehicleModel: "Vehicle", // Placeholder as we don't capture model
+                registrationNumber: result.reg_number || "N/A",
                 vin: result.chassis_number || "N/A",
                 phone: result.phone
             },

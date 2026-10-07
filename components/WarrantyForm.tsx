@@ -264,6 +264,7 @@ export default function WarrantyForm() {
                 customer: {
                     name: formData.name,
                     vehicleModel: "Vehicle",
+                    registrationNumber: formatRegNumber(formData.regNumber),
                     vin: cleanChassis || "N/A",
                     phone: `+91${formData.phone}`,
                 },

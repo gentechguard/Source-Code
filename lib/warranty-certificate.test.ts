@@ -43,6 +43,7 @@ test("renders roll serial details on the GenTech 10 certificate", () => {
     customer: {
       name: "Suresh Kumar",
       vehicleModel: "Vehicle",
+      registrationNumber: "TS 09 AB 0213",
       vin: "N/A",
       phone: "+919966660416",
     },
@@ -61,4 +62,38 @@ test("renders roll serial details on the GenTech 10 certificate", () => {
   assert.match(html, /Official Protection Document/);
   assert.match(html, /GenTech 10 Paint Protection Film/);
   assert.doesNotMatch(html, /PPF 10/);
+});
+
+test("renders the vehicle registration number on every certificate variant", () => {
+  const createData = (productName: string) => ({
+    warrantyId: "GW-000002",
+    productName,
+    duration: productName === "GenTech 10" ? "10 Years" : "5 Years",
+    serialNumber: "GT12345",
+    materialConsumed: "Standard Kit",
+    customer: {
+      name: "Vehicle Owner",
+      vehicleModel: "Vehicle",
+      registrationNumber: "TS 09 AB 0213",
+      vin: "MA3TESTVIN123",
+      phone: "+919876543210",
+    },
+    installer: {
+      studioName: "Gentech Authorized Studio",
+      location: "Hyderabad",
+      technician: "Authorized Technician",
+      date: "07/10/2026",
+    },
+  });
+
+  for (const productName of ["GEN 5 PPF", "GenTech 10"]) {
+    const html = renderToStaticMarkup(
+      React.createElement(Certificate, {
+        data: createData(productName),
+      })
+    );
+
+    assert.match(html, /Vehicle Registration No\./);
+    assert.match(html, /TS 09 AB 0213/);
+  }
 });
